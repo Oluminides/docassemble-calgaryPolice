@@ -1,3 +1,15 @@
+---
+include:
+  - docassemble.AssemblyLine:assembly_line_unstyled.yml
+---
+features:
+  small screen navigation: dropdown
+  navigation back button: False
+  javascript:
+    - docassemble.AssemblyLine:al_audio.js  
+  css:
+    - docassemble.AssemblyLine:al_audio.css    
+---
 metadata:
   title: Calgary Police Complaints
   short title: Calgary Police Complaints
@@ -574,6 +586,7 @@ buttons:
   - Restart: restart
 
 ---
+id: download
 question: |
   Your letter is complete! Please **carefully** read the information below.
 subquestion: |
