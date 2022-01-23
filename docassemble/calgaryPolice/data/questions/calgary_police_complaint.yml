@@ -5,6 +5,7 @@ include:
 features:
   small screen navigation: dropdown
   navigation back button: False
+  question back button: True
   javascript:
     - docassemble.AssemblyLine:al_audio.js  
   css:
@@ -601,10 +602,35 @@ subquestion: |
    Please consult legal advice if needed.
    
    **Note: until an investigator confirms this complaint, there is no guarantee that this is a valid complaint.** 
+   
+   ${ download_bundle.download_list_html() }
+   
+   ${ download_bundle.send_button_html() }
+progress: 100
+section: Next
+field: user_saw_the_letter
+continue button label: Email the letter   
+---
+objects:
+  - complaint_letter: ALDocument.using(
+          title="Formal Complaint Letter", 
+          filename="formal_complaint_letter", 
+          enabled=True, 
+          has_addendum=False
+        )
+---
+objects:
+  - download_bundle: ALDocumentBundle.using(
+        elements=[complaint_letter], 
+        filename="formal_complaint_letter", 
+        enabled=True,
+        title="Formal Complaint Letter"
+      )
+---   
 attachment:
   - name: Formal Complaint Letter
     filename: Formal_Complaint_Letter
-    variable name: complaint_letter
+    variable name: complaint_letter[i]
     valid formats:
       - pdf
     content: |
@@ -920,10 +946,6 @@ attachment:
       %endif
       %endif
       [END_CAPTION]
-progress: 100
-section: Next
-field: user_saw_the_letter
-continue button label: Email the letter
 ---
 code: |
   if one_or_more_grounds_met and user_saw_acknowlegment and user_saw_grounds4_screen and user.select_if_anonymous:
