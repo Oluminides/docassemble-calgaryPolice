@@ -603,6 +603,8 @@ subquestion: |
    
    **Note: until an investigator confirms this complaint, there is no guarantee that this is a valid complaint.** 
    
+   ${ complaint_letter.as_pdf() }
+   
    ${ download_bundle.download_list_html() }
    
    ${ download_bundle.send_button_html() }
