@@ -18,7 +18,16 @@ metadata:
 sections:
   - Welcome: Welcome
   - Information: How to file a complaint
-  - Grounds: Tell us what happened
+  - Grounds: 
+      - Breach of Confidence
+      - Under the Influence
+      - Corrupt Practice
+      - Deceit
+      - Discreditable Conduct
+      - Improper Use of Firearms
+      - Insubordination
+      - Neglect of Duty
+      - Unnecessary Exercise of Authority
   - Filing: Filing your complaint
   - Acknowledgement: Acknowledgement
   - Next: What is next?
@@ -260,9 +269,10 @@ fields:
     input type: area
     rows: 10
     show if: officer_should_have_showup
+section: Neglect of Duty
 ---
 # Grounds --> (a) breach of confidence
-question: Breach of Confidence (check any if applicable) [1/9]
+question: Breach of Confidence (check any if applicable)
 subquestion: |
 fields:
   - (1) Did the officer say something that was supposed to remain private or confidential?: officer_exposed_private_info
@@ -283,11 +293,11 @@ fields:
     input type: area
     rows: 10
     show if: officer_improper_statement
-section: Grounds
+section: Breach of Confidence
 ---
 # Grounds -->(b)
 question: |
-  Consumption or use of liquor or drugs in a manner that is prejudicial to duty (check any if applicable) [2/9]
+  Consumption or use of liquor or drugs in a manner that is prejudicial to duty (check any if applicable) 
 subquestion: |
 fields:
   - (1) Did the officer appear under the influene of alcohol?: officer_drunk
@@ -302,10 +312,10 @@ fields:
     input type: area
     rows: 10
     show if: officer_high
-section: Grounds
+section: Under the Influence
 ---
 # Grounds --> (c) corrupt practice questions
-question: Corrupt Practice (check any if applicable) [3/9]
+question: Corrupt Practice (check any if applicable)
 subquestion: |
 fields:
   - (1) Did the officer take money or property from you?: officer_took_money
@@ -332,10 +342,10 @@ fields:
     input type: area
     rows: 10
     show if: officer_took_advantage
-section: Grounds
+section: Corrupt Practice
 ---
 # Grounds --> (d) deceit questions
-question: Deceit (check any if applicable) [4/9]
+question: Deceit (check any if applicable) 
 subquestion: |
 fields:
   - (1) Did the officer make or sign a false or misleading statement?: officer_make_false_statement
@@ -350,9 +360,10 @@ fields:
     input type: area
     rows: 10
     show if: officer_hide_info
+section: Deceit
 ---
 # Grounds --> (e) discreditable conduct questions
-question: Discreditable Conduct (check any if applicable) [5/9]
+question: Discreditable Conduct (check any if applicable) 
 subquestion: |
 fields:
   - (1) Did the officer do something that could discredit the reputation of the police service?: officer_reputation
@@ -385,10 +396,10 @@ fields:
     input type: area
     rows: 10
     show if: officer_treatment
-section: Grounds
+section: Discreditable Conduct
 ---
 # Grounds --> (f) improper use of firearms questions:
-question: Improper Use of Firearms (check any if applicable) [6/9]
+question: Improper Use of Firearms (check any if applicable)
 subquestion: |
 fields:
   - (1) Did the officer have a gun that was not issued by the police service?: officer_not_issued_gun
@@ -427,9 +438,10 @@ fields:
     input type: area
     rows: 10
     show if: officer_erratic
+section: Improper Use of Firearms
 ---
 # Grounds --> (g) Insubordination questions
-question: Insubordination (check any if applicable) [7/9]
+question: Insubordination (check if applicable) 
 subquestion: |
 fields:
   - (1) Did the officer disobey their orders?: officer_not_obey
@@ -438,9 +450,10 @@ fields:
     input type: area
     rows: 10
     show if: officer_not_obey
+section: Insubordination
 ---
 # Grounds --> (h) neglect of duty (#2) questions:
-question:  Neglect of Duty (check any if applicable) [8/9]
+question:  Neglect of Duty (check any if applicable) 
 subquestion: |
 fields:
   - (1) Did the officer not perform their duties?: officer_perform_duties
@@ -473,9 +486,10 @@ fields:
     input type: area
     rows: 10
     show if: officer_no_evidence
+section: Neglect of Duty
 ---
 # Grounds --> (i) unlawful or unnecessary exercise of authority questions:
-question:  Unlawful or Unnecessary Exercise of Authority (check any if applicable) [pg 9/9]
+question:  Unlawful or Unnecessary Exercise of Authority (check any if applicable)
 subquestion: |
 fields:
   - (1) Did the officer threaten or try to intimidate you?: officer_intimidated
@@ -490,6 +504,7 @@ fields:
     input type: area
     rows: 10
     show if: officer_was_rough
+section: Unnecessary Exercise of Authority
 ---
 # Grounds --> final EXPLANATION SCREEN
 question: |
