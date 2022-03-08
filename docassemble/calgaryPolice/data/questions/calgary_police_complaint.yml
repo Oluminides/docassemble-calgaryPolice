@@ -11,1026 +11,1534 @@ features:
     - docassemble.AssemblyLine:al_audio.css    
 ---
 metadata:
-  title: Calgary Police Complaints
-  short title: Calgary Police Complaints
-  comment: A complaint filing system for the Calgary Police Service
----
-sections:
-  - Welcome: Welcome
-  - Information: How to file a complaint
-  - Grounds: 
-      - Breach of Confidence
-      - Under the Influence
-      - Corrupt Practice
-      - Deceit
-      - Discreditable Conduct
-      - Improper Use of Firearms
-      - Insubordination
-      - Neglect of Duty
-      - Unnecessary Exercise of Authority
-  - Filing: Filing your complaint
-  - Acknowledgement: Acknowledgement
-  - Next: What is next?
+  title: |
+    Calgary Police Complaints
+  short title: |
+    Calgary Police Complaints
+  description: |
+    A complaint filing system for the Calgary Police Service
 ---
 features:
   navigation: True
   progress bar: True
-  css: my-styles.css
+---
+
 ---
 objects:
   - user: Individual
-  - address: Address
 ---
 mandatory: true
 code: |
+  from datetime import datetime
   # Code-flow block
-  user_saw_welcome_screen
-  user_saw_information_screen
-  user_saw_information_grounds
-  if user.complaint_about_Calgary_Police:
-    user.incident_within_last_year
-  else: event: kickout1
- 
-  if not user.incident_within_last_year:
-    event: kickout2
-  else:
-    user.coduct_directed
-  if not user.coduct_directed:
-    user.conduct_witnessed
-  else:
-    user_saw_information2_grounds
-    before_police
-    user_saw_grounds3_screen
-  if not user.coduct_directed and not user.conduct_witnessed:
-    user.agent
-  else:
-    user_saw_information2_grounds
-    before_police
-    user_saw_grounds3_screen
-  if not user.coduct_directed and not user.conduct_witnessed and not user.agent:
-    user.has_personal_relationship
-  else:
-    user_saw_information2_grounds
-    before_police
-    user_saw_grounds3_screen
-   
-  if not user.coduct_directed and not user.conduct_witnessed and not user.agent and not user.has_personal_relationship:
-    event: kickout3
-  else:
-    user_saw_information2_grounds
-    before_police
-    user_saw_grounds3_screen
-   
-  if not police_showed_up and not one_ground_h1_met:
-    kickout4
+  user_saw_intro_screen
+  user_saw_important_info
+
+  user_screening1
+  user_screening2
+  cps = "The Calgary Police Service, or someone working for the Calgary Police   Service"
+  me = "Me"
+  witness = "Someone I witnessed"
+  representative = "Someone I represent as a social worker, advocate, or lawyer"
+  related = "Someone close to me, like a spouse, child, or romantic partner"
   
-  if police_showed_up and not atoi_grounds_met:
-    kickout4
+  kickout1_message = ""
+    
+  kickout_resources = " **The Law Society of Alberta**:<br/>403-228-1722<li> Try Dial-A-Law first.<li>You will be provided the contact information for up to three lawyers that best suit your need.<li>No charge for the first half hour of the first visit with one of the lawyers.|**Elizabeth Fry Society**:<br/>403-294-0737<li>Offers support and advocacy for women who are or have been involved in the criminal system.<li>Monday-Friday: 9am-4pm, **1731 10th Ave SW**\n"
+  kickout_resources +=  "-----------------------|-------------------------------\n"
+  kickout_resources += "**Legal Aid Society of Alberta**:<br/>403-297-2260<li>Provides legal aid in civil and criminal matters for individuals who cannot afford to pay a lawyer.<li>**665 - 8th Street SW**.|**Student Legal Services**:<br/>780-492-2226<li>Provides free legal information and representation for low-income individuals.<li>Assists with understanding and resolving legal issues about criminal, family or civil law.<li>**University (Main) Office 11036 88 Avenue NW, Edmonton, AB.**\n"
+  kickout_resources += "**Mustard Seed Legal Clinic**:<br/>403-269-1319<li>Free advice and court representation for evictions/landlord-tenant issues, criminal charges, tickets, and other issues.<li>4th Monday of the month 1:30-3:00pm, **102 11th Ave SE.**|**Calgary Legal Guidance**:<br/>403-234-9266<li>Free legal advice, assistance, information, and advocacy for low-income individuals.<li>Areas: Family, Civil, Criminal, etc.<li>Homeless Outreach Program: Free advice and court representation for eviction/landlord-tenant issues, criminal charges, etc.<li>Free non-governmental ID Clinics Monday - Thursday: 9am-4:30pm Friday: 9am-4pm, **100, 840 7th Ave SW**.\n"
+
+
+  unqualified = False
+  notClose = False
   
+  if user.complaint_about_cps != cps:
+    kickout1_message += "[INDENTBY 0.6in]This online tool is currently only for complaints about the Calgary Police Service. We are hoping to expand to other jurisdictions soon.<br/>"
+    unqualified = True
+    
+  if user.complaint_victim != me and user.complaint_victim != witness and user.complaint_victim != representative and user.complaint_victim != related:
+    if unqualified:
+		  kickout1_message += "<br/>"
+	  kickout1_message += "[INDENTBY 0.6in]Complaints must be directed sufficiently close or witnessed by the person filing the complaint, as per section 42.1(2) of the _Police Act_.<br/>"
+	  unqualified = True
+    notClose = True
+
+  user_is_complainant = "They were"
+
+  if user.complaint_victim == me:
+    user_is_complainant = "I was"
+
+  if user.incident_time == "I was aware of the incident for more than a year":
+    if unqualified:
+		  kickout1_message += "<br/>"
+    kickout1_message += "[INDENTBY 0.6in]Complaints must "
+	  if notClose:
+      kickout1_message += "also " 
+    kickout1_message += "be filed within a year of the incident, or within a year of becoming aware of the incident, as per section 43(11) of the _Police Act_."
+    unqualified = True
+    
+  incident_timeString = ""
+  if unqualified:
+	  event: kickout1
+  else: 
+    if user.incident_time == "The incident happened within the last year":
+      incident_timeString = "Within the last year on "
+    user_signpost1
+  
+  user_targetted1
+  user_targetted2
+    
+  if further_contact:
+    after_initial_contactString1  = "What happened the dates you had further contact with the police:"
+    after_initial_contactString2 = "**" + after_initial_contact + "**"
+  else:
+    after_initial_contactString1 = ""
+    after_initial_contactString2 = ""
+      
+  if anything_after_left:
+    after_left_sceneString1 = "What happened after the police left the scene:"
+    after_left_sceneString2 = "**" + after_left_scene + "**"
+  else:
+    after_left_sceneString1 = ""
+    after_left_sceneString2 = ""
+      
+  if saw_witnesses:
+    the_witnessesString1 = "The names and contact information of the witnesses:"
+    the_witnessesString2 = "**" + witnesses + "**"
+  else:
+    the_witnessesString1 = ""
+    the_witnessesString2 = ""
+    
+  user_signpost2
+  
+  user_plainlang1
+  user_plainlang2
+  user_plainlang3
+  user_plainlang4
+
+  answers = []
+  breaches = []
+  
+  unqualifiedPlainLang = True
+
+  serious_accident = False
+
+  protocol = False
+  unlawful_search_flag = False
+
+  if unlawful_search['searched_without_warrant'] or unlawful_search['arrested_without_warrant']:
+    protocol = True
+    unqualifiedPlainLang = False
+    unlawful_search_flag = True
+    
+    
+  if unlawful_search['searched_without_warrant']:  
+    answers.append(user_is_complainant + " searched without a warrant or a lawful reason. s. 5(2)(i)")
+
+  if unlawful_search['arrested_without_warrant']:
+    answers.append(user_is_complainant + " arrested without a warrant or a lawful reason. s. 5(2)(i)")
+
+  unethical_behaviour_flag = False
+
+  if unethical_behaviour['profane_language'] or unethical_behaviour['strip_searched'] or unethical_behaviour['discrimination']:
+    protocol = True
+    unqualifiedPlainLang = False
+    unethical_behaviour_flag = True
+  
+  if unethical_behaviour['profane_language']:
+    answers.append("The police used profane, abusive, or insulting language. s. 5(2)(e)")
+
+  if unethical_behaviour['strip_searched']:
+    answers.append("The police strip searched me or someone else without a lawful reason. s. 5(2)(i)")
+
+  if unethical_behaviour['discrimination']:
+    answers.append("The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. s. 5(2)(e)")
+
+
+  underTheInfluence = False
+
+  if under_the_influence['intoxicated']:
+    answers.append("The police consumed alcohol, marijuana, or an illegal narcotic drug while on duty or appeared to be intoxicated. s. 5(2)(b)")
+    underTheInfluence = True
+    unqualifiedPlainLang = False
+
+  outwardComms = False
+
+  improper_representation_flag = False
+
+  if improper_representation['unauthorised_communication'] or improper_representation['misleading_statement']:
+    outwardComms = True
+    improper_representation_flag = True
+    unqualifiedPlainLang = False
+    
+
+  if improper_representation['unauthorised_communication']:
+    answers.append("The police communicated something private, confidential, or improper to the media or any other person without authorization from the police. s. 5(2)(a)")
+
+  if improper_representation['misleading_statement']:
+    answers.append("The police made or signed a false or misleading statement. s. 5(2)(d)")
+
+  interference = False
+
+  helping_offenders_flag = False
+
+  if helping_offenders['unrelated_warrant'] or helping_offenders['unreported_offender']:
+    interference = True
+    helping_offenders_flag = True
+    unqualifiedPlainLang = False
+    
+
+  if helping_offenders['unrelated_warrant']:
+    answers.append("The police told someone there was a warrant for their arrest, or that there was a court summons that had been or was about to be issued for that person, and disclosed this information for a purpose unrelated to the lawful execution of the warrant or service of the court summons. s. 5(2)(a)")
+
+  if helping_offenders['unreported_offender']:
+    answers.append("The police knew the location of an offender but failed to report the offender or do anything to bring the offender into custody. s. 5(2)(h)(iv).")
+
+  job_failure_flag = False
+
+  if job_failure['failure_to_report_crime'] or job_failure['disobeyed_superior'] or job_failure['colluded_with_another_officer'] or job_failure['failure_of_negligence']:
+    interference = True
+    job_failure_flag = True
+    unqualifiedPlainLang = False
+    
+
+  if job_failure['failure_to_report_crime']:
+    answers.append("The police failed to report a crime or evidence about a crime to the police or Crown Prosecutor. s. 5(2)(h)")
+
+  if job_failure['disobeyed_superior']:
+    answers.append("The police disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police. s. 5(2)(g)")
+
+  if job_failure['colluded_with_another_officer']:
+    answers.append("The police helped another police officer commit misconduct against you, or the police did nothing to stop another police officer from committing misconduct against you or someone else. s. 5(2)(e)")
+
+  if job_failure['failure_of_negligence']:
+    answers.append("The police failed to do something else they should have done as part of their duties and responsibilities as a police officer. s. 5(2)(h)")
+
+  suppressing_flag = False
+
+  if suppressing['destroyed_official_document'] or suppressing['suppressed_complaint_against_officer']:
+    interference = True
+    suppressing_flag = True
+    unqualifiedPlainLang = False
+
+  if suppressing['destroyed_official_document']:
+    answers.append("The police destroyed, damaged, hid or erased an official document or any other record. s. 5(2)(d)")
+
+  if suppressing['suppressed_complaint_against_officer']:
+    answers.append("The police caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated. s. 5(2)(e)")
+
+  bribesBenefits = False
+
+  request_receive_flag = False
+
+  if request_receive['demanded_payment'] or request_receive['demanded_illicit_drug']:
+    bribesBenefits = True
+    request_receive_flag = True
+    unqualifiedPlainLang = False
+    
+
+  if request_receive['demanded_payment']:
+    answers.append("The police demanded, received or tried to convince me or another person to provide them with money, favour, or any other form of payment, gift, or benefit, without authorization. s. 5(2)(c)")
+
+  if request_receive['demanded_illicit_drug']:
+    answers.append("The police demanded, received or tried to convince me or another person to provide them with liquor, marijuana, or an illicit drug for a themself or any other police officer on duty. s. 5(2)(b)(iv)")
+
+
+  indebted_flag = False
+
+  if indebted['indebted_himself']:
+    bribesBenefits = True
+    indebted_flag = True
+    unqualifiedPlainLang = False
+    answers.append("A police officer indebted himself to a person the police officer was expected to report to police or testify against in a legal proceeding. s. 5(2)(c)")
+
+
+  firearms_flag = False
+
+  if firearms['had_gun'] or firearms['fired_gun'] or firearms['did_not_report_firing'] or firearms['pointed_gun'] or firearms['threatened_to_use_gun'] or firearms['acted_erratic']:
+    firearms_flag = True
+    unqualifiedPlainLang = False
+
+  if firearms['had_gun']:
+    answers.append("A police officer had a gun that was not issued by the police service. s. 5(2)(f)")
+
+  if firearms['fired_gun']:
+    answers.append("A police officer fired a gun. s. 5(2)(f)")
+    
+  if firearms['pointed_gun']:
+    answers.append("A police officer fired a gun. s. 5(2)(f)")
+
+  if firearms['did_not_report_firing']:
+    answers.append("A police officer did not report that they fired a gun. s. 5(2)(f)")
+
+  if firearms['threatened_to_use_gun']:
+    answers.append("A police officer threatened to use a gun against you or someone else, in any manner. s. 5(2)(f)")
+
+  if firearms['acted_erratic']:
+    answers.append("A police officer acted erratic or reckless with a gun, or did anything else involving a gun that was improper. s. 5(2)(f)")
+
+
+  excessiveForce = False  
+  excessiveForceString = ""
+
+  force_flag = False
+
+  if force['too_much_force']:
+    excessiveForce = True
+    force_flag = True
+    unqualifiedPlainLang = False
+    serious_accident = True
+    answers.append("The police used too much force. s. 5(2)(i)")
+
+  sexual_assault_flag = False
+
+  if sexual_assault['sexually_assaulted']:
+    excessiveForce = True
+    sexual_assault_flag = True
+    serious_accident = True
+    answers.append("The police sexually assaulted or harassed someone. s. 5(2)(e) + s. 46")
+
+
+  injury_or_death_flag = False
+
+  if injury_or_death['seriously_injured'] or injury_or_death['hospitalized'] or injury_or_death['killed']:
+    excessiveForce = True
+    serious_accident = True
+    injury_or_death_flag = True
+
+  if injury_or_death['seriously_injured']:
+    answers.append("The police seriously injured someone. s. 5(2)(e) + s. 46")
+
+  if injury_or_death['hospitalized']:
+    answers.append("The police hospitalized someone. s. 5(2)(e) + s. 46")
+
+  if injury_or_death['killed']:
+    answers.append("The police killed someone. s. 5(2)(e) + s. 46")
+
+  finalCatch = False
+
+  if final_catchall['unauthorised_by_law'] or final_catchall['threatens_reputation']:
+    finalCatch = True
+    unqualifiedPlainLang = False
+
+  if final_catchall['unauthorised_by_law']:
+    answers.append("The police did something else I have not previously mentioned that was not authorized by law. **s. 5(2)(i)**")
+
+  if final_catchall['threatens_reputation']:
+    answers.append("The police did something else I have not previously mentioned that threatens or decreases the positive reputation of the police. s. 5(2)(e)")
+  
+  # 5(2)(a)
+  sectionA = False
+  if improper_representation['unauthorised_communication'] or helping_offenders['unrelated_warrant']:
+    breaches.append("(a) Consumption or use of liquor or drugs in a manner that is prejudicial to duty")
+    sectionA = True
+
+  sectionB = False
+  # 5(2)(b)
+  if under_the_influence['intoxicated'] or request_receive['demanded_illicit_drug']:
+    breaches.append("(b) Breach of confidence")
+    sectionB = True
+
+  sectionC = False
+  # 5(2)(c)
+  if request_receive['demanded_payment'] or indebted['indebted_himself']:
+    breaches.append("(c) Corrupt practice")
+    sectionC = True
+
+  sectionD = False
+  # 5(2)(d)
+  if improper_representation['unauthorised_communication'] or suppressing['destroyed_official_document']: 
+    breaches.append("(d) Deceit")
+    sectionD = True
+
+  sectionE = False
+  # 5(2)(e)
+  if unethical_behaviour['profane_language'] or unethical_behaviour['discrimination'] or job_failure['colluded_with_another_officer'] or suppressing['suppressed_complaint_against_officer'] or sexual_assault['sexually_assaulted'] or injury_or_death['seriously_injured'] or injury_or_death['hospitalized'] or injury_or_death['killed'] or final_catchall['threatens_reputation']:
+    breaches.append("(e) Discreditable conduct")
+    sectionE = True
+
+  sectionF = False
+  # 5(2)(f)
+  if firearms['had_gun'] or firearms['fired_gun'] or firearms['did_not_report_firing'] or firearms['pointed_gun'] or firearms['threatened_to_use_gun'] or firearms['acted_erratic']: 
+    breaches.append("(f) Improper use of firearms")
+    sectionF = True
+
+  sectionG = False
+  # 5(2)(g)
+  if job_failure['disobeyed_superior']:
+    breaches.append("(g) Insubordination")
+    sectionG = True
+
+  sectionH = False
+  # 5(2)(h)
+  if helping_offenders['unreported_offender'] or job_failure['failure_to_report_crime'] or job_failure['failure_of_negligence']:
+    breaches.append("(h) Neglect of duty")
+    sectionH = True
+
+  sectionI = False
+  # 5(2)(i)
+  if unlawful_search['searched_without_warrant'] or unlawful_search['arrested_without_warrant'] or unethical_behaviour['strip_searched'] or force['too_much_force'] or final_catchall['unauthorised_by_law']:
+    breaches.append("(i) Unlawful or unnecessary exercise of authority")
+    sectionI = True
+    
+  finalPageString = ""
+  if not unqualifiedPlainLang:
+    finalPageString += "__<h4>Case Law Precedent Specific to Your Complaint</h4>__<br/>"
+  
+  if sectionA:
+    finalPageString += "__<h5>Section 5(1)(a)</h5>__<br/>Section 5(1)(a) governs unlawful disclosures of information and breaches of a person’s privacy. Police are given ready access to a significant amount of highly sensitive and confidential information and therefore must ensure they exercise their authority to use and disclose this information lawfully. Examples of breaches of confidence may include, but are not limited to, (1) disclosing information to a third-party about criminal history or suspected criminal activity (Best v Pearce, 2009 CanLII 94176 (AB LERB), Saunder v Cst. M. Elliot (No. 2564), 2012 CanLII 104693 (AB LERB), CH v Brodeur, 2013 CanLII 69156 (AB LERB), GH v Edmonton (Police Service), 2018 ABLERB 029), (2) disseminating information about internal EPS matters to third-parties including the media (EPS Officer AB v Chief of Police, 2013 CanLII 74399 (AB LERB), Fermaniuk v Edmonton (Police Service), 2014 ABLERB 52), or (3) disclosing information to a third- party about a person’s whereabouts, contact information, or other personal details without authorization (DC v Mortensen, 2013 CanLII 60846).<br/>"
+    
+  if sectionB:
+    finalPageString += "<br/>__<h5>Section 5(1)(b)</h5>__<br/>Section 5(1)(b) relates to scenarios where an officer consumes alcohol on duty, is impaired by  alcohol or non-prescribed drugs on duty (such as marijuana), or consumes an illegal drug on or off duty. Examples of breaches of s. 5(1)(b) may include the following, without limitation, (1)  consuming alcohol or lawful recreational drugs while on duty, (2) consuming alcohol or lawful recreational drugs while off duty to the point of impairment, and then attending work while still impaired, and/or (3) consuming illegal drugs at any time, whether the officer is on or off duty.<br/>"
+  
+  if sectionC:
+    finalPageString += "<br/>__<h5>Section 5(1)(c)</h5>__<br/>Section 5(1)(c) governs corrupt practice and involves misconduct where an officer abuses their position to benefit themselves or others. Examples of corrupt practice may include, without limitation, (1) using their position as a police officer to gather information from third- party sources for the purposes of benefitting the officer personally (Fingers v Calgary (Police Service), 2005 CanLII 92637 (AB LERB)), (2) using their position as a police officer to obtain gifts, discounts, or other similar benefits (Hoover (Re), 2012 CanLII 104624 (AB LERB)), (3) using their position as a police officer to benefit someone else, for example, lying to persons in authority about another person’s criminal conduct for the purposes of protecting the person from liability (Kube (Re), 2013 CanLII 96217 (AB LERB)), (4) using their position as a police officer, and using police equipment, to stalk or harass an individual (Phillips v Lethbridge (Police Service), 2021 ABLERB 003), or (5) using police information databases to query information relating to personal matters.<br/>Breaches of s. 5(1)(c) may also include scenarios where an officer takes, or fails to account for, money received in the course of their duties. For example, if an officer seizes money in the course of a criminal investigation and does not account for the full amount of the money seized, that is corrupt practice. This is especially so as these circumstances suggest the officer may have stolen the money unaccounted for.<br/>"
+    
+  if sectionD:
+    finalPageString += "<br/>__<h5>Section 5(1)(d)</h5>__<br/>Section 5(1)(d) governs deceit. Deceit occurs where an officer makes or signs a false, misleading or inaccurate statement or entry in an official document or record, or if the officer makes or signs a false, misleading or inaccurate statement pertaining to the officer’s duties. Deceit may also occur if the officer destroys, mutilates, or conceals an official document or record, or alters or erases an entry in an official document or record.<br/>Examples of deceit may include, without limitation, (1) entering false or misleading information in police notes, reports, search warrant documents, or any other police record about events occurring in the context of a police investigation (Quaidoo v Edmonton (Police Service), 2014 ABLERB 51, MF et al v Edmonton (Police Service), 2016 ABLERB 18), (2) making false or misleading statements about the behaviour of a subject to justify unlawful use of force against that subject (Quaidoo v Edmonton (Police Service), 2014 ABLERB 51), (3) lying or misleading investigators in an internal affairs investigation (Berube v Chief of Police, 2013 CanLII 78547 (AB LERB)), (4) fraudulently claiming expenses and/or overtime pay (MacDonald v Camrose (Police Service), 2014 ABLERB 55)), (5) giving false or misleading evidence in legal proceedings (M.C. v Calgary (Police Service), 2015 ABLERB 5), (6) lying or misrepresenting an officer’s authority to arrest or charge an individual (MF et al v Edmonton (Police Service), 2016 ABLERB 18, Shah v Edmonton (Police Service), 2019 ABLERB 17), and (7) generally, destroying, damaging, concealing, altering, or erasing an official document or record, such as a police report, police notes, or any other official police document or record.<br/>"
+    
+  if sectionE:
+    finalPageString += "<br/>__<h5>Section 5(1)(e)</h5>__<br/>Section 5(1)(e) governs any conduct that could discredit the police service. Discreditable conduct may arise in the following situations, without limitation, (1) where police use language or gestures that are disrespectful, inflammatory, profane, threatening, or generally unprofessional (Czapp v Cst. S. Zeilie, 2011 CanLII 102080 (AB LERB), Goree v Park, 2013 CanLII 27268 (AB LERB), EF v Lethbridge (Police Service), 2017 ABLERB 24 (CanLII)), (2) where police contravene Federal or Provincial laws, for example, driving while intoxicated, driving while prohibited, harassment, assault, and generally any conduct that is criminal or in breach of the law, (3) where police discriminate against any member of the public due to race (EF v Lethbridge (Police Service), 2017 ABLERB 24 (CanLII)), (4) where an officer assists another officer in committing any misconduct (Phillips v Lethbridge (Police Service), 2021 ABLERB 003), (5) where an officer relies on inappropriate myths and stereotypes to dismiss an allegation of sexual assault (BA v Edmonton (Police Service), 2021 ABLERB 10 (CanLII)), (6) where an officer pursues an intimate relationship with a complainant, suspect, witness, or accused in a criminal matter, (7) where an officer engages in sexual activity on duty, and (8) where an officer makes inappropriate posts on social media.<br/>"
+    
+  if sectionF:
+    finalPageString += "<br/>__<h5>Section 5(1)(f)</h5>__<br/>Section 5(1)(b) relates to scenarios where an officer consumes alcohol on duty, is impaired by  alcohol or non-prescribed drugs on duty (such as marijuana), or consumes an illegal drug on or off duty. Examples of breaches of s. 5(1)(b) may include the following, without limitation, (1)  consuming alcohol or lawful recreational drugs while on duty, (2) consuming alcohol or lawful recreational drugs while off duty to the point of impairment, and then attending work while still impaired, and/or (3) consuming illegal drugs at any time, whether the officer is on or off duty.<br/>"
+    
+  if sectionG:
+    finalPageString += "<br/>__<h5>Section 5(1)(g)</h5>__<br/>Section 5(1)(g) governs insubordination. Generally, there are two scenarios where insubordination may occur. The first is where a police officer is insubordinate to a superior police officer by refusing to follow a direction or order of the superior officer (Fingers v Calgary (Police Service), 2005 CanLII 92637 (AB LERB), Tait v Chief of Police, Blood Tribe Police Service, 2013 CanLII 69158 (AB LERB)). The second is where a police officer breaches a policy, directive, or lawful order of the police service (R.F. v Wasylyshen, 2010 CanLII 102195 (AB LERB), Engel v Cst. S. Zeilie (No. 2017), 2011 CanLII 102103 (AB LERB), Moffat v Edmonton (Police Service), 2019 ABLERB 29).<br/>"
+    
+  if sectionH:
+    finalPageString += "<br/>__<h5>Section 5(1)(h)</h5>__<br/>Section 5(1)(h) governs misconduct where an officer is negligent in their duties. Breaches of s. 5(1)(h) may arise in a variety of circumstances. Examples of neglect of duty are, without limitation, (1) conducting a negligent investigation by failing to undertake reasonable investigative steps (Babchishin and Keith v Edmonton (Police Service), 2021 ABLERB 14 (CanLII)), (2) failing to arrest and charge an individual where there are grounds to do so (Meyer v Chief of Police of the Lethbridge Regional Police Service, 2009 CanLII 94044 (AB LERB)), (3) failure to advise a person of the reasons for their arrest, and/or failure to advise a person of their right to a lawyer (Lucas v Amschler, 2009 CanLII 94031 (AB LERB), Kolson v Edmonton (Police Service), 2014 ABLERB 040),(4) failure to provide medical attention (Williamson v Douglas, 2008 CanLII 91552 (AB LERB), (5) failing to control a police service dog (Pettersson v Edmonton (Police Service), 2014 ABLERB 024, (6) failing to report for scheduled duty (Tait v Chief of Police, Blood Tribe Police Service, 2013 CanLII 69158 (AB LERB), (7) failing to appear as a witness for trial or other legal proceeding when required to do so (Lonsdale v Cst. M. Lay (No. 3264), 2011 CanLII 102072 (AB LERB), EPS Officer AB v Chief of Police, 2013 CanLII 74399 (AB LERB)), (8) failing to disclose relevant evidence in the context of a criminal prosecution (Vuong and Shah v Edmonton (Police Service), 2019 ABLERB 22 (CanLII)), (9) failing to arrest persons who have outstanding warrants, (10) failing to report matters, for example, failure to report criminal conduct, failure to report seized property, and generally failure to report any matter which the officer has an obligation to report, and (11) failing to submit a warrant for a person’s arrest in a timely manner.<br/>"
+    
+  if sectionI:
+    finalPageString += "<br/>__<h5>Section 5(1)(i)</h5>__<br/>Section 5(1)(i) governs misconduct where an officer exceeds their authority, uses force when it is not necessary, or uses force that is excessive. Breaches of s. 5(1)(i) may arise in a variety of circumstances, however, common examples are as follows, (1) where an officer uses force when it is not necessary to do so, or if force is necessary, the officer uses too much force (Hodelin v Lehaney (No. 3662), 2008 CanLII 91554 (AB LERB), Ferguson v Cst. R. Abbot (No. 1986), 2010 CanLII 102171 (AB LERB), Pringle v Constable T. Eltom (2091), 2010 CanLII 102175 (AB LERB), R.E. v Cst. C. Tagg (No. 2211), 2012 CanLII 104690 (AB LERB), Quaidoo v Edmonton (Police Service), 2014 ABLERB 051), (2) where an officer conducts a search of a person (including strip searches), vehicle, or residence when it is not lawful to do so (Williamson v Douglas, 2008 CanLII 91552 (AB LERB), R.E. v Cst. C. Tagg (No. 2211), 2012 CanLII 104690 (AB LERB), Vuong v Edmonton (Police Service), 2019 ABLERB 13 (CanLII), Cardinal v Edmonton (Police Service), 2019 ABLERB 7 (CanLII)), (3) where an officer arrests or charges someone for an offence, or threatens to arrest or charge someone with an offence, when there are no grounds to do so (Jackman v Edmonton (Police Service), 2015 ABLERB 15 (CanLII), AZ v Lethbridge Regional (Police Service), 2015 ABLERB 26 (CanLII) Shah v Edmonton (Police Service), 2019 ABLERB 017), and (4) commanding an individual do something, or not do something, when there officer has no lawful authority to do so (Cardinal v Edmonton (Police Service), 2019 ABLERB 7 (CanLii), Shah v Edmonton (Police Service), 2019 ABLERB 017).<br/>"
+    
+  user_signpost3
+  if unqualifiedPlainLang:
+    anonymous = True
+    kickout2
+  else:
+    user_qualified
+  
+  date = datetime.today().strftime('%Y-%m-%d')
+
+  name = ""
+  if not anonymous:
+    user_details
+    name = user_firstname + " " + user_lastname
+    user_sign
+    
+    if len(user_unitnum) > 0:
+      user_unitnum = "Unit " + user_unitnum + ", "
+    
   user_saw_the_letter
-  email_sent
-  final_screen
+  last_page
 ---
-# Welcome -->  MANDATORY screen #
+# ==================== Intro =================== #
 question: |
-  Welcome to the City of Calgary's complaint service for the Calgary Police Service.
+  This is the City of Calgary’s complaint tool for the Calgary Police Service. This tool is to help increase access to justice, so anyone can file a police complaint.
 subquestion: |
-   If you want to file a complaint about the Calgary Police Service, you are in the right place.
-   
-   Please press "continue" to proceed to the next screen where you can find an explanation about how this process works.
-continue button field: user_saw_welcome_screen
-section: Welcome
+  If something happened involving the **Calgary Police Service** that you believe was not right, you can complain about that. **If you want to complain, you are in the right place.** 
+  
+  This tool is **designed to assist you** in making your complaint in a way that is **straightforward, convenient, and free of charge.**
+
+  ###How this online tool works
+  STEP 1.	**Questions:** You will be asked questions to help you **organize the full story** of what happened. **This should take 15-35 minutes.**
+  
+    [INDENTBY 0.6in]Some questions will be open ended, some will just be checking off boxes if true.
+  
+  STEP 2. **Complaint Letter:** This online tool will then **automatically generate a complaint letter** for you to review.  
+  
+    [INDENTBY 0.6in]It will **look professionally written and will specifically mention any laws or regulations** the police may have breached based on what your answers were during the questions.
+  
+  STEP 3.	**Submitting Complaint:** You can then **officially file your police complaint with one click**, or **save the letter** to your computer if you don’t want to submit the police complaint.
+  
+   1.  You can file a complaint anonymously or with your personal information. Note that **if you file a complaint anonymously it is not likely to lead to an investigation.**
+   2.  The letter will get sent to **5 different parties:** Calgary Police Professional Standards Branch, Calgary Police Commission, Chief of Calgary Police, Alberta Minister of Justice, and Alberta Provincial Complaints Director. 
+   3.  You can also choose to not submit the letter, and **instead save and print the letter** and then **take the letter to a lawyer for legal advice** as well, if you want legal advice on your complaint before officially submitting it. 
+  
+  STEP 4.	**Complaint is Reviewed:** A human investigator will then go through your complaint, since this is just an online tool to help and not a final decision, and will determine the validity of your complaint. This may lead to an investigation, but it may also lead to closing the complaint.
+  
+    [INDENTBY 0.6in]If you complete this complaint process and your complaint is received, but an investigator deems you ineligible to complain, your complaint will not be investigated. If this happens, it is open to you to seek legal advice from a lawyer about the investigator’s opinion.
+  
+  
+  ###This service is not the only way you can complain. 
+  
+  There are **4 ways you can complain about Calgary Police:**
+  
+  1.  **Online** using this complaint tool
+  2.	**Over the phone** by calling the Calgary Police Service at 403-428-5904
+  3.	**In person** by calling the Calgary Police Service at 403-428-5904 and booking an appointment 
+  4.	**By mailing a letter** to the Calgary Police Service
+  
+  ###Your security and privacy is very important to us
+  
+  We use banking level encryption and no information will be collected aside from what you choose to include in your complaint. 
+  
+  [INDENTBY 0.6in]Our tool also does not save any information you enter, and after 90 minutes will delete any information you inputted if your window is still open. Once you submit a complaint, it gets sent to the different parties and then automatically deletes from our online tool system. For more information, **[click here](https://docassemble.org/docs/security.html)**.
+
+continue button field: user_saw_intro_screen
+section: Intro
 ---
-# Information --> MANDATORY screen #2
+# ==================== Important Info =================== #
 question: |
-  This is how this process works
+  Important notes before you start.
 subquestion: |
+  ###This is **legal information**, not legal advice.
+
+  [INDENTBY 0.6in]For more information on the difference, **{click here}**.
   
-  ###Step-by-step process:
- 
-  **First**, this service will ask a series of questions to assist you in submitting your complaint.
- 
-  **Then**, this service will provide you with useful information and an automatically generated letter to send to the authorities.
- 
-  **Finally**, in the "Filing you Complaint Section" you can submit your compaint anonymously or with your name and signature.
+  ###Filing a complaint against the police does not lead to financial compensation
   
-  **Note:** after submission, this complaint will be reviewed by an investigator who will assess the validity of this complaint. 
- 
-  **Estimated time for completing this form is 15-35 minutes.**
- 
-  ###This is **legal information**, not legal advice. 
-  **Legal information** explains the law and the legal system in general terms. The information is not tailored to a specific case.
- 
-  **Legal advice** applies the law, including statute and case law and legal principles to a particular situation. It provides recommendations about what course of action would best suit the facts of the case and what the person wants to achieve.
- 
-  For more information go to [this link]( https://www.cplea.ca/legal-information-vs-legal-advice-difference/#:~:text=Legal%20information%20explains%20the%20law%20and%20the%20legal%20system%20in%20general%20terms.&text=Legal%20advice%20applies%20the%20law,the%20person%20wants%20to%20achieve.).
-  ###Privacy
-  Your privacy is important. No information will be collected aside from what you choose to include in your complaint.
- 
-  *Personal Information*: anything that can be used to identify an individual.
- 
-  The collection of your personal information on this form is optional and only done with your consent.
- 
-  For more information regarding privacy go to [this link](https://docassemble.org/policies/data-privacy.html).
-continue button field: user_saw_information_screen
+  [INDENTBY 0.6in]The primary goal of filing a complaint against police is accountability, and that **there is no financial compensation available through the complaint process.**
+  
+  ###There are time limits for filing police complaints
+  
+  [INDENTBY 0.6in]A complaint must be made within **1 year of the date of the police misconduct**, or within **1 year you became aware of the police misconduct.**
+  
+      [INDENTBY 0.6in]If this date passes, you will **no longer have a right to complain.** This website does not, and cannot, provide advice on the timeline to make a complaint in your specific case.
+      
+  ###Everyone has the right to request their personal information from the police
+  
+  [INDENTBY 0.6in]**Everyone has the right to request their personal information from the police**, thanks to the *Freedom of Information and Protection of Privacy Act*. Sometimes requesting police records can reveal more information about an incident. **To learn more about requesting your police records, [click here](https://www.calgary.ca/cps/public-services/freedom-of-information-and-protection-of-privacy-act-request.html).**
+  
+  ###If you have been charged with criminal offences during the incident you want to complain about, this information could affect your defence of the criminal charges.
+  
+  [INDENTBY 0.6in]If the incident you want to complain about **resulted in you being charged with criminal offences**, and those criminal charges have not been resolved, you **may want to speak to a lawyer before making a complaint** through this service or otherwise, as **information you provide during the complaint process may affect your defence of the criminal charges.**
+  
+  ###If after reading the above, you would like to use this service to complain, please press **Continue** below to proceed to the next screen where you will find a few important notes before beginning to answer any questions. 
+  
+  [INDENTBY 0.6in]Should you choose to proceed with this service, it is your sole responsibility to ensure all information is true and accurate, and that you are aware of all legal issues and/or consequences that could arise as a result of your using this service. By using this service, you agree the service is not liable for any consequence, legal or otherwise, that may arise from your use of the service.
+
+
+terms:
+  click here: |
+    **This service provides legal information, not legal advice.** Legal information is not the same as legal advice. Legal information on this service is **limited to information about the complaint process, generally, and what acts, generally, may or may not constitute misconduct.**
+    
+    **Legal advice can only be provided by a lawyer**, and is specific to your circumstances. A lawyer can provide legal advice by reviewing the specific circumstances of your case, and applying it to the law, for the purposes of giving opinions and making recommendations about your specific case.
+    
+    Legal information is general information about legal processes. Unlike legal advice, **legal information is not specific to any person’s particular circumstances and cannot be relied on as a legal opinion or recommendation.**
+    
+    To assist in understanding the difference between legal information and legal advice, the following **two examples may help.**
+    
+    *  **Example 1** - this service provides legal information about the time limit to make a complaint under the *Police Act*, but does not provide legal advice about whether your complaint is within that time limit.
+    
+    *  **Example 2** - this service provides legal information about what types of misconduct can be complained about under the *Police Act*, but does not provide legal advice about what types of misconduct apply to your specific case.
+    
+    While a lawyer is not necessary to use this service or to make a complaint, **you may find it beneficial to speak to a lawyer before submitting a complaint.** Whether you choose to speak to a lawyer is **entirely your decision** and this service makes no recommendation about that.
+    
+    **The purpose of this service is to facilitate an individual’s right to complain about police misconduct and increase access to justice.** This service is **not intended to provide an individual with legal representation, or provide legal advice.**
+    
+    **None of the information submitted by you through this service is reviewed by lawyers.** The information you provide is only reviewed after you submit your final complaint, and the review is not done by lawyers and is done solely for the purpose of investigating your complaints or determining if your complaints should be investigated.
+    
+    
+continue button field: user_saw_important_info
 section: Information
 ---
-# Transition -->  MANDATORY screen #3
-question: Tell us what happened
-subquestion: |
-  This section will ensure this service is right for your complaint.
-continue button field: user_saw_information_grounds
-section: Grounds
-progress: 15
----
-# Transition -->  MANDATORY screen #3
-question: Tell us what happened
-subquestion: |
-  This section will ensure this service is right for your complaint.
-continue button field: user_saw_information_grounds
-section: Grounds
----
-# Grounds -->  MANDATORY question for screen #4
+# ==================== Screening 1 =================== #
 question: |
-  Is this a complaint about the Calgary Police Service or members of the Calgary Police Service?
-yesno: user.complaint_about_Calgary_Police
-section: Grounds
+  Initial Questions
+subquestion: |
+  ####To determine if your complaints are eligible to be submitted through this service, you must answer the following questions.
+
+fields: 
+  - This complaint is about: user.complaint_about_cps
+    input type: radio
+    choices:
+      - The Calgary Police Service, or someone working for the Calgary Police   Service
+      - A police force outside of Calgary, or someone working for a police force outside of Calgary
+
+  - The incident I am complaining about happened to: user.complaint_victim
+    input type: radio
+    choices:
+      - Me
+      - Someone I witnessed
+      - Someone I represent as a social worker, advocate, or lawyer
+      - Someone close to me, like a spouse, child, or romantic partner
+      - Not close at all
+
+continue button field: user_screening1
+section: Information
 ---
-# Grounds
+# ==================== Screening 2 =================== #
 question: |
   When did the incident happen?
-fields:
-  - Did the incident in question happen within the last year?: user.incident_within_last_year
-    datatype: yesnoradio
+
+subquestion: |
+  ####Did the incident in question happen within the last year or did you become aware of the incident within the last year?
+
+fields: 
+  - Answer here: user.incident_time
+    input type: radio
+    choices:
+      - The incident happened within the last year
+      - The incident happened more than a year ago
+
+  - If more than a year ago: user.incident_time
+    input type: radio
+    choices:
+    - I was aware of the incident for more than a year
+    - I only became aware of the incident within this last year
+    show if: 
+      variable: user.incident_time
+      is: The incident happened more than a year ago
   - note: |
-      * Note: S. 43(11) of the *Police Act* requires that complaints are filed within one year.
-  - What is the approximate date of the incident in YYYY-MM-DD format (to the best of your knowledge)?: user.incident_approximate_date
-    datatype: date
-    min: |
-     ${ today().minus(years=1) }
-    max: |
-     ${ today() }
-    show if: user.incident_within_last_year
-section: Grounds
+      *  Note: S. 43(11) of the *Police Act* requires that complaints are filed either within one year of the date of the incident, or within one year you first knew or ought to have known that the misconduct occurred.
+      
+      ####What is the approximate date of the incident?
+      
+  - If you do not know the exact date, fill in the best you can to the best of your knowledge.: date_of_incident
+    
+continue button field: user_screening2
+section: Screening  
 ---
-# Grounds
+# ==================== Signpost 1 =================== #
 question: |
-  Check off the following if applicable.
-fields:
-  - Your complaint is about police conduct that was directed at you: user.coduct_directed
-    datatype: yesnoradio
-  - You were present during the incident and witnessed the inappropriate police conduct: user.conduct_witnessed
-    datatype: yesnoradio
-    show if:
-      variable: user.coduct_directed
-      is: False
-  - You are acting on behalf of the person who was subject of the inappropriate police conduct: user.agent
-    datatype: yesnoradio
-    show if:
-      variable: user.conduct_witnessed
-      is: False
-  - You are in a personal relationship with the person who was subject of the inappropriate police conduct and you suffered because of that inappropriate police conduct: user.has_personal_relationship
-    datatype: yesnoradio
-    show if:
-      variable: user.agent
-      is: False
-section: Grounds
----
-# Grounds -->  Information screen - service is right for you
-question: |
-  Based on what you have said, you likely qualify to file a police complaint.
+  Based on what you have said, **you likely qualify to file a police complaint**.
 subquestion: |
-  The next section will ask you to describe the incident.
-  Please be as detailed as possible.
+  ###Here is what you have inputted so far:
   
-  * Note: until an investigator confirms your eligibility, there is no guarantee that you are qualified to submit this complaint. 
-continue button field: user_saw_information2_grounds
-section: Grounds
----
-# Grounds
-question: Tell us what happened.
-subquestion: |
-  Please explain to the best of your knowledge the incident in question, including relevent details about the police involvement (if any) and any police actions or omissions (if any).
-fields:
-  - What happened BEFORE the police were called or before they arrived?: before_police
-    input type: area
-    rows: 10
-  - Did police show up to the scene?: police_showed_up
-    datatype: yesnoradio
-  - What happened when police arrived?: when_police_showed
-    input type: area
-    rows: 10
-    show if: police_showed_up
-  - What happened when police left?: when_police_left
-    input type: area
-    rows: 10
-    show if: police_showed_up
-  - As clearly as possible, what is your complaint about the police concerning this incident?: your_complaint_explain
-    input type: area
-    rows: 10
-  - Do you know your police file number?: file_number
-    datatype: yesnoradio
-    show if: police_showed_up
-  - What is it?: file_number_name
-    datatype: integer
-    show if: file_number
-  - Do you know the name(s) of police officer(s) that you are filing the complaint against? Or are you able to provide their indentifiable discriptions?: names_police
-    datatype: yesnoradio
-    show if: police_showed_up
-  - Name(s)(First and/or Last) AND/OR an Identifiable Discription?: names_police_list
-    input type: area
-    show if: names_police
-section: Grounds
----
-# Grounds --> EXPLANATION SCREEN re grounds
-question: |
-   Thank you for those details.
-subquestion: |
-   This next section will ask a series of questions to figure out which breach of duty occured.
-continue button field: user_saw_grounds3_screen
-section: Grounds
----
-# Acknowldgment of feelings
-question: |
-   Thank you for sharing this information. 
-subquestion: |
-   We are sorry to hear about your negative encounter with the police. Submitting a complaint can be a meaningful step towards resolution.
-continue button field: user_saw_acknowlegment
-section: Grounds
+  Your complaint is about the: **Calgary Police Service**<br/>
+  The Incident happened to: **${ user.complaint_victim }**<br/>
+  The incident happened: **${ incident_timeString }${ date_of_incident }**
+  
+  ###The next section will ask you to describe the incident. 
+  
+  [INDENTBY 0.6in]**Note**: Until an investigator confirms your eligibility, there is no guarantee that you are qualified to submit this complaint. If you complete this complaint process and your complaint is received, but an investigator deems you ineligible to complain, your complaint will not be investigated. If this happens, it is open to you to seek legal advice from a lawyer about the investigator’s opinion.
 
+continue button field: user_signpost1
+section: Screening
 ---
-# Grounds --> (h) neglect of duty question
-question: Neglect of Duty (check if applicable)
-subquestion: |
-fields:
-  - Should the police officers have shown up and they didn't?: officer_should_have_showup
-    datatype: yesnowide
-  - Please explain: officer_should_have_showup_explain
-    input type: area
-    rows: 10
-    show if: officer_should_have_showup
-section: Neglect of Duty
----
-# Grounds --> (a) breach of confidence
-question: Breach of Confidence (check any if applicable)
-subquestion: |
-fields:
-  - (1) Did the officer say something that was supposed to remain private or confidential?: officer_exposed_private_info
-    datatype: yesnowide
-  - Please explain (briefly in one or two sentences): officer_exposed_private_info_explain
-    input type: area
-    rows: 10
-    show if: officer_exposed_private_info
-  - (2) Did the officer arrest someone without offering prior notification?: officer_gave_notice
-    datatype: yesnowide
-  - Please explain: officer_gave_notice_explain
-    input type: area
-    rows: 10
-    show if: officer_gave_notice
-  - (3) Did the officer circulate a petition or statement that was improper?: officer_improper_statement
-    datatype: yesnowide
-  - Please explain: officer_improper_statement_explain
-    input type: area
-    rows: 10
-    show if: officer_improper_statement
-section: Breach of Confidence
----
-# Grounds -->(b)
-question: |
-  Consumption or use of liquor or drugs in a manner that is prejudicial to duty (check any if applicable) 
-subquestion: |
-fields:
-  - (1) Did the officer appear under the influene of alcohol?: officer_drunk
-    datatype: yesnowide
-  - Please explain: officer_drunk_explain
-    input type: area
-    rows: 10
-    show if: officer_drunk
-  - (2) Did the officer appear under the influence of a narcotic drug?: officer_high
-    datatype: yesnowide
-  - Please explain: officer_high_explain
-    input type: area
-    rows: 10
-    show if: officer_high
-section: Under the Influence
----
-# Grounds --> (c) corrupt practice questions
-question: Corrupt Practice (check any if applicable)
-subquestion: |
-fields:
-  - (1) Did the officer take money or property from you?: officer_took_money
-    datatype: yesnowide
-  - Please explain: officer_took_money_explain
-    input type: area
-    rows: 10
-    show if: officer_took_money
-  - (2) Did the officer try to force you to give a bribe, gift, or favour?: officer_force_gift
-    datatype: yesnowide
-  - Please explain: officer_force_gift_explain
-    input type: area
-    rows: 10
-    show if: officer_force_gift
-  - (3) Did the officer accept a bribe, gift, or favour?: officer_accept_gift
-    datatype: yesnowide
-  - Please explain: officer_accept_gift_explain
-    input type: area
-    rows: 10
-    show if: officer_accept_gift
-  - (4) Did the officer use their position as a police officer to take advantage of you?: officer_took_advantage
-    datatype: yesnowide
-  - Please explain: officer_took_advantage_explain
-    input type: area
-    rows: 10
-    show if: officer_took_advantage
-section: Corrupt Practice
----
-# Grounds --> (d) deceit questions
-question: Deceit (check any if applicable) 
-subquestion: |
-fields:
-  - (1) Did the officer make or sign a false or misleading statement?: officer_make_false_statement
-    datatype: yesnowide
-  - Please explain: officer_make_false_statement_explain
-    input type: area
-    rows: 10
-    show if: officer_make_false_statement
-  - (2) Did the officer destroy, hide, change, or erase something?: officer_hide_info
-    datatype: yesnowide
-  - Please explain: officer_hide_info_explain
-    input type: area
-    rows: 10
-    show if: officer_hide_info
-section: Deceit
----
-# Grounds --> (e) discreditable conduct questions
-question: Discreditable Conduct (check any if applicable) 
-subquestion: |
-fields:
-  - (1) Did the officer do something that could discredit the reputation of the police service?: officer_reputation
-    datatype: yesnowide
-  - Please explain: officer_reputation_explain
-    input type: area
-    rows: 10
-    show if: officer_reputation
-  - (2) Did the officer use profane, abusive, or insulting language?: officer_profane_language
-    datatype: yesnowide
-  - Please explain: officer_profane_language_explain
-    input type: area
-    rows: 10
-    show if: officer_profane_language
-  - (3) Did the officer ignore a complaint against another officer?: officer_ignore_complaint
-    datatype: yesnowide
-  - Please explain: officer_ignore_complaint_explain
-    input type: area
-    rows: 10
-    show if: officer_ignore_complaint
-  - (4) Did the officer lie about something?: officer_lie
-    datatype: yesnowide
-  - Please explain: officer_lie_explain
-    input type: area
-    rows: 10
-    show if: officer_lie
-  - (5) Did the officer treat someone different based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry?: officer_treatment
-    datatype: yesnowide
-  - Please explain: officer_treatment_explain
-    input type: area
-    rows: 10
-    show if: officer_treatment
-section: Discreditable Conduct
----
-# Grounds --> (f) improper use of firearms questions:
-question: Improper Use of Firearms (check any if applicable)
-subquestion: |
-fields:
-  - (1) Did the officer have a gun that was not issued by the police service?: officer_not_issued_gun
-    datatype: yesnowide
-  - Please explain: officer_not_issued_gun_explain
-    input type: area
-    rows: 10
-    show if: officer_not_issued_gun
-  - (2) Did the officer fire a gun?: officer_shoot
-    datatype: yesnowide
-  - Please explain: officer_shoot_explain
-    input type: area
-    rows: 10
-    show if: officer_shoot
-  - (3) Did the officer not report that he/she fired a gun?: officer_not_report
-    datatype: yesnowide
-  - Please explain: officer_not_report_explain
-    input type: area
-    rows: 10
-    show if: officer_not_report
-  - (4) Did the officer point a gun at you?: officer_point_gun
-    datatype: yesnowide
-  - Please explain: officer_point_gun_explain
-    input type: area
-    rows: 10
-    show if: officer_point_gun
-  - (5) Did the officer threaten you with a gun?: officer_threaten
-    datatype: yesnowide
-  - Please explain: officer_threaten_explain
-    input type: area
-    rows: 10
-    show if: officer_threaten
-  - (6) Did the officer act erratic or reckless with a gun?: officer_erratic
-    datatype: yesnowide
-  - Please explain: officer_erratic_explain
-    input type: area
-    rows: 10
-    show if: officer_erratic
-section: Improper Use of Firearms
----
-# Grounds --> (g) Insubordination questions
-question: Insubordination (check if applicable) 
-subquestion: |
-fields:
-  - (1) Did the officer disobey their orders?: officer_not_obey
-    datatype: yesnowide
-  - Please explain: officer_not_obey_explain
-    input type: area
-    rows: 10
-    show if: officer_not_obey
-section: Insubordination
----
-# Grounds --> (h) neglect of duty (#2) questions:
-question:  Neglect of Duty (check any if applicable) 
-subquestion: |
-fields:
-  - (1) Did the officer not perform their duties?: officer_perform_duties
-    datatype: yesnowide
-  - Please explain: officer_perform_duties_explain
-    input type: area
-    rows: 10
-    show if: officer_perform_duties
-  - (2) Did the officer stand by and do nothing?: officer_stand_by
-    datatype: yesnowide
-  - Please explain: officer_stand_by_explain
-    input type: area
-    rows: 10
-    show if: officer_stand_by
-  - (3) Did the officer allow a crime to happen?: officer_allow_crime
-    datatype: yesnowide
-  - Please explain: officer_allow_crime_explain
-    input type: area
-    rows: 10
-    show if: officer_allow_crime
-  - (4) Did the officer allow a prisoner or suspect to escape?: officer_allow_escape
-    datatype: yesnowide
-  - Please explain: officer_allow_escape_explain
-    input type: area
-    rows: 10
-    show if: officer_allow_escape
-  - (5) Did the officer not provide evidence?: officer_no_evidence
-    datatype: yesnowide
-  - Please explain: officer_no_evidence_explain
-    input type: area
-    rows: 10
-    show if: officer_no_evidence
-section: Neglect of Duty
----
-# Grounds --> (i) unlawful or unnecessary exercise of authority questions:
-question:  Unlawful or Unnecessary Exercise of Authority (check any if applicable)
-subquestion: |
-fields:
-  - (1) Did the officer threaten or try to intimidate you?: officer_intimidated
-    datatype: yesnowide
-  - Please explain: officer_intimidated_explain
-    input type: area
-    rows: 10
-    show if: officer_intimidated
-  - (2) Did the officer use too much force or act too rough?: officer_was_rough
-    datatype: yesnowide
-  - Please explain: officer_was_rough_explain
-    input type: area
-    rows: 10
-    show if: officer_was_rough
-section: Unnecessary Exercise of Authority
----
-# Grounds --> final EXPLANATION SCREEN
-question: |
-   Based on what you have said, you may have grounds for a police misconduct complaint. 
-subquestion: |
-  We are nearly finished. This final section will ask what information you would like on the complaint letter.
-  
-  * Note: until an investigator confirms this complaint, there is no guarantee that this is a valid complaint. 
-continue button field: user_saw_grounds4_screen
-section: Grounds
----
-question: I hereby declare that all of the information I have provided is complete and correct.
-subquestion: |
-  Please sign:
-signature: user.signature
-section: Acknowledgement
-progress: 80
----
-question: |
-  Anonymous vs Non-Anonymous Complaint
-subquestion: |
-  Based on the information you provided, there might have been police misconduct as defined by the Alberta Police Regulations.
-  If you would like to generate a formal complaint letter, you may do so either anonymously or with your contact information.
-  If you provide your contact information, you may also choose if you would like to be contacted further about this complaint and any decisions or actions on the matter.
-  
-  **Note:** If you remain anonymous, investigators will be unable to follow-up with you about any questions or issues that may arise.
-field: user.select_if_anonymous
-dropdown:
-  - Anonymous
-  - Non-Anonymous
-continue button field: user_saw_filing_info
-section: Filing
----
-generic object: Individual
-question: |
-  Please provide the following personal information:
-fields:
-  - First Name: user.name.first
-  - Last Name: user.name.last
-  - Email: user.email
-    required: False
-  - Address: address.address
-    required: True
-  - Unit: address.unit
-    required: False
-  - City: address.city
-  - Province: address.province
-    required: True
-  - Postal Code: address.postal_code
-    required: True
-  - Country: address.country
-    code: |
-      countries_list()
-    required: False
-  - I can be contacted about this complaint and any subsequent decisions: user.okay_tobe_contacted
-    datatype: yesnoradio
-    required: True
-section: Filing
----
-event: kickout
-question: |
-  Sorry, you might not have the proper grounds for submitting a formal complaint against the Calgary Police Service.
-  Please consult legal advice if needed.
-buttons:
-  - Exit: exit
-  - Restart: restart
----
-event: kickout1
-question: |
-  Sorry, this service is only for complaints about the Calgary Police Service.
-buttons:
-  - Exit: exit
-  - Restart: restart
----
-event: kickout2
-question: |
-  Sorry, to use this service, the incident must have happened within the past year. Please see legal advice if needed.
-buttons:
-  - Exit: exit
-  - Restart: restart
----
-event: kickout3
-question: |
-  Sorry, to use this service, you must be connected to the incident in question. Please see legal advice if needed.
-buttons:
-  - Exit: exit
-  - Restart: restart
----
-event: kickout4
-question: |
-  Sorry, you might not have the proper grounds for submitting a formal complaint against the Calgary Police Service. Please consult legal advice if needed.
-buttons:
-  - Exit: exit
-  - Restart: restart
 
----
-id: download
+# ==================== Targetted Text Boxes 1 =================== #
 question: |
-  Your letter is complete! Please **carefully** read the information below.
+  Tell us what happened in your own words
 subquestion: |
-   You can choose to send a copy of the formal complaint letter (see below) directly to the Calgary Police, Chief of Calgary Police, the Calgary Police Commission, and the Minister of Justice via the email function by clicking "Email the letter".
-   
-   Additionally, you can email this letter to yourself by adding your email address in the space below.
-   
-   Or, you can download and print the letter, and then mail it to the addresses listed in the letterhead.
-   
-   Or, you can download and email the letter from your email account.
-   
-   Please consult legal advice if needed.
-   
-   **Note: until an investigator confirms this complaint, there is no guarantee that this is a valid complaint.** 
+  The purpose of this page is for you to describe, from beginning to end, what happened. The questions below are intended to make telling your story easier, with direction on specific questions.
+
+  This will be part of your statement to police which will be used as evidence if your complaint is investigated. It is important to be as detailed as possible to the best of your recollection. Your statement should describe what happened in chronological order, from beginning to end. If possible, you should provide dates and times of all events that happened.
+
+  If you cannot recall specific dates and times, provide an estimate. If your complaint involves words said by you, police officers, or others, try to remember the exact words said. It is important you not guess what happened, and only provide details of what you remember. Overall, it is important that you include a description, in as much detail as possible, about what the police did or did not do that causes you to complain.
+
+fields:
+  - note: |
+      <br/><h4>What happened before police became involved?</h4>
+  - Answer here: before_police_involved
+    input type: area
+  
+  - note: |
+      <br/><h4>Describe how police became involved. For example, did you call police? Did you attend at a police station? Did police attend at the scene? **Please explain and be as detailed as possible.** </h4>
+  - Answer here: how_police_involved
+    input type: area
+  
+  - note: |
+      <br/><h4>What happened during your initial contact with the police?</h4>
+  - Answer here: during_initial_contact
+    input type: area
+  
+  - note: |
+      <br/><h4>After your initial contact with police, did you have further contact with police?</h4>
+  - Answer here: further_contact
+    datatype: yesnoradio
+  
+  - note: |
+      <br/><h4>Please provide the dates you had further contact and describe what happened on each of those dates.</h4>
+  
+    show if: 
+      variable: further_contact
+      is: True      
+  - Answer here: after_initial_contact 
+    input type: area
+    show if: 
+      variable: further_contact
+      is: True
+
+continue button field: user_targetted1
+section: Targetted
+---
+# ==================== Targetted Text Boxes 2 =================== #
+question: |
+  Tell us a bit more
+subquestion: |
+  <h4>After police left the scene, or after their last contact with you, did anything else happen that you feel relates to your complaint, or which you think would help with investigating your complaint?</h4>
+fields:
+   - Answer here: anything_after_left
+     datatype: yesnoradio
+
+   - Please describe what happened: after_left_scene
+     input type: area
+     show if:
+       variable: anything_after_left
+       is: True
+       
+   - note: |
+      <br/><h4>Are there witnesses to the incident who are not police officers?</h4>
+   - Answer here: saw_witnesses
+     datatype: yesnoradio
+
+
+   - note: |
+       <h4>If there are witnesses who are willing to speak to police, please provide their names and phone numbers or any other contact information you have for the witnesses.</h4>
+  
+     show if: 
+       variable: saw_witnesses
+       is: True
+   - Answer here: witnesses
+     input type: area
+     show if: 
+       variable: saw_witnesses
+       is: True
+   - note: |
+       <h4>If possible, and as clearly as possible, can you describe the crux of your complaint/breach of public expectations or standards in a few summary sentences?</h4>
+       
+   - Answer here: complaint_summary
+     input type: area
+
+
+continue button field: user_targetted2
+section: Targetted
+---
+# ==================== Signpost 2 =================== #
+question: |
+  Thank you for those details
+
+subquestion: |
+  ###Here is what you told us so far
+  
+review:
+
+  - note: |
+      <br/>What happened before the police became involved:
+      
+  - Edit: before_police_involved
+    button: |
+      **${ before_police_involved }** 
+      
+  - note: |
+      <br/>How the police became involved:
+  
+  - Edit: how_police_involved
+    button: |
+      **${ how_police_involved }**
+      
+  - note: |
+      <br/>What happened during your initial contact with the police: 
+  
+  - Edit: during_initial_contact
+    button: |
+      **${ during_initial_contact }**
+      
+  - note: |
+      <br/>After initial contact, did you have further contact with police?: 
+  
+  - Edit: further_contact
+    button: |
+      **${ further_contact }**
+      
+  - note: |
+      <br/>${ after_initial_contactString1 } 
+  
+    show if: further_contact
+      
+  - Edit: after_initial_contact
+    button: |
+     ${ after_initial_contactString2 }
+    show if: further_contact
+    
+  - note: |
+      <br/>After the police left the scene, or after their last contact with you, did anything else happen?  
+  
+  - Edit: anything_after_left
+    button: |
+      **${ anything_after_left }**
+      
+  - note: |
+      <br/>${ after_left_sceneString1 } 
+  
+    show if: anything_after_left
+  
+  - Edit: after_left_scene
+    button: |
+      ${ after_left_sceneString2 }
+    show if: anything_after_left
+  
+  - note: |
+      Are there witnesses to the incident who are not police officers?:  
+  
+  - Edit: saw_witnesses
+    button: |
+      **${ saw_witnesses }**
+  
+  - note: |
+      <br/>${ the_witnessesString1 } 
+  
+    show if: saw_witnesses
+  
+  - Edit: witnesses
+    button: |
+      ${ the_witnessesString2 }
+    show if: saw_witnesses
+
+  - note: |
+      <br/>Summary of complaint:
+  
+  - Edit: complaint_summary
+    button: |
+      **${ complaint_summary }**
+
+  - note: |
+      <br/><h4>The next section will ask a series of specific questions to figure out what police misconduct, if any, occurred.</h4>
+
+      <h4>In this next section, you are permitted to select as many answers as needed to describe the incident.</h4>
+  
+
+continue button field: user_signpost2
+section: Screening
+---
+# ==================== Plain Lang Questions 1 =================== #
+question: |  
+  1/4 Specific Questions – Unlawful Behavior and Communications
+
+subquestion: |
+  Select as many answers as needed to describe the incident
+
+  __<h3>Protocol/Legal</h3>__
+  
+fields:
+  - note: |
+      <h4>Unlawful Search/Detention</h4>
+  - <h5>${user_is_complainant}</h5>: unlawful_search
+    datatype: checkboxes
+    required: False
+    choices:
+      - Searched without a warrant or a lawful reason. <br/>[INDENTBY 0.3in]**s. 5(2)(i)**: searched_without_warrant
+        help: |
+          <h5>A search may include a search of your body, your bag, your car, your home, or any of your personal belongings. <br/>s. 5(2)(i)</h5>
+      
+      - Arrested or detained without a warrant or lawful reason. <br/>[INDENTBY 0.3in]**s. 5(2)(i)**: arrested_without_warrant
+        help: |
+          <h6>If you are not sure if you were arrested or detained, think about whether you were free to leave. If you weren’t free or felt you weren’t free to leave, then you could have been detained or arrested. <br/>s. 5(2)(i)</h6>
+          
+          <h6>If you have been charged with criminal offences during the incident you want to complain about, this information could affect your defence of the criminal charges.</h6> 
+          
+          [INDENTBY 0.6in]<h6>If the incident you want to complain about resulted in you being charged with criminal offences, and those criminal charges have not been resolved, you may want to speak to a lawyer before making a complaint through this service or otherwise, as information you provide during the complaint process may affect your defence of the criminal charges.</h6>
+
+
+  - note: |
+      <br/><h4>Unethical/Disrespectful/Discriminatory Behavior</h4>
+
+  - <h5>The police</h5>: unethical_behaviour
+    required: False
+    datatype: checkboxes
+    choices:
+      - Used profane, abusive, or insulting language <br/>[INDENTBY 0.3in]**s. 5(2)(e)**: profane_language
+      
+      - Strip searched me or someone else without a lawful reason <br/>[INDENTBY 0.3in]**s. 5(2)(i)**: strip_searched
+        help: |
+          <h5>A strip search is when a police officer removes or rearrange some or all of the clothing of the person to do a visual inspection.</h5>
+      
+      - Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. <br/>[INDENTBY 0.3in]**s. 5(2)(e)**: discrimination
+        help: |
+          <h5>If you have been discriminated against by the police for any of the above reasons, or any other reasons, you may also be able to file a human rights complaint with the Alberta Human Rights Commission. For more info, visit: <br/><br/>albertahumanrights.ab.ca/complaints/forms/Pages/complaint_form_and_guide.aspx</h5>
+
+
+  - note: |
+      <br/>__<h3>Under the Influence of Alcohol or Drugs</h3>__
+  
+  - <h5>The police</h5>: under_the_influence
+    required: False
+    datatype: checkboxes
+    choices:
+      - Consumed alcohol, marijuana, or an illegal narcotic drug while on duty or appeared to be intoxicated. <br/>[INDENTBY 0.3in]**s. 5(2)(b)**: intoxicated
+
+  - note: |
+      <br/>__<h3>Outward Communications</h3>__
+
+      <h4>Improper Representations</h4>
+
+  - <h5>The police</h5>: improper_representation
+    required: False
+    datatype: checkboxes
+    choices:
+      - Communicated something private, confidential, or improper to the media or any other person without authorization from the police. <br/>[INDENTBY 0.3in]**s. 5(2)(a)**: unauthorised_communication
+        help: |
+          <h5>This includes showing anyone a police record without proper authorization from the police. <br/>s. 5(2)(a)</h5>
+
+          <h5>This also includes circulating a petition, or statement relating to the police service, that was not authorized by the police. <br/>s. 5(2)(a)</h5>
+      
+      - Made or signed a false or misleading statement. <br/>[INDENTBY 0.3in]**s. 5(2)(d)**: misleading_statement
+        help: |
+          <h5>A false or misleading statement can take any form, including verbal, written, or digital content made by the officer. This includes false complaints against another police officer. <br/>s. 5(2)(d).</h5>
+
+continue button field: user_plainlang1
+section: Plain Lang
+---
+# ==================== Plain Lang Questions 2 =================== #
+question: |  
+  2/4 Specific Questions - Interference
+
+subquestion: |
+  Select as many answers as needed to describe the incident
+
+  __<h3>Interference</h3>__
+  
+fields:
+  - note: |
+      <h4>Helping Potential Offenders</h4>
+  - <h5>The police</h5>: helping_offenders
+    required: False
+    datatype: checkboxes
+    choices:
+      - Told someone there was a warrant for their arrest, or that there was a court summons that had been or was about to be issued for that person, and disclosed this information for a purpose unrelated to the lawful execution of the warrant or service of the court summons. <br/>[INDENTBY 0.3in]**s. 5(2)(a)**: unrelated_warrant
+        help: |
+          <h5>One such example of misconduct under this section could be if a police officer disclosed the existence of a warrant for the purposes of assisting the person avoid arrest. <br/>s. 5(2)(a)</h5>
+      
+      - Knew the location of an offender but failed to report the offender or do anything to bring the offender into custody. <br/>[INDENTBY 0.3in]**s. 5(2)(h)(iv)**.: unreported_offender 
+
+  - note: |
+      <br/><h4>Failing to Do Part of Their Job</h4>
+
+  - <h5>The police</h5>: job_failure
+    required: False
+    datatype: checkboxes
+    choices:
+      - Failed to report a crime or evidence about a crime to the police or Crown Prosecutor <br/>[INDENTBY 0.3in]**s. 5(2)(h)**: failure_to_report_crime
+      
+      - Disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police <br/>[INDENTBY 0.3in]**s. 5(2)(g)**: disobeyed_superior
+      
+      - Helped another police officer commit misconduct against you, or the police did nothing to stop another police officer from committing misconduct against you or someone else <br/>[INDENTBY 0.3in]**s. 5(2)(e)**: colluded_with_another_officer 
+      
+      - Failed to do something else they should have done as part of their duties and responsibilities as a police officer. <br/>[INDENTBY 0.3in]**s. 5(2)(h)**: failure_of_negligence
+
+  - note: |
+      <br/><h4>Suppressing</h4>
+
+  - <h5>The police</h5>: suppressing
+    required: False
+    datatype: checkboxes
+    choices:
+      - Destroyed, damaged, hid or erased an official document or any other record <br/>[INDENTBY 0.3in]**s. 5(2)(d)**: destroyed_official_document
+      
+      - Caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated <br/>[INDENTBY 0.3in]**s. 5(2)(e)**: suppressed_complaint_against_officer
+        help: |
+          <h5>For example, did you try to complain about a police officer’s conduct and were prevented from doing so? <br/>s. 5(2)(e)</h5>
+
+continue button field: user_plainlang2
+section: Plain Lang
+---
+# ==================== Plain Lang Questions 3 =================== #
+question: |  
+  3/4 Specific Questions- Bribes and Firearms
+
+subquestion: |
+  Select as many answers as needed to describe the incident
+
+  __<h3>Bribes/Benefits</h3>__
+
+fields:
+  - note: |
+      <h4>Request/Receive </h4>
+  - <h5>The police demanded, received or tried to convince me or another person to provide them with</h5>: request_receive
+    required: False
+    datatype: checkboxes
+    choices:
+      - Money, favour, or any other form of payment, gift, or benefit, without authorization. <br/>[INDENTBY 0.3in]**s. 5(2)(c)**: demanded_payment
+      
+      - Liquor, marijuana, or an illicit drug for a themself or any other police officer on duty? <br/>[INDENTBY 0.3in]**s. 5(2)(b)(iv)**.: demanded_illicit_drug
+
+  - note: |
+      <br/><h4>Indebted</h4>
+
+  - <h5>A police officer</h5>: indebted
+    required: False
+    datatype: checkboxes
+    choices:
+      - Indebted himself to a person the police officer was expected to report to police or testify against in a legal proceeding. <br/>[INDENTBY 0.3in]**s. 5(2)(c)**: indebted_himself
+        help: |
+          <h5>For example, through a financial, contractual, or other obligation <br/>s. 5(2)(c)</h5>
+
+  - note: |
+      <br/>__<h3>Firearms</h3>__
+
+  - <h5>A police officer</h5>: firearms
+    required: False
+    datatype: checkboxes
+    choices:
+      - Had a gun that was not issued by the police service. <br/>[INDENTBY 0.3in]**s. 5(2)(f)**: had_gun
+      
+      - Fired a gun. **s. 5(2)(f)**: fired_gun
+      
+      - Did not report that they fired a gun. <br/>[INDENTBY 0.3in]**s. 5(2)(f)**: did_not_report_firing
+      
+      - Pointed a gun at you or someone else. <br/>[INDENTBY 0.3in]**s. 5(2)(f)**: pointed_gun
+      
+      - Threatened to use a gun against you or someone else, in any manner. <br/>[INDENTBY 0.3in]**s. 5(2)(f)**: threatened_to_use_gun
+      
+      - Acted erratic or reckless with a gun, or did anything else involving a gun that was improper. <br/>[INDENTBY 0.3in]**s. 5(2)(f)**: acted_erratic
+
+continue button field: user_plainlang3
+section: Plain Lang
+---
+# ==================== Plain Lang Questions 4 =================== #
+question: |  
+  4/4 Specific Questions- Excessive Force and Final Catch-All
+
+subquestion: |
+  Select as many answers as needed to describe the incident
+
+  __<h3>Excessive Force/Injury</h3>__
+
+fields:
+  - note: |
+      <h4>Force</h4>
+
+  - <h5>The police</h5>: force
+    required: False
+    datatype: checkboxes
+    choices:
+      - Used too much force. [INDENTBY 0.3in]**s. 5(2)(i)**: too_much_force
+        help: |
+          <h5>This can include when force was not needed but was used. <br/>s. 5(2)(i)</h5>
+          <h5>This can also include when force was needed but was too much force. <br/>s. 5(2)(i)</h5>
+  
+  - note: |
+      <br/><h4>Sexual Assault</h4>
+
+  - <h5>The police</h5>: sexual_assault
+    required: False
+    datatype: checkboxes
+    choices:
+      - Sexually assaulted or harassed someone. <br/>[INDENTBY 0.3in]**s. 5(2)(e)** + **s. 46**: sexually_assaulted
+
+  - note: |
+      <br/><h4>Injury/Death</h4>
+
+  - <h5>The police</h5>: injury_or_death
+    required: False
+    datatype: checkboxes
+    choices:
+      - Seriously injured someone. <br/>[INDENTBY 0.3in]**s. 5(2)(e)** + **s. 46**: seriously_injured 
+        help: |
+          <h5>A serious injury includes a fractured bone, a major burn, or a loss of vision, hearing or body part. <br/>s. 5(2)(e) + s. 46</h5>
+      
+      - Hospitalized someone.  [INDENTBY 0.3in]**s. 5(2)(e)** + **s. 46**: hospitalized
+      
+      - Killed someone. [INDENTBY 0.3in]**s. 5(2)(e)** + **s. 46**: killed
+
+  - note: |
+      <br/>__<h3>Final Catch-All</h3>__
+  
+  - <h5>The police did something else I have not previously mentioned that:</h5>: final_catchall
+    required: False
+    datatype: checkboxes
+    choices:
+      - Was not authorized by law. <br/>[INDENTBY 0.3in]**s. 5(2)(i)**: unauthorised_by_law
+        help: |
+          <h5>For example, an officer’s conduct may constitute a criminal offence, a traffic offence, a bylaw offence, and so forth. <br/>s. 5(2)(e)</h5>
+      
+      - Threatens or decreases the positive reputation of the police. <br/>[INDENTBY 0.3in]**s. 5(2)(e)**: threatens_reputation
+      
+continue button field: user_plainlang4
+section: Plain Lang
+---
+# ==================== Signpost 3 =================== #
+question: |
+  Thank you for sharing this information
+
+subquestion: |
+
+  <h4>The City of Calgary and the Calgary Police Service will use your complaint to find a meaningful resolution. We are sorry to hear about your negative encounter with the police. Submitting a complaint can be a meaningful step towards resolution.</h4>
+  
+  __<h3>Here is what you selected in the previous section<h3>__
+  
+review:
+  - note: |
+      <br/>__<h3>Protocol/Legal</h3>__
+  
+    show if: protocol
+
+  - note: |
+      <h4>Unlawful Search/Detention</h4>
+  
+    show if: unlawful_search_flag
+    
+  - Edit: unlawful_search['searched_without_warrant']
+    button: |
+      ${ user_is_complainant } searched without a warrant or a lawful reason. <br/>**s. 5(2)(i)**
+    show if: unlawful_search['searched_without_warrant']
+    
+  - Edit: unlawful_search['arrested_without_warrant']
+    button: |
+      ${ user_is_complainant } arrested without a warrant or a lawful reason. <br/>**s. 5(2)(i)** 
+    show if: unlawful_search['arrested_without_warrant']
+
+  - note: |
+      <br/><h4>Unethical/Disrespectful/Discriminatory Behavior</h4>
+  
+    show if: unethical_behaviour_flag
+    
+  - Edit: unethical_behaviour['profane_language']
+    button: |
+      The police used profane, abusive, or insulting language <br/>**s. 5(2)(e)**
+    show if: unethical_behaviour['profane_language']
+
+  - Edit: unethical_behaviour['strip_searched']
+    button: |
+      The police strip searched me or someone else without a lawful reason <br/>**s. 5(2)(i)**
+    show if: unethical_behaviour['strip_searched']
+
+  - Edit: unethical_behaviour['discrimination']
+    button: |
+      The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. <br/>**s. 5(2)(e)** 
+    show if: unethical_behaviour['discrimination']
+    
+  - note: |
+      <br/>__<h3>Under the Influence of Alcohol or Drugs</h3>__
+  
+    show if: underTheInfluence
+
+  - Edit: under_the_influence['intoxicated']
+    button: |
+      The police consumed alcohol, marijuana, or an illegal narcotic drug while on duty or appeared to be intoxicated. <br/>**s. 5(2)(b)** 
+    show if: under_the_influence['intoxicated']
+  
+  - note: |
+      <br/>__<h3>Outward Communications</h3>__
+  
+    show if: outwardComms
+
+  - note: |
+      <h4>Improper Representations</h4>
+  
+    show if: improper_representation_flag
+    
+  - Edit: improper_representation['unauthorised_communication']
+    button: |
+      The police communicated something private, confidential, or improper to the media or any other person without authorization from the police. <br/>**s. 5(2)(a)** 
+    show if: improper_representation['unauthorised_communication']
+
+  - Edit: improper_representation['misleading_statement']
+    button: |
+      The police made or signed a false or misleading statement. <br/>**s. 5(2)(d)**
+    show if: improper_representation['misleading_statement']
+
+  - note: |
+      <br/>__<h3>Interference</h3>__
+  
+    show if: interference
+
+  - note: |
+      <h4>Helping Potential Offenders</h4>
+  
+    show if: helping_offenders_flag
+
+  - Edit: helping_offenders['unrelated_warrant']
+    button: |
+      The police told someone there was a warrant for their arrest, or that there was a court summons that had been or was about to be issued for that person, and disclosed this information for a purpose unrelated to the lawful execution of the warrant or service of the court summons. <br/>**s. 5(2)(a)**
+    show if: helping_offenders['unrelated_warrant']
+
+  - Edit: helping_offenders['unreported_offender']
+    button: |
+      The police knew the location of an offender but failed to report the offender or do anything to bring the offender into custody. <br/>**s. 5(2)(h)(iv)**.
+    show if: helping_offenders['unreported_offender']
+
+  - note: |
+      <br/><h4>Failing to Do Part of Their Job</h4>
+  
+    show if: job_failure_flag
+
+  - Edit: job_failure['failure_to_report_crime']
+    button: |
+      The police failed to report a crime or evidence about a crime to the police or Crown Prosecutor <br/>**s. 5(2)(h)**
+    show if: job_failure['failure_to_report_crime']
+
+  - Edit: job_failure['disobeyed_superior']
+    button: |
+      The police disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police <br/>**s. 5(2)(g)**
+    show if: job_failure['disobeyed_superior']
+
+
+  - Edit: job_failure['colluded_with_another_officer']
+    button: |
+      The police helped another police officer commit misconduct against you, or the police did nothing to stop another police officer from committing misconduct against you or someone else <br/>**s. 5(2)(e)**
+    show if: job_failure['colluded_with_another_officer']
+
+  - Edit: job_failure['failure_of_negligence']
+    button: |
+      The police failed to do something else they should have done as part of their duties and responsibilities as a police officer. <br/>**s. 5(2)(h)**
+    show if: job_failure['failure_of_negligence']
+
+  - note: |
+      <br/><h4>Suppressing</h4>
+  
+    show if: suppressing_flag
+
+  - Edit: suppressing['destroyed_official_document']
+    button: |
+      The police failed to do something else they should have done as part of their duties and responsibilities as a police officer. <br/>**s. 5(2)(h)**
+    show if: suppressing['destroyed_official_document']
+
+  - Edit: suppressing['suppressed_complaint_against_officer']
+    button: |
+      The police caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated <br/>**s. 5(2)(e)**
+    show if: suppressing['suppressed_complaint_against_officer']
+
+  - note: |
+      <br/>__<h3>Bribes/Benefits</h3>__
+  
+    show if: bribesBenefits
+
+  - note: |
+      <h4>Request/Receive</h4>
+  
+    show if: request_receive_flag
+
+  - Edit: request_receive['demanded_payment']
+    button: |
+      The police demanded, received or tried to convince me or another person to provide them with money, favour, or any other form of payment, gift, or benefit, without authorization. <br/>**s. 5(2)(c)**
+    show if: request_receive['demanded_payment']
+
+  - Edit: request_receive['demanded_illicit_drug']
+    button: |
+      The police demanded, received or tried to convince me or another person to provide them with liquor, marijuana, or an illicit drug for a themself or any other police officer on duty? <br/>**s. 5(2)(b)(iv)**.
+    show if: request_receive['demanded_illicit_drug']
+
+  - note: |
+      <br/><h4>Indebted</h4>
+  
+    show if: indebted_flag
+
+  - Edit: indebted['indebted_himself']
+    button: |
+      A police officer indebted himself to a person the police officer was expected to report to police or testify against in a legal proceeding. <br/>**s. 5(2)(c)**
+    show if: indebted['indebted_himself']
+
+  - note: |
+      <br/>__<h3>Firearms</h3>__
+  
+    show if: firearms_flag
+
+  - Edit: firearms['had_gun']
+    button: |
+      A police officer had a gun that was not issued by the police service. <br/>**s. 5(2)(f)**
+    show if: firearms['had_gun']
+  
+  - Edit: firearms['fired_gun']
+    button: |
+      A police officer fired a gun. **s. 5(2)(f)**
+    show if: firearms['fired_gun']
+    
+  - Edit: firearms['pointed_gun']
+    button: |
+      A police officer pointed a gun at you or someone else. <br/>**s. 5(2)(f)**
+    show if: firearms['pointed_gun']
+
+  - Edit: firearms['did_not_report_firing']
+    button: |
+      A police officer did not report that they fired a gun. <br/>**s. 5(2)(f)**
+    show if: firearms['did_not_report_firing']
+
+  - Edit: firearms['threatened_to_use_gun']
+    button: |
+      A police officer threatened to use a gun against you or someone else, in any manner. <br/>**s. 5(2)(f)**
+    show if: firearms['threatened_to_use_gun']
+
+  - Edit: firearms['acted_erratic']
+    button: |
+      A police officer acted erratic or reckless with a gun, or did anything else involving a gun that was improper. <br/>**s. 5(2)(f)**
+    show if: firearms['acted_erratic']
+    
+  - note: |
+      <br/>__<h3>Excessive Force/Injury</h3>__
+  
+    show if: excessiveForce
+
+  - note: |
+      <h4>Force</h4>
+  
+    show if: force_flag
+
+  - Edit: force['too_much_force']
+    button: |
+      The police used too much force. **s. 5(2)(i)**
+    show if: force['too_much_force']
+
+  - note: |
+      <br/><h4>Sexual Assault</h4>
+  
+    show if: sexual_assault_flag
+
+  - Edit: sexual_assault['sexually_assaulted']
+    button: |
+      The police sexually assaulted or harassed someone. <br/>**s. 5(2)(e)** + **s. 46**
+    show if: sexual_assault['sexually_assaulted']
+
+  - note: |
+      <br/><h4>Injury/Death</h4>
+  
+    show if: injury_or_death_flag
+
+  - Edit: injury_or_death['seriously_injured']
+    button: |
+      The police seriously injured someone. <br/>**s. 5(2)(e)** + **s. 46**
+    show if: injury_or_death['seriously_injured']
+
+  - Edit: injury_or_death['hospitalized']
+    button: |
+      The police hospitalized someone. <br/>**s. 5(2)(e)** + **s. 46**
+    show if: injury_or_death['hospitalized']
+
+  - Edit: injury_or_death['killed']
+    button: |
+      The police killed someone. <br/>**s. 5(2)(e)** + **s. 46**
+    show if: injury_or_death['killed']
+
+  - note: |
+      <br/>__<h3>Final Catch-All</h3>__
+  
+    show if: finalCatch
+
+  - Edit: final_catchall['unauthorised_by_law']
+    button: |
+      The police did something else I have not previously mentioned that was not authorized by law. <br/>**s. 5(2)(i)**
+    show if: final_catchall['unauthorised_by_law']
+
+  - Edit: final_catchall['threatens_reputation']
+    button: |
+      The police did something else I have not previously mentioned that threatens or decreases the positive reputation of the police. <br/>**s. 5(2)(e)**
+    show if: final_catchall['threatens_reputation']
+
+
+  - note: |
+      <br/>__<h3>You did not select any answers</h3>__
+  
+    show if: unqualifiedPlainLang
+
+  
+  - note: |
+      <h5>Once you click Continue, CCF’s online tool will compute your responses to cite any specific statutes or regulations the police may have breached. On the next page, CCF’s online tool will tell you if any formal breaches of the Police Act or Police Regulations have been breached, or if nothing was detected.</h5>
+
+    
+continue button field: user_signpost3
+section: Plain Lang
+---
+# ==================== Qualified Complainant =================== #
+question: |
+  You may have grounds for a police misconduct complaint based on what you have told us
+
+subquestion: |
+  Based on the information you provided, there might have been police misconduct as
+  defined by the Alberta Police Act and Police Service Regulations. 
+
+  If you would like to generate a formal complaint letter, you may do so either anonymously or with your full name and contact information. Investigators need your contact information to follow up with you on the progress of the investigation.
+  
+  **Warning:** If you choose to remain anonymous, the likely result is your complaint will not be investigated. That is because a precondition of a complaint under s. 42.1(4)(a) of the Police Act is that the person making the complaint provide their full name. If your full name is not provided, your complaint may not be investigated. If you refuse to be contacted, investigators will be unable to contact you and conduct a proper investigation, which may lead to the complaint being considered “abandoned”.
+
+fields:
+  - note: |
+      <br/><h4>Do you want to keep your complaint anonymous?</h4>
+  - Answer here: anonymous
+    datatype: yesnoradio
+
+  - note: |
+      <br/><h5>Continue to the final screen to see your professionally-written complaint letter, citing exactly which laws may have been broken by police.</h5>
+      
+      [INDENTBY 0.6in]<h5>**Note:** Whether your complaint meets the legal preconditions will be decided by an investigator. CCF does not guarantee that your complaint will meet the legal preconditions for investigation. If your complaint does not meet the legal preconditions, you can choose to seek legal advice about next steps.</h5>
+
+continue button field: user_qualified
+section: Plain Lang
+---
+# ==================== Non-Anonymous =================== #
+question: |
+  Please provide the following personal information
+
+fields:
+  - First Name: user_firstname
+  - Last Name: user_lastname
+  - Email: user_email
+  - Address: user_address
+  - Apt/Unit: user_unitnum
+    required: False
+  - City: user_city
+  - Province: user_province
+  - Postal code: user_postalCode
+  - Country: user_country
+
+  - note: |
+      <br/><h5>Should you choose to proceed with this service and submit a complaint right now by hitting Continue, it is your sole responsibility to ensure all information is true and accurate, and that you are aware of all legal issues and/or consequences that could arise as a result of your using this service. By using this service, you agree the service is not liable for any consequence, legal or otherwise, that may arise from your use of the service.</h5>
+
+continue button field: user_details
+section: Non-Anonymous
+---
+# ===================== Sign =============================== #
+question: |
+  Sign your name
+subquestion: |
+  By signing your name, you agree to
+  our terms and conditions.
+signature: user_signature
+under: |
+  ${ name } 
+  
+continue button field: user_sign
+section: Non-Anonymous
+---
+# ===================== Final Review =============================== #
+question: |
+  Your letter is complete! Please carefully read the information below.
+
+subquestion: |
+  <h4>You can choose to either:</h4> 
+
+  1.  <h5>**Submit the letter right now through this online tool.**</h5>
+
+    * Send a copy of the formal complaint letter (see below) directly to the Calgary Police, Chief of Calgary Police, the Calgary Police Commission, and the Minister of Justice via the email function by clicking “Email the letter”.
+
+  2.	<h5>**Email the letter to yourself or someone else**</h5>
+
+    * Additionally, you can email this letter to yourself by adding your email address in the space below.
+
+  3.	<h5>**Print the letter with your computer**</h5>
+
+    * Download and then print the letter. You can then mail it to the addresses listed in the letterhead
+
+  4.	<h5>**Download the letter to your computer**</h5>
+
+    * Download using the options below and email the letter from your email account or keep it for the future
+
+  5.	<h5>**Restart complaint**</h5>
+
+    * If you would like to redo this process with this online tool, you have the option as well
+
+
+  __<h4>Note:</h4>__ There is no guarantee that your complaint will meet the legal preconditions to be  investigated. Whether the complaint meets the legal preconditions will be decided by an investigator. If your complaint does not meet the legal preconditions, it is open to you to choose to seek legal advice about that.
+
+  <h5>Please consult legal advice if needed. Listed below are some free legal resources.</h5> 
+
+fields:  
+  - note: |
+      **Calgary Legal Guidance**<br/>
+      Phone: 403-234-9266<br/>
+      Website: www.clg.ab.ca<br/>
+
+      **Legal Aid of Alberta**<br/>
+      Phone: 1-866-845-3425<br/>
+      Website: www.legalaid.ab.ca<br/>
+
+      **Student Legal Assistance of Calgary**<br/>
+      Phone: 403-220-6637<br/>
+      Website: www.slacalgary.com<br/>
+
+      **Women’s Centre of Calgary (for women)**<br/>
+      Phone: 403-264-1155<br/>
+      Website: www.womenscentrecalgary.org/legal-advice-for-women<br/>
+      
+      ${ kickout_resources }
+     
 attachment:
-  - name: Formal Complaint Letter
-    filename: Formal_Complaint_Letter
-    variable name: complaint_letter
-    valid formats:
-      - pdf
-    content: |
-     [FLUSHLEFT] ${ format_date(today()) } [NEWLINE]
-     
-      [FLUSHLEFT] Calgary Police Service [NEWLINE]
-      Professional Standards Section #811 [NEWLINE]
-      Westwinds Campus East Building [NEWLINE]
-      5111 47 St NE [NEWLINE]
-      Calgary, AB T3J 3R2 [NEWLINE]
-      Fax: 403-265-9870 [NEWLINE]
-      Email: PSS@calgarypolice.ca [NEWLINE]
-     
-      [FLUSHLEFT] Chief Constable Mark Neufeld [NEWLINE]
-      Office of the Chief [NEWLINE]
-      Westwinds Campus East Building [NEWLINE]
-      5111 47 St NE [NEWLINE]
-      Calgary, AB T3J 3R2 [NEWLINE]
-      Fax: 403-265-9870 [NEWLINE]
-      Email: cps@calgarypolice.ca [NEWLINE]
-     
-      [FLUSHLEFT] Calgary Police Commission [NEWLINE]
-      Public Complaint Director [NEWLINE]
-      Suite 650, 615 Macleod Tr. SE [NEWLINE]
-      Calgary, AB T2G 4T8 [NEWLINE]
-      Fax: 403-261-4605 [NEWLINE]
-      Email: cpcpcd@calgarypolicecommission.ca [NEWLINE]
-       
-      [FLUSHLEFT] Minister of Justice and Solicitor General Kacee Madu [NEWLINE]
-      Office of the Minister [NEWLINE]
-      Justice and Solicitor General [NEWLINE]
-      424 Legislature Building [NEWLINE]
-      10800 - 97 Avenue [NEWLINE]
-      Edmonton, AB T5K 2B6 [NEWLINE]
-      Fax: (780) 422-6621 [NEWLINE]
-      Email: ministryofjustice@gov.ab.ca [NEWLINE]
-         
-      Dear Calgary Police Service, Chief Neufeld, Calgary Police Commission, and Minister of Justice Madu,
-       
-      [NOINDENT]
-      %if police_showed_up:
-      %if file_number:
-      %if file_number_name:
-      Police File Number: ${ file_number_name }.
-      %endif
-      %endif
-      %endif
-     
-      [NOINDENT] This is a formal complaint under the *Police Act*, relating to the conduct of member(s) of the Calgary Police Service. This matter is of a serious nature, and attention is required to resolve the issue at hand.
-      %if police_showed_up:
-      %if names_police:
-      %if names_police_list:
-      Specifically, I am complaining about ${ names_police_list }.
-      %endif
-      %endif
-      %endif
-     
-      [NOINDENT] Based on what happened on ${ user.incident_approximate_date }, the following portion of the Alberta Police Regulations may have been breached:
-     
-     5(1) A police officer shall not engage in any action that constitutes one or more of the following:
-      %if not police_showed_up:
-      %if officer_should_have_showup:
-      (h)neglect of duty;
-      %endif
-      %endif
-      
-      %if police_showed_up:
-      %if breach_of_confidence:
-      (a)breach of confidence;
-      %endif
-     
-      %if consumption_against_duty:
-      (b)consumption or use of liquor or drugs in a manner that is prejudicial to duty;
-      %endif
-     
-      %if corrupt_practice:
-      (c)corrupt practice;
-      %endif
-     
-      %if deceit:
-      (d)deceit;
-      %endif
-     
-      %if discreditable_conduct:
-      (e)discreditable conduct;
-      %endif
-     
-      %if improper_use_of_firearms:
-      (f)improper use of firearms;
-      %endif
-     
-      %if officer_not_obey:
-      (g)insubordination;
-      %endif
-     
-      %if neglect_of_duty:
-      (h)neglect of duty;
-      %endif
-     
-      %if unlawful_authority:
-      (i)unlawful or unnecessary exercise of authority;
-      %endif
-      %endif
-      [NEWPAR]
-      [NOINDENT]
-      **Before the police arrived to the scene, this is what happened**: ${ before_police }
-     
-      [NEWPAR]
-      [NOINDENT]
-      %if police_showed_up:
-      %if defined('when_police_showed'):
-      **When police arrived, this is what happened**: ${ when_police_showed }
-      %endif
-      %endif
-     
-      [NEWPAR]
-      [NOINDENT]
-      %if police_showed_up:
-      %if defined('when_police_left'):
-      **When police left, this is what happened**: ${ when_police_left }
-      %endif
-      %endif
-     
-      [NEWPAR]
-      [NOINDENT]
-      **This complaint is being filed because**:
-      ${ your_complaint_explain }
-     
-      [NEWPAR]
-      [NOINDENT]
-      **Specifically, below are details on the misconduct.**
-      
-      
-     %if not police_showed_up:
-     %if officer_should_have_showup:
-      (h)The police officers should have shown up and they did not: ${ officer_should_have_showup_explain }
-      %endif
-      %endif
-     
-      %if police_showed_up:
-      %if officer_exposed_private_info:
-      (a)The officer told someone something that was supposed to stay private or confidential: ${ officer_exposed_private_info_explain }
-      %endif
-     
-      %if officer_gave_notice:
-      (a)The officers failed to notify someone beforehand that who was going to be arrested: ${ officer_gave_notice_explain }
-      %endif    
-     
-      %if officer_improper_statement:
-      (a)The officers circulate a petition or statement that was improper: ${ officer_improper_statement_explain }
-      %endif      
-     
-      %if officer_drunk:
-      (b)The officers were drunk on alcohol: ${ officer_drunk_explain }
-      %endif
-     
-      %if officer_high:
-      (b)The officers were high on a drug: ${ officer_high_explain }
-      %endif      
-     
-      %if officer_took_money:
-      (c)The officers took money or property from me: ${ officer_took_money_explain }
-      %endif
-     
-      %if officer_force_gift:
-      (c)The officers tried to force me to give a bribe, gift, or favor: ${ officer_force_gift_explain }
-      %endif
-     
-      %if officer_accept_gift:
-      (c)The officers accepted a bribe, gift, or favor: ${ officer_accept_gift_explain }
-      %endif  
-     
-      %if officer_took_advantage:
-      (c)The officers used their position as a police officers to take advantage of me: ${ officer_took_advantage_explain }
-      %endif      
-           
-      %if officer_make_false_statement:
-      (d)The officers made or sign a false or misleading statement: ${ officer_make_false_statement_explain }
-      %endif
-     
-      %if officer_hide_info:
-      (d)The officers destroyed, hid, changed, or erased something: ${ officer_hide_info_explain  }
-      %endif
-     
-      %if officer_reputation:
-      (e)The officers did something that could discredit the reputation of the police service: ${ officer_reputation_explain }
-      %endif
-     
-      %if officer_profane_language:
-      (e)The officers used profane, abusive, or insulting language: ${ officer_profane_language_explain }
-      %endif
-     
-      %if officer_ignore_complaint:
-      (e)The officers ignored a complaint against another officer: ${ officer_ignore_complaint_explain }
-      %endif  
-     
-      %if officer_lie:
-      (e)The officers lied about something: ${ officer_lie_explain }
-      %endif  
-     
-      %if officer_treatment:
-      (e)The officers treated someone different based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry: ${ officer_treatment_explain }
-      %endif        
-     
-     
-      %if officer_not_issued_gun:
-      (f)The officers had a gun that was not issued by the police service: ${ officer_not_issued_gun_explain }
-      %endif
-      
-      %if officer_shoot:
-      (f)The officers shot their gun: ${ officer_shoot_explain }
-      %endif
-     
-      %if officer_not_report:
-      (f)The officers did not report they fired their gun: ${ officer_not_report_explain }
-      %endif      
-     
-      %if officer_point_gun:
-      (f)The officers pointed their gun at me: ${ officer_point_gun_explain }
-      %endif      
-     
-      %if officer_threaten:
-      (f)The officers threatened me with their gun: ${ officer_threaten_explain }
-      %endif      
-      
-      %if officer_erratic:
-      (f)The officers were behaving erratic and unrestrained with their guns: ${ officer_erratic_explain }
-      %endif  
-                       
-     
-      %if officer_not_obey:
-      (g)The officers did not obey orders: ${ officer_not_obey_explain }
-      %endif
-     
-     
-      %if officer_perform_duties:
-      (h)The officers did not perform their duties: ${ officer_perform_duties_explain}
-      %endif
-     
-      %if officer_stand_by:
-      (h)The officers stood by and did nothing: ${ officer_stand_by_explain}
-      %endif    
-      %if officer_allow_crime:
-      (h)The officers allowed a crime to happen: ${ officer_allow_crime_explain}
-      %endif    
-     
-      %if officer_allow_escape:
-      (h)The officers allowed a prisoner or suspect escape: ${ officer_allow_escape_explain}
-      %endif      
-     
-      %if officer_no_evidence:
-      (h)The officers did not give any evidence: ${ officer_no_evidence_explain}
-      %endif      
-     
-     
-      %if officer_intimidated:
-      (i)The officers threatened or tried to intimidate me: ${ officer_intimidated_explain}
-      %endif
-     
-      %if officer_was_rough:
-      (i)The officers used too much force or were too rough: ${ officer_was_rough_explain}
-      %endif
-      %endif
-     
-      [NOINDENT]
-      **Next steps**:
-      
-      [NOINDENT] This complaint is made on the basis that the police officer(s) engaged in police misconduct as defined by section 5(1) of the *Alberta Police Regulations*. As per the *Alberta Police Act*, this complaint is being forwarded to the Calgary Police Service, Chief of the Calgary Police Service, Calgary Police Commission, and Minister of Justice and Solicitor General.    
-     
-     
-     [NOINDENT] I request that this complaint is subject to an evidence-based investigation, to ensure the reputation of the Calgary Police Service is not discredited. The *Alberta Police Regulations* govern the discipline and performance of police officers. To be a police officer, under section 36 of the *Alberta Police Act*, the person must, with respect to the carrying out of the duties of a police officer, meet those basic standards of skill and knowledge that are acceptable to the Minister of Justice and Solicitor General. The complaint submitted today concerns the basic standards of skill and knowledge that the officer(s) thought were acceptable. I believe the actions of the officer(s) were misconduct, as defined by law and the Minister of Justice.
-     
-     
-     [NOINDENT] If the complaint leads to an investigation, once the investigation is completed, the Chief of the Calgary Police Service will determine whether or not there is sufficient evidence, based on a balance of probabilities, to prove misconduct. If misconduct is proven, the Chief directs what form of discipline, if any, is to take place. This discipline may range from a warning to full dismissal without pay.
-     
-     
-     
-      [NOINDENT] If dissatisfied with the Chief of Police or the Commission’s resolution of a complaint, an individual also has the right to appeal that decision to the Law Enforcement and Review Board. This Board is an independent non-police body consisting of a chairperson and two members appointed by the provincial government. This appeal can relate to the final disposition of a complaint following a formal investigation or hearing, or a summary dismissal of a complaint. To appeal a decision, an individual has to file with a written notice explaining the grounds of your appeal within 30 days of being advised of the decision. The Review Board will advise, in writing, of the date, time and place of the hearing and what, if anything, will be required. An individual appealing a decision also has the right to counsel if chosen.  
-     
-     
-     
-      [NOINDENT]
-      %if user.non_anonymous:
-      %if user.okay_tobe_contacted:
-      Please contact me once a decision has been made regarding if an investigation will take place, and subsequently if any final decisions have been made, or if you may require any further information.
-     
-      My contact details are:
-     
-      * Name: ${ user }
-     
-      %if address.address:
-      * Address: ${ address.address }, ${ address.unit }, ${ address.city }, ${ address.province }, ${ address.postal_code }.
-      %endif
-     
-      * Email: ${ user.email }
-      %endif
-      %endif
-     
-     
-      [NOINDENT]
-      Yours faithfully,
-      [BEGIN_CAPTION]
-      %if user.non_anonymous:
-      ${ user }
-      %else:
-      Anonymous
-      %endif
-     
-      [VERTICAL_LINE]
-      %if user.non_anonymous:
-      %if user.signature:
-      ${ user.signature }
-      %endif
-      %endif
-      [END_CAPTION]
-progress: 100
-section: Next
+  name: Formal Complaint Letter
+  filename: Formal_Complaint_Letter
+  variable name: complaint_letter
+  docx template file: Final_Template.docx
+  valid formats:
+    - pdf
+    - docx
+
 field: user_saw_the_letter
 continue button label: Email the letter
 ---
-code: |
-  if one_or_more_grounds_met and user_saw_acknowlegment and user_saw_grounds4_screen and user.select_if_anonymous:
-    continue_screen = True
-  else: 
-    continue_screen = False
----
-code: |
-  if (continue_screen and user.select_if_anonymous == "Anonymous"):
-    user.anonymous = True
-  else:
-    user.anonymous = False
----
-code: |
-  if (continue_screen and user.select_if_anonymous == "Non-Anonymous"):
-    user.non_anonymous = True
-  else:
-    user.non_anonymous = False
----
-code: |
-  if police_showed_up and (officer_exposed_private_info or officer_gave_notice or officer_improper_statement or officer_drunk or officer_high or officer_took_money or officer_force_gift or officer_accept_gift or officer_took_advantage or officer_make_false_statement or officer_hide_info or officer_profane_language or officer_ignore_complaint or officer_lie or officer_treatment or officer_reputation or officer_not_issued_gun or officer_shoot or officer_not_report or officer_point_gun or officer_threaten or officer_erratic or officer_not_obey or officer_perform_duties or officer_stand_by or officer_allow_crime or officer_allow_escape or officer_no_evidence or officer_intimidated or officer_was_rough):
-    atoi_grounds_met = True
-  else: 
-    atoi_grounds_met = False
----
-code: |
-  if not police_showed_up and officer_should_have_showup and officer_should_have_showup_explain:
-    one_ground_h1_met = True
-  else:
-    one_ground_h1_met = False
----
-code: |
-  if atoi_grounds_met or one_ground_h1_met:
-    one_or_more_grounds_met = True
-  else: 
-    one_or_more_grounds_met = False
----
-code: |
-  if officer_exposed_private_info or officer_gave_notice or officer_improper_statement:
-    breach_of_confidence = True
-  else:
-    breach_of_confidence = False
----
-code: |
-  if officer_drunk or officer_high:
-    consumption_against_duty = True
-  else:
-    consumption_against_duty = False  
----
-code: |
-  if officer_took_money or officer_force_gift or officer_accept_gift or officer_took_advantage:
-    corrupt_practice = True
-  else:
-    corrupt_practice = False
----
-code: |
-  if officer_make_false_statement or officer_hide_info:
-    deceit = True
-  else:
-    deceit = False
----
-code: |
-  if officer_reputation or officer_profane_language or officer_ignore_complaint or officer_lie or officer_treatment:
-    discreditable_conduct = True
-  else:
-    discreditable_conduct = False
----
-code: |
-  if officer_not_issued_gun or officer_shoot or officer_not_report or officer_point_gun or officer_threaten or officer_erratic:
-    improper_use_of_firearms = True
-  else:
-    improper_use_of_firearms = False
----
-code: |
-  if officer_perform_duties or officer_stand_by or officer_allow_crime or officer_allow_escape or officer_no_evidence:
-    neglect_of_duty = True
-  else:
-    neglect_of_duty = False
----
-code: |
-  if officer_intimidated or officer_was_rough:
-    unlawful_authority = True
-  else:
-    unlawful_authority = False
----
-code: |
-  email_sent = send_email(to=['komelche@ualberta.ca','dwagner@ualberta.ca','dram@ualberta.ca','punnia@ualberta.ca'],attachments=complaint_letter)
----
-event: final_screen
-question: You are done!
+# ===================== After Submission =============================== #
+event: last_page
+question: |
+  You are done!
 subquestion: |
-  Your letter has been sent to the Calgary Police, Chief of Calgary Police, the Calgary Police Commission, and the Minister of Justice.
-back button: True
-back button label: |
-  Return to dowload my letter
+  Your letter has been sent to the Calgary Police, Chief of Calgary Police, the Calgary Police Commission, and the Minister of Justice. 
+  
+  __<h4>What Happens Next</h4>__
+  If the complaint leads to an investigation, once the investigation is completed, the Chief of the Calgary Police Service will determine whether or not there is sufficient evidence, based on a balance of probabilities, to prove misconduct. 
+  
+  If misconduct is proven, the Chief directs what form of discipline, if any, is to take place. This discipline may range from a warning to full dismissal without pay.
+  
+  __<h4>Appealing Resolution of a Complaint</h4>__
+  If dissatisfied with the Chief of Police or the Commission’s resolution of a complaint, an individual also has the right to appeal that decision to the Law Enforcement and Review Board. This Board is an independent non-police body consisting of a chairperson and two members appointed by the provincial government. 
+  
+  This appeal can relate to the final disposition of a complaint following a formal investigation or hearing, or a summary dismissal of a complaint. To appeal a decision, an individual has to file with a written notice explaining the grounds of your appeal within 30 days of being advised of the decision. 
+  
+  The Review Board will advise, in writing, of the date, time and place of the hearing and what, if anything, will be required. An individual appealing a decision also has the right to counsel if chosen. 
+  
+  ${ finalPageString }
+
+buttons:
+  - Exit: exit
+  - Restart: restart
+---
+# ===================== Kickout 1 =============================== #
+event: kickout1
+question: |
+  Sorry, this online tool cannot help you further at this time.
+subquestion: |
+  ###This online tool cannot help because:
+
+  **${ kickout1_message }**
+  
+  If you want to get legal advice, you can seek lawyer to help you.
+
+  Here are some free options to help, if you want to discuss your complaint further. We are not affiliated with the groups below, but provide this to help you further if you wish.
+
+  **Calgary Legal Guidance**<br/>
+  Phone: 403-234-9266<br/>
+  Website: www.clg.ab.ca<br/>
+
+  **Legal Aid of Alberta**<br/>
+  Phone: 1-866-845-3425<br/>
+  Website: www.legalaid.ab.ca<br/>
+
+  **Student Legal Assistance of Calgary**<br/>
+  Phone: 403-220-6637<br/>
+  Website: www.slacalgary.com<br/>
+
+  **Women’s Centre of Calgary (for women)**<br/>
+  Phone: 403-264-1155<br/>
+  Website: www.womenscentrecalgary.org/legal-advice-for-women<br/>
+  
+  ${ kickout_resources }
+
+
+buttons:
+  - Exit: exit
+  - Restart: restart
+---
+# ===================== Kickout 2 =============================== #
+event: kickout2
+question: |
+  Sorry, this online tool was unable to determine any specific police misconduct based on what you have inputted.
+subquestion: |
+  If you want to get legal advice, you can seek a lawyer to help you.
+
+  Here are some free options to help, if you want to discuss your complaint further. We are not affiliated with the groups below but provide this to help you further if you wish.
+
+  <h4>You may still choose to submit this complaint, and if so, click **Submit Anyway** below.</h4>
+
+  **Calgary Legal Guidance**<br/>
+  Phone: 403-234-9266<br/>
+  Website: www.clg.ab.ca<br/>
+
+  **Legal Aid of Alberta**<br/>
+  Phone: 1-866-845-3425<br/>
+  Website: www.legalaid.ab.ca<br/>
+
+  **Student Legal Assistance of Calgary**<br/>
+  Phone: 403-220-6637<br/>
+  Website: www.slacalgary.com<br/>
+
+  **Women’s Centre of Calgary (for women)**<br/>
+  Phone: 403-264-1155<br/>
+  Website: www.womenscentrecalgary.org/legal-advice-for-women<br/>
+  
+  ${ kickout_resources }
+
+buttons:
+  - Exit: exit
+  - Restart: restart
+  - Submit Anyway: user_saw_the_letter
+---
