@@ -5,6 +5,7 @@ include:
 features:
   small screen navigation: dropdown
   navigation back button: False
+  question back button: True
   javascript:
     - docassemble.AssemblyLine:al_audio.js  
   css:
@@ -1348,6 +1349,22 @@ fields:
 continue button field: user_qualified
 section: Plain Lang
 ---
+objects:
+  - complaint_letter: ALDocument.using(
+          title="Formal Complaint Letter", 
+          filename="formal_complaint_letter", 
+          enabled=True, 
+          has_addendum=False
+        )
+---
+objects:
+  - download_bundle: ALDocumentBundle.using(
+        elements=[complaint_letter], 
+        filename="formal_complaint_letter", 
+        enabled=True,
+        title="Formal Complaint Letter"
+      )
+---   
 # ==================== Non-Anonymous =================== #
 question: |
   Please provide the following personal information
@@ -1413,6 +1430,13 @@ subquestion: |
 
   __<h4>Note:</h4>__ There is no guarantee that your complaint will meet the legal preconditions to be  investigated. Whether the complaint meets the legal preconditions will be decided by an investigator. If your complaint does not meet the legal preconditions, it is open to you to choose to seek legal advice about that.
 
+  ${ complaint_letter.as_pdf() }
+   
+  ${ download_bundle.download_list_html() }
+   
+  ${ download_bundle.send_button_html() }
+
+  
   <h5>Please consult legal advice if needed. Listed below are some free legal resources.</h5> 
 
 fields:  
@@ -1438,7 +1462,7 @@ fields:
 attachment:
   name: Formal Complaint Letter
   filename: Formal_Complaint_Letter
-  variable name: complaint_letter
+  variable name: complaint_letter[i]
   docx template file: Final_Template.docx
   valid formats:
     - pdf
@@ -1467,7 +1491,7 @@ subquestion: |
   The Review Board will advise, in writing, of the date, time and place of the hearing and what, if anything, will be required. An individual appealing a decision also has the right to counsel if chosen. 
   
   ${ finalPageString }
-
+ 
 buttons:
   - Exit: exit
   - Restart: restart
