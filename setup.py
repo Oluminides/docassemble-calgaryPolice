@@ -53,7 +53,7 @@ setup(name='docassemble.calgaryPolice',
       url='https://docassemble.org',
       packages=find_packages(),
       namespace_packages=['docassemble'],
-      install_requires=['docassemble.AssemblyLine>=2.8.0'],
+      install_requires=['docassemble.AssemblyLine>=2.10.1'],
       zip_safe=False,
       package_data=find_package_data(where='docassemble/calgaryPolice/', package='docassemble.calgaryPolice'),
      )

@@ -1458,7 +1458,10 @@ fields:
       Website: www.womenscentrecalgary.org/legal-advice-for-women<br/>
       
       ${ kickout_resources }
-     
+
+field: user_saw_the_letter
+continue button label: Email the letter
+---     
 attachment:
   name: Formal Complaint Letter
   filename: Formal_Complaint_Letter
@@ -1467,9 +1470,6 @@ attachment:
   valid formats:
     - pdf
     - docx
-
-field: user_saw_the_letter
-continue button label: Email the letter
 ---
 # ===================== After Submission =============================== #
 event: last_page
