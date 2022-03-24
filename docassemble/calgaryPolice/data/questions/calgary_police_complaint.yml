@@ -41,23 +41,8 @@ mandatory: true
 code: |
   from datetime import datetime
   # Code-flow block
-  
-  intro_table = "**<h3>STEP 1.**</h3>	<br/>**We ask some questions to organize the full story.** <br/><br/>This should take 15-35 minutes. <br/><li>Some questions will ask you to describe what happened, some will just be checking off boxes if true.<br/><br/><br/>|**<h3>STEP 2.**</h3>	<br/>**This app writes your complaint letter for you.** <br/><br/>The app compares your story to what the law says. <br/><li>This **professionally-written letter will specifically mention any laws or regulations** the police may have breached based on what you tell us.\n"
-  intro_table += "-----------------------|-------------------------------\n"
-  intro_table += "**<h3>STEP 3.**</h3>	<br/>**You can send your complaint letter with one click.** <br/><br/>You can also save the complaint letter if you don’t want to send it. <br/><li>**Note** that if you file a complaint anonymously (without your name and information) it probably won’t be investigated.<li>You can also print the complaint letter and take it to a lawyer for legal advice first.|**<h3>STEP 4.**</h3>	<br/>**Someone from the police will review your complaint letter.** <br/><br/>They might open up a full investigation depending on their review of your complaint.<br/><li>Once you complete this online complaint tool, and if an investigator says you cannot complain or that you do not have ground for police misconduct, your complaint will not be investigated. If this happens, you have the right to talk to a lawyer about the investigator’s decision."
-  
-  intro_table2 = "**<h3>Online**</h3> <br/>Using this complaint tool <br/> (calgarypolice.mycomplaints.ca)|**<h3>Phone**</h3> <br/>Call the Calgary Police Service <br/> (403-428-5904)\n"
-  intro_table2 += "-----------------------|-------------------------------\n"
-  intro_table2 += "**<h3>In person**</h3> <br/>Call the Calgary Police Service and book an appointment  <br/> **(403-428-5904)**|**<h3>Mail**</h3> <br/>Mail the Calgary Police Service <br/> (Professional Standards Section #811, Westwinds Campus East Building, 5111 47 St NE, Calgary, AB, T3J 3R2)\n"
-
-
+ 
   user_saw_intro_screen
-  
-  info_table = "**<h3>1.  This is legal information**, not legal advice.**</h3>** <br/>We can help you with understanding the law, but we can’t tell you what to do. If you want legal advice, you need to talk to a lawyer.<br/> For more info **{click here}** <br/><br/>| **<h3>2.  You don’t get money** if your complaint is successful.</h3> <br/>The primary goal of a police complaint is accountability. **There is no financial compensation available through the complaint process.**\n"
-  info_table += "-----------------------|-------------------------------\n"
-  info_table += "**<h3>3.  There is usually a one year time limit** for complaining about the police.</h3> <br/><li>A complaint must be made within **1 year of the date of the police misconduct**, or within **1 year you became aware of the police misconduct.** <br/><br/> If this date has passed, you will **no longer have a right to complain.** This website does not, and cannot, give you advice on the timeline to make a complaint in your specific case.| **<h3>4.  You can ask the police for your entire police file** if you want it for more information.</h3> <br/><li>**Everyone has the right to request their personal information from the police,** thanks to the *Freedom of Information and Protection of Privacy Act.* <br/><br/>Sometimes requesting police records **can uncover more information** about an incident. **To learn more about requesting your police records, [click here](https://www.calgary.ca/cps/public-services/freedom-of-information-and-protection-of-privacy-act-request.html).**\n"
-  info_table += "**<h3>5.	If you were charged with a criminal offence and you want to complain about that,** you might want to talk to a lawyer first.</h3> <br/> What you complain about here could affect your legal defence against your criminal charges. <br/><br/> <li>If the incident you want to complain about **resulted in you being charged with criminal offences,** and those criminal charges have not been resolved, you **might want to speak to a lawyer before making a complaint** because the **information you give police during the complaint process can be used against you in court and may affect your defence of the criminal charges.**|**<h3>6.	You cannot lie in your complaint, **please try your best to make sure everything you say is as accurate as possible</h3>"
-  
   user_saw_important_info
 
   user_screening1
@@ -70,7 +55,7 @@ code: |
   
   kickout1_message = ""
     
-  kickout_resources = " **The Law Society of Alberta**<br/>**Phone**: 403-228-1722 <br/>**Website**: [click here](https://www.lawsociety.ab.ca/public/lawyer-referral/) <br/>**Address**: 700-333 11 Ave SW, Calgary, AB <li>You will be provided the contact information for up to three lawyers that best suit your need, no charge for the first half hour.|**Calgary Legal Guidance**<br/>**Phone**: 403-234-9266 <br/>**Website**: [click here](https://www.clg.ab.ca) <br/>**Address**: 100-840 7th Ave SW, Calgary, AB <li>Free legal advice, assistance, information, and  advocacy for low-income individuals.\n"
+  kickout_resources = " **The Law Society of Alberta**<br/>**Phone**: 403-228-1722 <br/>**Website**: [click here](https://www.lawsociety.ab.ca/public/lawyer-referral/) <br/>**Address**: 700-333 11 Ave SW, Calgary, AB <li>You will be provided the contact information for up to three lawyers that best suit your need, no charge for the first half hour.|**Calgary Legal Guidance**<br/>**Phone**: 403-234-9266 <br/>**Website**: [click here](https://www.clg.ab.ca) <br/>**Address**: 100-840 7th Ave SW, Calgary, AB <li>Free legal advice, assistance, information, and  advocacy for low-income individuals.<br/><br/>\n"
   kickout_resources +=  "-----------------------|-------------------------------\n"
   kickout_resources += "**Legal Aid Society of Alberta**<br/>**Phone**: 403-297-2260<br/>**Website**: [click here](https://www.legalaid.ab.ca) <br/>**Address**: 665 - 8th Street SW.<li>Provides legal aid in civil and criminal matters for individuals who cannot afford to pay a lawyer.|**Student Legal Services**<br/>**Phone**: 780-492-2226 <br/> **Website**: [click here](https://www.slacalgary.com) <br/> 3390 Murray Fraser Hall, Calgary, AB <li>Free representation and assistance by law students to University of Calgary students and individuals in Calgary that cannot afford a lawyer\n"
   kickout_resources += "**Mustard Seed Legal Clinic**<br/>**Phone**: 403-269-1319 <br/>**Website**: [click here](https://www.clg.ab.ca/event/homeless-outreach-	program-legal-clinic/) <br/>**Address**: 102 11 Ave SE, Calgary, AB <li>Free advice and court representation for evictions/landlord-tenant issues, criminal charges, tickets, and other issues|**Elizabeth Fry Society**<br/>**Phone**: 403-294-0737<br/>**Website**: [click here](https://www.elizabethfrycalgary.ca) <br/>**Address**: 1731 10 Ave SW, Calgary, AB <li>Offers support and advocacy for women who are or have been involved in the criminal system.\n"
@@ -113,6 +98,31 @@ code: |
   
   user_targetted1
   user_targetted2
+  
+  how_police_involvedString = ""
+  
+  how_police_discoveredBool = False
+  
+  if how_police_involved == "I personally called the police.":
+    how_police_involvedString += how_police_involved
+  elif how_police_involved == "Someone else called the police.":
+    how_police_involvedString += how_police_involved
+  elif how_police_involved == "The police found out what was happening some other way.":
+    how_police_involvedString += how_police_discovered
+    how_police_discoveredBool = True
+  
+  after_showed_upBool = False
+  
+  showed_upString = ""
+  
+  if showed_up == "Came in person to the scene.":
+    showed_upString += "The police then came in person to the scene. "
+    showed_upString += after_showed_up
+    after_showed_upBool = True
+  elif showed_up == "Did not come in person.":
+    showed_upString += "The police did not come to the scene in person."
+  
+  involved_string = how_police_involvedString + " " + showed_upString
   
   had_contactBool = False
   
@@ -164,7 +174,7 @@ code: |
     officers_string2 = ""
     
   user_signpost2
-  
+    
   user_plainlang1
   user_plainlang2
   user_plainlang3
@@ -527,7 +537,7 @@ code: |
 ---
 # ==================== Intro =================== #
 question: |
-  This tool is to help file a complaint about the Calgary Police.
+  This tool is to help file a Calgary Police complaint.
 subquestion: |
   #####If you think the Calgary Police did something that was not right, you can complain about that here.
   
@@ -535,15 +545,47 @@ subquestion: |
   
   ###How this works
   
-  ${ intro_table }
+  |**<h3>STEP 1.**</h3>	<br/>**We ask some questions to organize the full story.** <br/><br/>This should take 15-35 minutes. **{more info<span style="color:white">1</span>}**|**<h3>STEP 2.**</h3>	<br/>**This app writes your complaint letter for you.** <br/><br/>The app compares your story to what the law says. **{more info<span style="color:white">2</span>}**|
+  -----------------------|-------------------------------
+  **<h3>STEP 3.**</h3>	<strong><br/>**You can send your complaint letter with one click.** <br/><br/>You can also save the complaint letter if you don’t want to send it. **{more info<span style="color:#F2F2F2">3</span>}**</strong>|**<h3>STEP 4.**</h3>	<strong><br/>**Someone from the police will review your complaint letter.** <br/><br/>They might open up a full investigation depending on their review of your complaint. **{more info<span style="color:#F2F2F2">4</span>}**</strong>
+  
   
   <br/>
   
   ###There are 4 ways to complain about the Calgary Police: 
   
-  ${ intro_table2 }
+  **<h3>Online**</h3> <br/> **{more info<span style="color:white">5</span>}**|**<h3>Phone**</h3> <br/>**{more info<span style="color:white">6</span>}**
+  -----------------------|-------------------------------
+  **<h3>In person**</h3> <strong><br/>**{more info<span style="color:#F2F2F2">7</span>}**</strong>|**<h3>Mail**</h3> <br/><strong>**{more info<span style="color:#F2F2F2">8</span>}**</strong>
   
   <br/>
+  
+terms: 
+  more info<span style="color:white">1</span>: |
+    <li>Some questions will ask you to describe what happened, some will just be checking off boxes if true
+    
+  more info<span style="color:white">2</span>: |
+    <li>This <strong>professionally-written letter will specifically mention any laws or regulations</strong> the police may have breached based on what you tell us.
+  
+  more info<span style="color:#F2F2F2">3</span>: |
+    <li>Note that if you file a complaint anonymously (without your name and information) it probably won’t be investigated.
+    <li>You can also print the complaint letter and take it to a lawyer for legal advice first
+  
+  more info<span style="color:#F2F2F2">4</span>: |
+    <li>Once you complete this online complaint tool, and if an investigator says you cannot complain or that you do not have ground for police misconduct, your complaint will not be investigated. If this happens, you have the right to talk to a lawyer about the investigator’s decision.
+  
+  more info<span style="color:white">5</span>: |
+    Using this complaint tool <br/> (calgarypolice.mycomplaints.ca)
+  
+  more info<span style="color:white">6</span>: |
+    Call the Calgary Police Service <br/> (403-428-5904)
+  
+  more info<span style="color:#F2F2F2">7</span>: |
+    Call the Calgary Police Service and book an appointment  <br/> <strong>(403-428-5904)</strong>
+  
+  more info<span style="color:#F2F2F2">8</span>: |
+    Mail the Calgary Police Service <br/> (Professional Standards Section #811, Westwinds Campus East Building, 5111 47 St NE, Calgary, AB, T3J 3R2)
+  
   
 fields:
   - note: |
@@ -565,7 +607,12 @@ section: Introduction
 question: |
   Important notes before you start.
 subquestion: |
-  ${ info_table }
+ 
+  
+  **<h3>1.  This is legal information**, not legal advice.**</h3>** <br/>We can help you with understanding the law, but we can’t tell you what to do. If you want legal advice, you need to talk to a lawyer.<br/> For more info **{click here}** | **<h3>2.  You don’t get money** if your complaint is successful.</h3> <br/> **{more info<span style="color:white">2</span>}** <br/><br/><br/><br/>
+  -----------------------|-------------------------------
+  **<h3>3.  There is usually a one year time limit** for complaining about the police.</h3> <br/>**{more info<span style="color:#F2F2F2">3</span>}**| **<h3>4.  You can ask the police for your entire police file** if you want it for more information.</h3> <br/>**{more info<span style="color:#F2F2F2">4</span>}**  
+  **<h3>5.	If you were charged with a criminal offence and you want to complain about that,** you might want to talk to a lawyer first.</h3> <br/> What you complain about here could affect your legal defence against your criminal charges. <br/>**{more info<span style="color:white">5</span>}**|**<h3>6.	You cannot lie in your complaint, **please try your best to make sure everything you say is as accurate as possible</h3>
   
 terms:
   click here: |
@@ -586,6 +633,21 @@ terms:
     **The purpose of this service is to help an individual’s right to complain about police misconduct and increase access to justice.** This service is **not intended to provide an individual with legal representation, or provide legal advice.**
     
     **None of the information submitted by you through this service is reviewed by lawyers.** The information you provide is only reviewed after you submit your final complaint, and the review is not done by lawyers and is done solely for the purpose of investigating your complaints or determining if your complaints should be investigated.
+      
+  more info<span style="color:white">2</span>: |
+    <li>The primary goal of a police complaint is accountability. <strong>There is no financial compensation available through the complaint process.</strong>
+  
+  more info<span style="color:#F2F2F2">3</span>: |
+    <li>A complaint must be made within <strong>1 year of the date of the police misconduct</strong>, or within <strong>1 year you became aware of the police misconduct.</strong> <br/><br/> If this date has passed, you will <strong>no longer have a right to complain.</strong> This website does not, and cannot, give you advice on the timeline to make a complaint in your specific case.
+  
+  more info<span style="color:#F2F2F2">4</span>: |
+    <li><strong>Everyone has the right to request their personal information from the police,</strong> thanks to the <i>Freedom of Information and Protection of Privacy Act.</i> <br/><br/>Sometimes requesting police records <strong>can uncover more information</strong> about an incident. <strong>To learn more about requesting your police records, <a href="https://www.calgary.ca/cps/public-services/freedom-of-information-and-protection-of-privacy-act-request.html">click here</a>
+
+  
+  more info<span style="color:white">5</span>: |
+    <li>If the incident you want to complain about <strong>resulted in you being charged with criminal offences,</strong> and those criminal charges have not been resolved, you <strong>might want to speak to a lawyer before making a complaint</strong> because the <strong>information you give police during the complaint process can be used against you in court and may affect your defence of the criminal charges.</strong>
+  
+  
     
 fields:
   - note: |
@@ -631,13 +693,13 @@ fields:
   - I am complaining about something that happened:: user.incident_time
     input type: radio
     choices:
-      - This year (12 months)
+      - This year (Within 12 months)
       - More than a year ago
 
   - I found out about what happened: user.incident_time
     input type: radio
     choices:
-      - This year (12 months)
+      - This year (Within 12 months)
       - More than a year ago
     show if: 
       variable: user.incident_time
@@ -659,7 +721,7 @@ question: |
   Based on what you have said:
   
 subquestion: |
-  <h3><b>You can potentially file a police complaint.</b></h3>
+  <h3><strong><span style="color:#2fbd39">You can potentially file a police complaint.</span></strong></h3>
   
   <br/>
   
@@ -689,19 +751,47 @@ subquestion: |
 
 fields:
   - note: |
-      <br/><h4>This is what happened before police got involved</h4>
+      <br/><h4>This is what happened before the police got involved</h4>
   - Answer here: before_police_involved
     input type: area
   
   - note: |
-      <br/><h4>This is how police got involved:</h4><br/>
-      [INDENTBY 0.6in]Try to answer all the following questions:<br/>
-      1.	Did you call the police or how did they find out about what was happening? <br/>
-      2.	Did the police show up to the scene?<br/>
-      3.	What did the police do if they showed up in person?<br/>
-      4.	Did you go to a police station?<br/>
+      <br/><h4>This is how the police got involved:</h4><br/>
   - Answer here: how_police_involved
+    input type: radio
+    choices:
+      - I personally called the police.
+      - Someone else called the police.
+      - The police found out what was happening some other way.
+  
+  - note: |
+      <br/><h4>This is how the police found out what was happening</h4>
+  
+    show if:
+      variable: how_police_involved
+      is: The police found out what was happening some other way.
+      
+  - This might involve you or someone else going to a police station: how_police_discovered 
     input type: area
+    show if:
+      variable: how_police_involved
+      is: The police found out what was happening some other way.
+  
+  - note: |
+      <br/>
+  - <h4>The police:</h4>: showed_up
+    input type: radio
+    choices:
+      - Came in person to the scene.
+      - Did not come in person.
+      
+  - note: |
+      <br/><h4>This is what happened when the police arrived</h4>
+  - Answer here: after_showed_up
+    input type: area
+    show if:
+      variable: showed_up
+      is: Came in person to the scene.
      
   - <br/><h4>I personally:</h4>: had_contact
     input type: radio
@@ -836,114 +926,73 @@ subquestion: |
   
 review:
 
-  - note: |
-      <br/>This is what happened before police got involved:
-      
   - Edit: before_police_involved
     button: |
-      **${ before_police_involved }** 
-      
-  - note: |
-      <br/>This is how the police got involved:
-  
+       This is what happened before police got involved: **${ before_police_involved }** 
+
   - Edit: how_police_involved
     button: |
-      **${ how_police_involved }**
+      This is how the police got involved: **${ how_police_involvedString }**
       
-  - note: |
-      <br/> I personally
+  - Edit: how_police_discovered
+    button: |
+      This is how the police found out what was happening: **${ how_police_discovered }**
+    show if: how_police_discoveredBool
+    
+  - Edit: showed_up
+    button: |
+      The police: **${ showed_up }**
+      
+  - Edit: after_showed_up
+    button: |
+      This is what happened when the police arrived: **${ after_showed_up }**
+    show if: after_showed_upBool 
       
   - Edit: had_contact
     button: |
-      **${ had_contact }**
+      I personally: **${ had_contact }**
       
-  - note: |
-      <br/>${ during_initial_contactString1 } 
-  
-    show if: had_contactBool
-    
-  
   - Edit: during_initial_contact
     button: |
-      ${ during_initial_contactString2 } 
-      
-    show if: had_contactBool
-       
-      
-  - note: |
-      <br/>After my first contact with the police: 
-  
+      ${ during_initial_contactString1 } ${ during_initial_contactString2 }  
     show if: had_contactBool
   
   - Edit: further_contact
     button: |
-      **${ further_contact }**
-    
+      After my first contact with the police: **${ further_contact }**
     show if: had_contactBool
-   
-      
-  - note: |
-      <br/>${ after_initial_contactString1 } 
-  
-    show if: further_contactBool
       
   - Edit: after_initial_contact
     button: |
-     ${ after_initial_contactString2 }
-     
+     ${ after_initial_contactString1 } ${ after_initial_contactString2 } 
     show if: further_contactBool
-    
-  - note: |
-      <br/>After the last contact with the police, or after police left the scene:  
   
   - Edit: anything_after_left
     button: |
-      **${ anything_after_left }**
-      
-  - note: |
-      <br/>${ after_left_sceneString1 } 
-  
-    show if: anything_after_leftBool
+      After the last contact with the police, or after police left the scene: **${ anything_after_left }**
     
   
   - Edit: after_left_scene
     button: |
-      ${ after_left_sceneString2 }
+      ${ after_left_sceneString1 } ${ after_left_sceneString2 }
     show if: anything_after_leftBool
-    
-  
-  - note: |
-      <br/>${ saw_witnessesString1 }
-  
+   
   - Edit: saw_witnesses
     button: |
-      ${ saw_witnessesString2 }
-  
-  - note: |
-      <br/>${ the_witnessesString1 } 
-  
-    show if: saw_witnessesBool
-    
-  
+      ${ saw_witnessesString1 } ${ saw_witnessesString2 }
+
   - Edit: witnesses
     button: |
-      ${ the_witnessesString2 }
+      ${ the_witnessesString1 } ${ the_witnessesString2 }
     show if: saw_witnessesBool
-    
-      
-  - note: |
-      <br/>${ officers_string1 }
-      
+
   - Edit: officers_ids
     button: |
-      ${ officers_string2 }
+      ${ officers_string1 } ${ officers_string2 }
 
-  - note: |
-      <br/>In a few short sentences, I am complaining because: 
-  
   - Edit: complaint_summary
     button: |
-      **${ complaint_summary }**
+      In a few short sentences, I am complaining because: **${ complaint_summary }**
 
   - note: |
       <br/><h4>Now that you told us what happened, the next section will ask you specific questions to figure out if there was any police misconduct.</h4>
@@ -1041,33 +1090,33 @@ fields:
     none of the above: False
     datatype: checkboxes
     choices:
-      - Failed to report a crime or evidence about a crime. <br/>[INDENTBY 0.3in]s. 5(2)(h): failure_to_report_crime
+      - Failed to report a crime or evidence about a crime.: failure_to_report_crime
       
-      - Disobeyed a command, rule, or policy of the police. <br/>[INDENTBY 0.3in]s. 5(2)(g): disobeyed_superior
+      - Disobeyed a command, rule, or policy of the police.: disobeyed_superior
       
-      - Helped or did nothing to stop another police officer commit misconduct. <br/>[INDENTBY 0.3in]s. 5(2)(e): colluded_with_another_officer 
+      - Helped or did nothing to stop another police officer commit misconduct.: colluded_with_another_officer 
       
-      - Didn’t do something else they should have done as part of their job as a police officer. <br/>[INDENTBY 0.3in]s. 5(2)(h): failure_of_negligence
+      - Didn’t do something else they should have done as part of their job as a police officer.: failure_of_negligence
 
   - <h5>The police</h5>: helping_offenders
     required: False
     none of the above: False
     datatype: checkboxes
     choices:
-      - Told someone there was or was about to be a warrant or court summons for their arrest, before they were supposed to tell them. <br/>[INDENTBY 0.3in]s. 5(2)(a): unrelated_warrant
+      - Told someone there was or was about to be a warrant or court summons for their arrest, before they were supposed to tell them.: unrelated_warrant
         help: |
           <h5>One such example of misconduct under this section could be if a police officer disclosed the existence of a warrant for the purposes of assisting the person avoid arrest. <br/>s. 5(2)(a)</h5>
       
-      - Knew the location of someone that was supposed to be arrested, but didn’t do anything to arrest that person. <br/>[INDENTBY 0.3in]s. 5(2)(h)(iv): unreported_offender 
+      - Knew the location of someone that was supposed to be arrested, but didn’t do anything to arrest that person.: unreported_offender 
 
   - <h5>The police</h5>: suppressing
     required: False
     none of the above: False
     datatype: checkboxes
     choices:
-      - Destroyed, damaged, hid or erased an official document or any other records. <br/>[INDENTBY 0.3in]s. 5(2)(d): destroyed_official_document
+      - Destroyed, damaged, hid or erased an official document or any other records.: destroyed_official_document
       
-      - Caused a complaint against another police officer to be ignored or prevented from being investigated. <br/>[INDENTBY 0.3in]s. 5(2)(e): suppressed_complaint_against_officer
+      - Caused a complaint against another police officer to be ignored or prevented from being investigated.: suppressed_complaint_against_officer
         help: |
           <h5>For example, did you try to complain about a police officer’s conduct and they tried to force you to stop ? <br/>s. 5(2)(e)</h5>
 
@@ -1090,9 +1139,9 @@ fields:
     none of the above: False
     datatype: checkboxes
     choices:
-      - Demanded or received money, favours, or any other type of payment, gift, or benefit, without authorization. <br/>[INDENTBY 0.3in]s. 5(2)(c): demanded_payment
+      - Demanded or received money, favours, or any other type of payment, gift, or benefit, without authorization.: demanded_payment
       
-      - Tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty  <br/>[INDENTBY 0.3in]s. 5(2)(b)(iv): demanded_illicit_drug
+      - Tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty.: demanded_illicit_drug
 
 
   - <h5>A police officer</h5>: firearms
@@ -1100,19 +1149,19 @@ fields:
     none of the above: False
     datatype: checkboxes
     choices:
-      - Had a gun they were not supposed to have. <br/>[INDENTBY 0.3in]s. 5(2)(f): had_gun
+      - Had a gun they were not supposed to have.: had_gun
       
-      - Shot a gun they were not supposed to shoot. s. 5(2)(f): fired_gun
+      - Shot a gun they were not supposed to shoot.: fired_gun
       
-      - Did not report they fired a gun. <br/>[INDENTBY 0.3in]s. 5(2)(f): did_not_report_firing
+      - Did not report they fired a gun.: did_not_report_firing
       
-      - Pointed a gun at you or someone else. <br/>[INDENTBY 0.3in]s. 5(2)(f): pointed_gun
+      - Pointed a gun at you or someone else.: pointed_gun
       
-      - Threatened to use a gun against you or someone else. <br/>[INDENTBY 0.3in]s. 5(2)(f): threatened_to_use_gun
+      - Threatened to use a gun against you or someone else.: threatened_to_use_gun
       
-      - Acted unstable or reckless with a gun  <br/>[INDENTBY 0.3in]s. 5(2)(f): acted_erratic
+      - Acted unstable or reckless with a gun.: acted_erratic
       
-      - Did anything else involving a gun that they should not have done. <br/>[INDENTBY 0.3in]s. 5(2)(f): involving_a_gun
+      - Did anything else involving a gun that they should not have done.: involving_a_gun
 progress: 80
 continue button field: user_plainlang3
 section: Potential Breaches
@@ -1134,21 +1183,21 @@ fields:
     none of the above: False
     datatype: checkboxes
     choices:
-      - Used too much force. [INDENTBY 0.3in]s. 5(2)(i): too_much_force
+      - Used too much force.: too_much_force
         help: |
           <h5>Includes when:
           <li>Force was not needed but was still used. <br/>s. 5(2)(i)
           <li>Force was needed but was too much force. <br/>s. 5(2)(i)</h5>
           
-      - Seriously injured me or someone else. <br/>[INDENTBY 0.3in]s. 5(2)(i) + s. 46: seriously_injured 
+      - Seriously injured me or someone else.: seriously_injured 
         help: |
           <h5>A serious injury includes a fractured bone, a major burn, or a loss of vision, hearing or body part. <br/>s. 5(2)(i) + s. 46</h5>
       
-      - Hospitalized me or someone else.  [INDENTBY 0.3in]s. 5(2)(i) + s. 46: hospitalized
+      - Hospitalized me or someone else.: hospitalized
       
-      - Sexually assaulted or sexually harassed me or someone else. <br/>[INDENTBY 0.3in]s. 5(2)(e) + s. 46: sexually_assaulted
+      - Sexually assaulted or sexually harassed me or someone else.: sexually_assaulted
       
-      - Killed someone. [INDENTBY 0.3in]s. 5(2)(i) + s. 46: killed
+      - Killed someone.: killed
     
  
   - <h5>The police did something else I have not previously mentioned that:</h5>: final_catchall
@@ -1156,13 +1205,13 @@ fields:
     none of the above: False
     datatype: checkboxes
     choices:
-      - Was not authorized by law. <br/>[INDENTBY 0.3in]s. 5(2)(i): unauthorised_by_law
+      - Was not authorized by law.: unauthorised_by_law
       
-      - Is against the law. <br/>[INDENTBY 0.3in]s. 5(2)(e): illegal
+      - Is against the law.: illegal
         help: |
           <h5>For example, an officer’s conduct may constitute a criminal offence, a traffic offence, a bylaw offence, and so forth. <br/>s. 5(2)(e)</h5>
       
-      - Threatens or harms the positive reputation of the police. <br/>[INDENTBY 0.3in]s. 5(2)(e): threatens_reputation
+      - Threatens or harms the positive reputation of the police.: threatens_reputation
       
 progress: 85
 continue button field: user_plainlang4
@@ -1180,175 +1229,173 @@ subquestion: |
 review:
   - Edit: unlawful_search['searched_without_warrant']
     button: |
-      The police searched me or someone else without a warrant or a legal reason. <br/>s. 5(2)(i)
+      The police searched me or someone else without a warrant or a legal reason.
     show if: unlawful_search['searched_without_warrant']
     
   - Edit: unlawful_search['arrested_without_warrant']
     button: |
-      The police arrested or detained me or someone else without a warrant or legal reason. <br/>s. 5(2)(i)
+      The police arrested or detained me or someone else without a warrant or legal reason.
     show if: unlawful_search['arrested_without_warrant']
     
   - Edit: unethical_behaviour['profane_language']
     button: |
-      The police used abusive or insulting language <br/>s. 5(2)(e)
+      The police used abusive or insulting language.
     show if: unethical_behaviour['profane_language']
 
   - Edit: unethical_behaviour['strip_searched']
     button: |
-      The police strip searched me or someone else without a legal reason <br/>s. 5(2)(i)
+      The police strip searched me or someone else without a legal reason.
     show if: unethical_behaviour['strip_searched']
 
   - Edit: unethical_behaviour['discrimination']
     button: |
-      The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. <br/>s. 5(2)(e) 
+      The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.
     show if: unethical_behaviour['discrimination']
     
   - Edit: under_the_influence['intoxicated']
     button: |
-      The police consumed alcohol, marijuana, or an illegal drug or acted like they were not sober while on duty. <br/>s. 5(2)(b)
+      The police consumed alcohol, marijuana, or an illegal drug or acted like they were not sober while on duty.
     show if: under_the_influence['intoxicated']
     
   - Edit: improper_representation['unauthorised_communication']
     button: |
-      The police told someone something that was private or confidential without authorization. <br/>s. 5(2)(a) 
+      The police told someone something that was private or confidential without authorization.
     show if: improper_representation['unauthorised_communication']
 
   - Edit: improper_representation['misleading_statement']
     button: |
-      The police made or signed a false or misleading statement. <br/>s. 5(2)(d)
+      The police made or signed a false or misleading statement.
     show if: improper_representation['misleading_statement']
 
   - Edit: job_failure['failure_to_report_crime']
     button: |
-      The police failed to report a crime or evidence about a crime <br/>s. 5(2)(h)
+      The police failed to report a crime or evidence about a crime.
     show if: job_failure['failure_to_report_crime']
 
   - Edit: job_failure['disobeyed_superior']
     button: |
-      The police disobeyed a command, rule, or policy of the police  <br/>s. 5(2)(g)
+      The police disobeyed a command, rule, or policy of the police.
     show if: job_failure['disobeyed_superior']
 
 
   - Edit: job_failure['colluded_with_another_officer']
     button: |
-      The police helped or did nothing to stop another police officer commit misconduct. <br/>s. 5(2)(e)
+      The police helped or did nothing to stop another police officer commit misconduct.
     show if: job_failure['colluded_with_another_officer']
 
   - Edit: job_failure['failure_of_negligence']
     button: |
-      The police didn't do something else they should have done as part of their job as a police officer. <br/>s. 5(2)(h)
+      The police didn't do something else they should have done as part of their job as a police officer.
     show if: job_failure['failure_of_negligence']
     
   
   - Edit: helping_offenders['unrelated_warrant']
     button: |
-      The police told someone there was or was about to be a warrant or court summons for their arrest, before they were supposed to tell them. <br/>s. 5(2)(a)
+      The police told someone there was or was about to be a warrant or court summons for their arrest, before they were supposed to tell them.
     show if: helping_offenders['unrelated_warrant']
 
   - Edit: helping_offenders['unreported_offender']
     button: |
-      The police knew the location of someone that was supposed to be arrested, but didn’t do anything to arrest that person. <br/>s. 5(2)(h)(iv).
+      The police knew the location of someone that was supposed to be arrested, but didn’t do anything to arrest that person.
     show if: helping_offenders['unreported_offender']
     
 
   - Edit: suppressing['destroyed_official_document']
     button: |
-      The police destroyed, damaged, hid or erased an official document or any other records. <br/>s. 5(2)(d)
+      The police destroyed, damaged, hid or erased an official document or any other records.
     show if: suppressing['destroyed_official_document']
 
   - Edit: suppressing['suppressed_complaint_against_officer']
     button: |
-      The police caused a complaint against another police officer to be ignored or prevented from being investigated. <br/>s. 5(2)(e)
+      The police caused a complaint against another police officer to be ignored or prevented from being investigated.
     show if: suppressing['suppressed_complaint_against_officer']
 
 
   - Edit: request_receive['demanded_payment']
     button: |
-      The police demanded or received money, favours, or any other type of payment, gift, or benefit, without authorization. <br/>s. 5(2)(c)
+      The police demanded or received money, favours, or any other type of payment, gift, or benefit, without authorization. 
     show if: request_receive['demanded_payment']
 
   - Edit: request_receive['demanded_illicit_drug']
     button: |
-      The police tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty. <br/>s. 5(2)(b)(iv)
+      The police tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty.
     show if: request_receive['demanded_illicit_drug']
 
 
   - Edit: firearms['had_gun']
     button: |
-      The police had a gun they were not supposed to have. <br/>s. 5(2)(f)
+      The police had a gun they were not supposed to have.
     show if: firearms['had_gun']
   
   - Edit: firearms['fired_gun']
     button: |
-      The police shot a gun they were not supposed to shoot. s. 5(2)(f)
+      The police shot a gun they were not supposed to shoot.
     show if: firearms['fired_gun']
     
   - Edit: firearms['pointed_gun']
     button: |
-      The police pointed a gun at you or someone else. <br/>s. 5(2)(f)
+      The police pointed a gun at you or someone else.
     show if: firearms['pointed_gun']
 
   - Edit: firearms['did_not_report_firing']
     button: |
-      The police did not report that they fired a gun. <br/>s. 5(2)(f)
+      The police did not report that they fired a gun.
     show if: firearms['did_not_report_firing']
 
   - Edit: firearms['threatened_to_use_gun']
     button: |
-      The police threatened to use a gun against you or someone else. <br/>s. 5(2)(f)
+      The police threatened to use a gun against you or someone else. 
     show if: firearms['threatened_to_use_gun']
 
   - Edit: firearms['acted_erratic']
     button: |
-      The police acted unstable or reckless with a gun. <br/>s. 5(2)(f)
+      The police acted unstable or reckless with a gun.
     show if: firearms['acted_erratic']
     
   - Edit: firearms['involving_a_gun']
     button: |
-      The police did anything else involving a gun that they should not have done. <br/>s. 5(2)(f)
+      The police did anything else involving a gun that they should not have done.
     show if: firearms['involving_a_gun']
-    
 
   - Edit: force['too_much_force']
     button: |
-      The police used too much force. s. 5(2)(i)
+      The police used too much force.
     show if: force['too_much_force']
 
   - Edit: force['sexually_assaulted']
     button: |
-      The police sexually assaulted or sexually harassed me or someone else. <br/>s. 5(2)(e) + s. 46
+      The police sexually assaulted or sexually harassed me or someone else. 
     show if: force['sexually_assaulted']
 
   - Edit: force['seriously_injured']
     button: |
-      The police seriously injured me or someone else. <br/>s. 5(2)(e) + s. 46
+      The police seriously injured me or someone else.
     show if: force['seriously_injured']
 
   - Edit: force['hospitalized']
     button: |
-      The police hospitalized me or someone else. <br/>s. 5(2)(e) + s. 46
+      The police hospitalized me or someone else.
     show if: force['hospitalized']
 
   - Edit: force['killed']
     button: |
-      The police killed someone. <br/>s. 5(2)(e) + s. 46
+      The police killed someone.
     show if: force['killed']
-
  
 
   - Edit: final_catchall['unauthorised_by_law']
     button: |
-      The police did something else I have not mentioned yet that was not authorized by law. <br/>s. 5(2)(i)
+      The police did something else I have not mentioned yet that was not authorized by law. 
     show if: final_catchall['unauthorised_by_law']
 
   - Edit: final_catchall['illegal']
     button: |
-      The police did something else I have not mentioned yet that is against the law. <br/>s. 5(2)(e)
+      The police did something else I have not mentioned yet that is against the law.
     show if: final_catchall['illegal']
     
   - Edit: final_catchall['threatens_reputation']
     button: |
-      The police did something else I have not mentioned yet that threatens or harms the reputation of the police. <br/>s. 5(2)(e)
+      The police did something else I have not mentioned yet that threatens or harms the reputation of the police.
     show if: final_catchall['threatens_reputation']
 
 
@@ -1370,13 +1417,14 @@ question: |
   Based on what you said:
 
 subquestion: |
-  ###Your complaint might potentially be police misconduct.
+  <h3><strong><span style="color:#2fbd39">Your complaint might potentially be police misconduct.</span></strong></h3>
+  ###
   
   This online tool detected **${ plainNum }** potential reasons your complaint might be police misconduct.
 
   If you want to have the app write you a professional complaint letter, you can choose if you want to use your name and contact information, or stay anonymous.
   
-  **Warning:** If you choose to remain anonymous, the likely result is your complaint will not be investigated. That is because a precondition of a complaint under s. 42.1(4)(a) of the *Police Act* is that the person making the complaint provide their full name. If your full name is not provided, your complaint may not be investigated. If you refuse to be contacted, investigators will be unable to contact you and conduct a proper investigation, which may lead to the complaint being considered “abandoned”.
+  [INDENTBY 0.6in]**Warning:** If you choose to remain anonymous, the likely result is your complaint will not be investigated. That is because a precondition of a complaint under s. 42.1(4)(a) of the *Police Act* is that the person making the complaint provide their full name. If your full name is not provided, your complaint may not be investigated. If you refuse to be contacted, investigators will be unable to contact you and conduct a proper investigation, which may lead to the complaint being considered “abandoned”.
 
 fields:
   - note: |
@@ -1390,6 +1438,18 @@ fields:
   - note: |
       <br/><h5>The next screen is the final review screen to check over your complaint letter and send it if you want.</h5>
       
+      <br/><h5>If you continue with this online tool and submit the complaint you generated with this online tool, it is your responsibility to make sure:
+      
+      *  All the information in the complaint is as true and accurate as possible
+      *  You aware of all legal issues and consequences that could arise by using this online tool. 
+      
+      **By using this online tool, you agree this online tool is not liable for any consequence, legal or otherwise, that may arise from your use of the service.**</h5>
+  
+    show if: 
+      variable: anonymous
+      is: To be anonymous, even if it means my complaint probably won’t be investigated.
+  
+  - note: |
       [INDENTBY 0.6in]<h5>**Note:** Whether your complaint meets the legal preconditions will be decided by an investigator. CCF does not guarantee that your complaint will meet the legal preconditions for investigation. If your complaint does not meet the legal preconditions, you can choose to seek legal advice about next steps.</h5>
 
 progress: 95
@@ -1466,18 +1526,21 @@ subquestion: |
   __<h4>Note:</h4>__ There is no guarantee that your complaint will meet the legal preconditions to be  investigated. This will be decided by an investigator. If your complaint does not meet the legal preconditions, you can choose to talk to a lawyer for more advice.
   
   <br/><h5>Listed below are some free and low-cost legal resources</h5> 
-  
-  ${ kickout_resources }
 
   ${ complaint_letter.as_pdf() }
    
   ${ download_bundle.download_list_html() }
    
   ${ download_bundle.send_button_html() }
+  
+under: |
+  <br/>
+  
+  ${ kickout_resources }
 
 field: user_saw_the_letter
 buttons:
-  - Email Complaint: proceed
+  - Send Complaint: proceed
   - Exit App: exit
   - Restart Complaint: restart
 progress: 95
@@ -1499,7 +1562,8 @@ question: |
   Your complaint letter has been: 
   
 subquestion: |
-  ###Successfully sent 
+
+  <h3><strong><span style="color:#2fbd39">Successfully sent</span></strong></h3>
   
   <br/>
   
