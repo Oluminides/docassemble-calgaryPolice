@@ -3,6 +3,8 @@ include:
   - docassemble.AssemblyLine:assembly_line_unstyled.yml
 ---
 features:
+  navigation: True
+  progress bar: True
   small screen navigation: dropdown
   navigation back button: False
   question back button: True
@@ -19,10 +21,6 @@ metadata:
   description: |
     A complaint filing system for the Calgary Police Service
 ---
-features:
-  navigation: True
-  progress bar: True
----
 sections:
   - Introduction
   - Screening:
@@ -36,6 +34,22 @@ sections:
 ---
 objects:
   - user: Individual
+  - ccf_logo: DAStaticFile.using(filename="ccf_logo.png")
+  - cps_logo: DAStaticFile.using(filename="cps_logo.png")
+---
+default screen parts:
+  logo: |
+    <div class="title-container" style="display: flex; flex-direction: row;">
+      <div class="al-logo">
+        <img src="${ ccf_logo.url_for() }"/>
+        <img src="${ cps_logo.url_for() }"/>
+      </div>
+      
+      <div class="al-title" style="padding-left: 15px; padding-top: 5px;">
+        <div class="title-row-2">${all_variables(special='metadata').get('title','').rstrip()}</div>
+      </div>
+    </div> 
+    
 ---
 mandatory: true
 code: |
@@ -654,7 +668,7 @@ terms:
     
 fields:
   - note: |
-      ####Please select **Continue** if you have read everything and want to continue.
+      #####Please select **Continue** if you have read everything and want to continue.
       
       *  If you continue, you have to make sure all the information is true and accurate, and that you are aware of all legal issues and/or consequences that could arise because of using this service. 
       *  If you continue, you also agree this complaint tool is not liable for any consequence, legal or otherwise, that could potentially happen from you using this complaint tool.
