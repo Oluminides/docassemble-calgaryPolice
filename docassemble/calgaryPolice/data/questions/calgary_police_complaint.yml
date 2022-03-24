@@ -55,7 +55,7 @@ code: |
   
   kickout1_message = ""
     
-  kickout_resources = " **The Law Society of Alberta**<br/>**Phone**: 403-228-1722 <br/>**Website**: [click here](https://www.lawsociety.ab.ca/public/lawyer-referral/) <br/>**Address**: 700-333 11 Ave SW, Calgary, AB <li>You will be provided the contact information for up to three lawyers that best suit your need, no charge for the first half hour.|**Calgary Legal Guidance**<br/>**Phone**: 403-234-9266 <br/>**Website**: [click here](https://www.clg.ab.ca) <br/>**Address**: 100-840 7th Ave SW, Calgary, AB <li>Free legal advice, assistance, information, and  advocacy for low-income individuals.<br/><br/>\n"
+  kickout_resources = " <span style=\"font-weight:normal\">**The Law Society of Alberta**<br/>**Phone**: 403-228-1722 <br/>**Website**: [click here](https://www.lawsociety.ab.ca/public/lawyer-referral/) <br/>**Address**: 700-333 11 Ave SW, Calgary, AB <li>You will be provided the contact information for up to three lawyers that best suit your need, no charge for the first half hour.</span>|<span style=\"font-weight:normal\">**Calgary Legal Guidance**<br/>**Phone**: 403-234-9266 <br/>**Website**: [click here](https://www.clg.ab.ca) <br/>**Address**: 100-840 7th Ave SW, Calgary, AB <li>Free legal advice, assistance, information, and  advocacy for low-income individuals.</span><br/><br/>\n"
   kickout_resources +=  "-----------------------|-------------------------------\n"
   kickout_resources += "**Legal Aid Society of Alberta**<br/>**Phone**: 403-297-2260<br/>**Website**: [click here](https://www.legalaid.ab.ca) <br/>**Address**: 665 - 8th Street SW.<li>Provides legal aid in civil and criminal matters for individuals who cannot afford to pay a lawyer.|**Student Legal Services**<br/>**Phone**: 780-492-2226 <br/> **Website**: [click here](https://www.slacalgary.com) <br/> 3390 Murray Fraser Hall, Calgary, AB <li>Free representation and assistance by law students to University of Calgary students and individuals in Calgary that cannot afford a lawyer\n"
   kickout_resources += "**Mustard Seed Legal Clinic**<br/>**Phone**: 403-269-1319 <br/>**Website**: [click here](https://www.clg.ab.ca/event/homeless-outreach-	program-legal-clinic/) <br/>**Address**: 102 11 Ave SE, Calgary, AB <li>Free advice and court representation for evictions/landlord-tenant issues, criminal charges, tickets, and other issues|**Elizabeth Fry Society**<br/>**Phone**: 403-294-0737<br/>**Website**: [click here](https://www.elizabethfrycalgary.ca) <br/>**Address**: 1731 10 Ave SW, Calgary, AB <li>Offers support and advocacy for women who are or have been involved in the criminal system.\n"
@@ -97,7 +97,7 @@ code: |
     
   
   user_targetted1
-  user_targetted2
+  
   
   how_police_involvedString = ""
   
@@ -105,22 +105,25 @@ code: |
   
   if how_police_involved == "I personally called the police.":
     how_police_involvedString += how_police_involved
-  elif how_police_involved == "Someone else called the police.":
-    how_police_involvedString += how_police_involved
   elif how_police_involved == "The police found out what was happening some other way.":
     how_police_involvedString += how_police_discovered
     how_police_discoveredBool = True
   
   after_showed_upBool = False
+  not_showed_upBool = True
   
   showed_upString = ""
+  after_question = ""
   
   if showed_up == "Came in person to the scene.":
     showed_upString += "The police then came in person to the scene. "
     showed_upString += after_showed_up
     after_showed_upBool = True
+    not_showed_upBool = False
+    after_question = "After the police left the scene:"
   elif showed_up == "Did not come in person.":
     showed_upString += "The police did not come to the scene in person."
+    after_question = "After last contact with the police:"
   
   involved_string = how_police_involvedString + " " + showed_upString
   
@@ -143,6 +146,7 @@ code: |
     after_initial_contactString1 = ""
     after_initial_contactString2 = ""
     
+  user_targetted2
   
   anything_after_leftBool = False  
   if anything_after_left == "Something else happened that might help with investigating my complaint.":
@@ -505,7 +509,7 @@ code: |
     finalPageString += "<br/>__<h5>Section 5(1)(i)</h5>__<br/>Section 5(1)(i) governs misconduct where an officer exceeds their authority, uses force when it is not necessary, or uses force that is excessive. Breaches of s. 5(1)(i) may arise in a variety of circumstances, however, common examples are as follows, (1) where an officer uses force when it is not necessary to do so, or if force is necessary, the officer uses too much force (***Hodelin v Lehaney (No. 3662)***, 2008 CanLII 91554 (AB LERB), ***Ferguson v Cst. R. Abbot (No. 1986)***, 2010 CanLII 102171 (AB LERB), ***Pringle v Constable T. Eltom (2091)***, 2010 CanLII 102175 (AB LERB), ***R.E. v Cst. C. Tagg (No. 2211)***, 2012 CanLII 104690 (AB LERB), ***Quaidoo v Edmonton (Police Service)***, 2014 ABLERB 051), (2) where an officer conducts a search of a person (including strip searches), vehicle, or residence when it is not lawful to do so (***Williamson v Douglas***, 2008 CanLII 91552 (AB LERB), ***R.E. v Cst. C. Tagg (No. 2211)***, 2012 CanLII 104690 (AB LERB), ***Vuong v Edmonton (Police Service)***, 2019 ABLERB 13 (CanLII), ***Cardinal v Edmonton (Police Service)***, 2019 ABLERB 7 (CanLII)), (3) where an officer arrests or charges someone for an offence, or threatens to arrest or charge someone with an offence, when there are no grounds to do so (***Jackman v Edmonton (Police Service)***, 2015 ABLERB 15 (CanLII), ***AZ v Lethbridge Regional (Police Service)***, 2015 ABLERB 26 (CanLII) ***Shah v Edmonton (Police Service)***, 2019 ABLERB 017), and (4) commanding an individual do something, or not do something, when there officer has no lawful authority to do so (***Cardinal v Edmonton (Police Service)***, 2019 ABLERB 7 (CanLii), ***Shah v Edmonton (Police Service)***, 2019 ABLERB 017).<br/>"
     
     
-  final_options = "**<h5>1.  Send the complaint letter** right now through this app</h5><br/><li>Send a copy of the formal complaint letter (see below) directly to the Calgary Police, Chief of Calgary Police, the Calgary Police Commission, and the Minister of Justice via the email function by clicking “Email the letter”.|**<h5>2.  Email the complaint letter** to yourself or someone else</h5><br/><li>Additionally, you can email this letter to yourself by adding your email address in the space below.<br/><br/><br/><br/><br/>\n"
+  final_options = "<span style=\"font-weight:normal\">**<h5>1.  Send the complaint letter** right now through this app</h5><br/><li>Send a copy of the formal complaint letter (see below) directly to the Calgary Police, Chief of Calgary Police, the Calgary Police Commission, and the Minister of Justice via the email function by clicking “Email the letter”.</span>|<span style=\"font-weight:normal\">**<h5>2.  Email the complaint letter** to yourself or someone else</h5><br/><li>Additionally, you can email this letter to yourself by adding your email address in the space below.</span><br/><br/><br/><br/><br/><br/>\n"
   final_options += "------------------|------------------\n"
   final_options += "**<h5>3.  Print the complaint letter** with your computer</h5><br/><li>Print the letter, and then mail it to the addresses listed in the letterhead.|**<h5>4.  Download the complaint letter** to your computer</h5><br/><li>Download and email the letter from your email account or keep it for the future.\n"
   final_options += "**<h5>5.  Restart the complaint letter**</h5><br/><li>If you would like to redo this online tool, you have the option as well.|<h5>**6.  Exit the online tool**</h5><br/><li>a.	Everything you entered will be deleted if you didn’t submit the letter.\n"
@@ -545,56 +549,55 @@ subquestion: |
   
   ###How this works
   
-  |**<h3>STEP 1.**</h3>	<br/>**We ask some questions to organize the full story.** <br/><br/>This should take 15-35 minutes. **{more info<span style="color:white">1</span>}**|**<h3>STEP 2.**</h3>	<br/>**This app writes your complaint letter for you.** <br/><br/>The app compares your story to what the law says. **{more info<span style="color:white">2</span>}**|
+  |**<h3>STEP 1.**</h3>	<span style="font-weight:normal"><br/>**We ask some questions to organize the full story.** <br/><br/>This should take 15-35 minutes. <br/>**{More info<span style="color:white">1</span>}**<br/><br/></span>|**<h3>STEP 2.**</h3>	<span style="font-weight:normal"><br/>**This app writes your complaint letter for you.** <br/><br/>The app compares your story to what the law says. <br/>**{More info<span style="color:white">2</span>}**</span>|
   -----------------------|-------------------------------
-  **<h3>STEP 3.**</h3>	<strong><br/>**You can send your complaint letter with one click.** <br/><br/>You can also save the complaint letter if you don’t want to send it. **{more info<span style="color:#F2F2F2">3</span>}**</strong>|**<h3>STEP 4.**</h3>	<strong><br/>**Someone from the police will review your complaint letter.** <br/><br/>They might open up a full investigation depending on their review of your complaint. **{more info<span style="color:#F2F2F2">4</span>}**</strong>
+  **<h3>STEP 3.**</h3>	<br/>**You can send your complaint letter with one click.** <br/><br/>You can also save the complaint letter if you don’t want to send it. <br/>**{More info<span style="color:#F2F2F2">3</span>}**|**<h3>STEP 4.**</h3>	<br/>**Someone from the police will review your complaint letter.** <br/><br/>They might open up a full investigation depending on their review of your complaint. <br/>**{More info<span style="color:#F2F2F2">4</span>}**
   
   
   <br/>
   
-  ###There are 4 ways to complain about the Calgary Police: 
+  ####There are 4 ways to complain about the Calgary Police: 
   
-  **<h3>Online**</h3> <br/> **{more info<span style="color:white">5</span>}**|**<h3>Phone**</h3> <br/>**{more info<span style="color:white">6</span>}**
+  **<h3>Online**</h3> <span style="font-weight:normal"><br/> **{More info<span style="color:white">5</span>}**</span>|**<h3>Phone**</h3> <span style="font-weight:normal"><br/>**{More info<span style="color:white">6</span>}**</span>
   -----------------------|-------------------------------
-  **<h3>In person**</h3> <strong><br/>**{more info<span style="color:#F2F2F2">7</span>}**</strong>|**<h3>Mail**</h3> <br/><strong>**{more info<span style="color:#F2F2F2">8</span>}**</strong>
+  **<h3>In person**</h3> <br/>**{More info<span style="color:#F2F2F2">7</span>}**|**<h3>Mail**</h3> <br/>**{More info<span style="color:#F2F2F2">8</span>}**
   
   <br/>
   
 terms: 
-  more info<span style="color:white">1</span>: |
+  More info<span style="color:white">1</span>: |
     <li>Some questions will ask you to describe what happened, some will just be checking off boxes if true
     
-  more info<span style="color:white">2</span>: |
+  More info<span style="color:white">2</span>: |
     <li>This <strong>professionally-written letter will specifically mention any laws or regulations</strong> the police may have breached based on what you tell us.
   
-  more info<span style="color:#F2F2F2">3</span>: |
+  More info<span style="color:#F2F2F2">3</span>: |
     <li>Note that if you file a complaint anonymously (without your name and information) it probably won’t be investigated.
     <li>You can also print the complaint letter and take it to a lawyer for legal advice first
   
-  more info<span style="color:#F2F2F2">4</span>: |
+  More info<span style="color:#F2F2F2">4</span>: |
     <li>Once you complete this online complaint tool, and if an investigator says you cannot complain or that you do not have ground for police misconduct, your complaint will not be investigated. If this happens, you have the right to talk to a lawyer about the investigator’s decision.
   
-  more info<span style="color:white">5</span>: |
+  More info<span style="color:white">5</span>: |
     Using this complaint tool <br/> (calgarypolice.mycomplaints.ca)
   
-  more info<span style="color:white">6</span>: |
+  More info<span style="color:white">6</span>: |
     Call the Calgary Police Service <br/> (403-428-5904)
   
-  more info<span style="color:#F2F2F2">7</span>: |
+  More info<span style="color:#F2F2F2">7</span>: |
     Call the Calgary Police Service and book an appointment  <br/> <strong>(403-428-5904)</strong>
   
-  more info<span style="color:#F2F2F2">8</span>: |
+  More info<span style="color:#F2F2F2">8</span>: |
     Mail the Calgary Police Service <br/> (Professional Standards Section #811, Westwinds Campus East Building, 5111 47 St NE, Calgary, AB, T3J 3R2)
   
   
 fields:
   - note: |
-      ###This app passed security reviews, so all the information you tell us is as safe as possible.
-  
-    help: |
+      #####This app passed security reviews, so all the information you tell us is as safe as possible.
+      
       We use banking level encryption and no information will be collected other than what you choose to tell us. 
       
-      [INDENTBY 0.6in]Our online tool does not save any information you enter, and auto deleted the local data. For more information, **[click here](https://docassemble.org/docs/security.html)**.<br/><br/>
+      [INDENTBY 0.6in]Our online tool does not save any information you enter, and auto deletes the local data. For more information, **[click here](https://docassemble.org/docs/security.html)**.<br/><br/>
 
       [INDENTBY 0in]If you want to use this tool to complain about the Calgary Police, please select **Continue**.
 
@@ -609,13 +612,13 @@ question: |
 subquestion: |
  
   
-  **<h3>1.  This is legal information**, not legal advice.**</h3>** <br/>We can help you with understanding the law, but we can’t tell you what to do. If you want legal advice, you need to talk to a lawyer.<br/> For more info **{click here}** | **<h3>2.  You don’t get money** if your complaint is successful.</h3> <br/> **{more info<span style="color:white">2</span>}** <br/><br/><br/><br/>
+  <span style="font-weight:normal">**<h3>1.  This is legal information**, not legal advice.**</h3>** <br/>We can help you with understanding the law, but we can’t tell you what to do. If you want legal advice, you need to talk to a lawyer.<br/> For more info, **{Click here}**</span> | <span style="font-weight:normal">**<h3>2.  You don’t get money** if your complaint is successful.</h3> <br/> **{More info<span style="color:white">2</span>}** <br/><br/><br/><br/></span>
   -----------------------|-------------------------------
-  **<h3>3.  There is usually a one year time limit** for complaining about the police.</h3> <br/>**{more info<span style="color:#F2F2F2">3</span>}**| **<h3>4.  You can ask the police for your entire police file** if you want it for more information.</h3> <br/>**{more info<span style="color:#F2F2F2">4</span>}**  
-  **<h3>5.	If you were charged with a criminal offence and you want to complain about that,** you might want to talk to a lawyer first.</h3> <br/> What you complain about here could affect your legal defence against your criminal charges. <br/>**{more info<span style="color:white">5</span>}**|**<h3>6.	You cannot lie in your complaint, **please try your best to make sure everything you say is as accurate as possible</h3>
+  **<h3>3.  There is usually a one year time limit** for complaining about the police.</h3> <br/>**{More info<span style="color:#F2F2F2">3</span>}**| **<h3>4.  You can ask the police for your entire police file** if you want it for more information.</h3> <br/>**{More info<span style="color:#F2F2F2">4</span>}**  
+  **<h3>5.	If you were charged with a criminal offence and you want to complain about that,** you might want to talk to a lawyer first.</h3> <br/> What you complain about here could affect your legal defence against your criminal charges. <br/>**{More info<span style="color:white">5</span>}**|**<h3>6.	You cannot lie in your complaint, **please try your best to make sure everything you say is as accurate as possible</h3>
   
 terms:
-  click here: |
+  Click here: |
     **This online tool provides legal information, not legal advice.** Legal information is not the same as legal advice. Legal information on this service is **limited to information about the complaint process, generally, and what acts, generally, may or may not constitute misconduct.**
     
     **Legal advice can only be provided by a lawyer**, and is specific to your circumstances. A lawyer can provide legal advice by reviewing the specific circumstances of your case, and applying it to the law, for the purposes of giving opinions and making recommendations about your specific case.
@@ -634,25 +637,24 @@ terms:
     
     **None of the information submitted by you through this service is reviewed by lawyers.** The information you provide is only reviewed after you submit your final complaint, and the review is not done by lawyers and is done solely for the purpose of investigating your complaints or determining if your complaints should be investigated.
       
-  more info<span style="color:white">2</span>: |
+  More info<span style="color:white">2</span>: |
     <li>The primary goal of a police complaint is accountability. <strong>There is no financial compensation available through the complaint process.</strong>
   
-  more info<span style="color:#F2F2F2">3</span>: |
+  More info<span style="color:#F2F2F2">3</span>: |
     <li>A complaint must be made within <strong>1 year of the date of the police misconduct</strong>, or within <strong>1 year you became aware of the police misconduct.</strong> <br/><br/> If this date has passed, you will <strong>no longer have a right to complain.</strong> This website does not, and cannot, give you advice on the timeline to make a complaint in your specific case.
   
-  more info<span style="color:#F2F2F2">4</span>: |
+  More info<span style="color:#F2F2F2">4</span>: |
     <li><strong>Everyone has the right to request their personal information from the police,</strong> thanks to the <i>Freedom of Information and Protection of Privacy Act.</i> <br/><br/>Sometimes requesting police records <strong>can uncover more information</strong> about an incident. <strong>To learn more about requesting your police records, <a href="https://www.calgary.ca/cps/public-services/freedom-of-information-and-protection-of-privacy-act-request.html">click here</a>
 
   
-  more info<span style="color:white">5</span>: |
+  More info<span style="color:white">5</span>: |
     <li>If the incident you want to complain about <strong>resulted in you being charged with criminal offences,</strong> and those criminal charges have not been resolved, you <strong>might want to speak to a lawyer before making a complaint</strong> because the <strong>information you give police during the complaint process can be used against you in court and may affect your defence of the criminal charges.</strong>
   
   
     
 fields:
   - note: |
-      ###Please select **Continue** if you have read everything and want to continue.
-      <br/>
+      ####Please select **Continue** if you have read everything and want to continue.
       
       *  If you continue, you have to make sure all the information is true and accurate, and that you are aware of all legal issues and/or consequences that could arise because of using this service. 
       *  If you continue, you also agree this complaint tool is not liable for any consequence, legal or otherwise, that could potentially happen from you using this complaint tool.
@@ -733,7 +735,7 @@ subquestion: |
   
   <br/>
   
-  ###The next section will ask you to describe what happened in your own words.  
+  ####The next section will ask you to describe what happened in your own words.  
   
   [INDENTBY 0.6in]**Note**: Until an investigator confirms your eligibility, there is no guarantee that you are qualified to submit this complaint. 
   
@@ -761,7 +763,6 @@ fields:
     input type: radio
     choices:
       - I personally called the police.
-      - Someone else called the police.
       - The police found out what was happening some other way.
   
   - note: |
@@ -787,6 +788,10 @@ fields:
       
   - note: |
       <br/><h4>This is what happened when the police arrived</h4>
+  
+    show if:
+      variable: showed_up
+      is: Came in person to the scene.
   - Answer here: after_showed_up
     input type: area
     show if:
@@ -814,8 +819,7 @@ fields:
       
   
   - note: |
-      <br/><h4>After my first contact with the police:</h4>
-      
+      <br/><h4>After my first contact with the police:</h4>      
   
     show if:
       variable: had_contact
@@ -855,7 +859,7 @@ question: |
 
 fields:
   - note: |
-      <br/><h4>After the last contact with the police, or after police left the scene:</h4>
+      <br/><h4>${ after_question }</h4> 
       
   - Answer here: anything_after_left
     input type: radio
@@ -969,7 +973,13 @@ review:
   
   - Edit: anything_after_left
     button: |
-      After the last contact with the police, or after police left the scene: **${ anything_after_left }**
+      After last contact with the police: **${ anything_after_left }**
+    show if: not_showed_upBool
+      
+  - Edit: anything_after_left
+    button: |
+      After the police left the scene: **${ anything_after_left }**
+    show if: after_showed_upBool
     
   
   - Edit: after_left_scene
@@ -1488,14 +1498,6 @@ fields:
   - Postal code: user_postalCode
   - Country: user_country
 
-  - note: |
-      <br/><h5>If you continue with this online tool and submit the complaint you generated with this online tool, it is your responsibility to make sure:
-      
-      *  All the information in the complaint is as true and accurate as possible
-      *  You aware of all legal issues and consequences that could arise by using this online tool. 
-      
-      **By using this online tool, you agree this online tool is not liable for any consequence, legal or otherwise, that may arise from your use of the service.**</h5>
-
 progress: 95
 continue button field: user_details
 section: Identity Confirmation
@@ -1504,12 +1506,22 @@ section: Identity Confirmation
 question: |
   Sign your name
 subquestion: |
+
+  <br/><span style="font-weight:normal"><h5>If you continue with this online tool and submit the complaint you generated with this online tool, it is your responsibility to make sure:
+      
+  *  All the information in the complaint is as true and accurate as possible
+  *  You aware of all legal issues and consequences that could arise by using this online tool. 
+      
+  **By using this online tool, you agree this online tool is not liable for any consequence, legal or otherwise, that may arise from your use of the service.**</h5>
+  
   By signing your name, you agree to
-  our terms and conditions.
+  our terms and conditions.</span>
+
+      
 signature: user_signature
 under: |
   ${ name } 
-
+  
 progress: 95
 continue button field: user_sign
 section: Identity Confirmation
