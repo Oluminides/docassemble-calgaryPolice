@@ -217,11 +217,11 @@ code: |
     
     
   if unlawful_search['searched_without_warrant']:  
-    answers.append("The police searched me or someone else without a warrant or a legal reason. s. 5(2)(i)")
+    answers.append("The police searched me or someone else without a warrant or a legal reason.")
     plainNum = plainNum + 1 
 
   if unlawful_search['arrested_without_warrant']:
-    answers.append("The police arrested me or someone else without a warrant or a lawful reason. s. 5(2)(i)")
+    answers.append("The police arrested me or someone else without a warrant or a lawful reason.")
     plainNum = plainNum + 1 
 
   unethical_behaviour_flag = False
@@ -232,22 +232,22 @@ code: |
     unethical_behaviour_flag = True
   
   if unethical_behaviour['profane_language']:
-    answers.append("The police used abusive or insulting language. s. 5(2)(e)")
+    answers.append("The police used abusive or insulting language.")
     plainNum = plainNum + 1 
 
   if unethical_behaviour['strip_searched']:
-    answers.append("The police strip searched me or someone else without a legal reason. s. 5(2)(i)")
+    answers.append("The police strip searched me or someone else without a legal reason.")
     plainNum = plainNum + 1 
 
   if unethical_behaviour['discrimination']:
-    answers.append("The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. s. 5(2)(e)")
+    answers.append("The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.")
     plainNum = plainNum + 1 
 
 
   underTheInfluence = False
 
   if under_the_influence['intoxicated']:
-    answers.append("The police consumed alcohol, marijuana, or an illegal drug or acted like they were not sober while on duty. s. 5(2)(b)")
+    answers.append("The police consumed alcohol, marijuana, or an illegal drug or acted like they were not sober while on duty.")
     underTheInfluence = True
     unqualifiedPlainLang = False
     plainNum = plainNum + 1 
@@ -263,11 +263,11 @@ code: |
     
 
   if improper_representation['unauthorised_communication']:
-    answers.append("The police told someone something that was private or confidential without authorization. s. 5(2)(a)")
+    answers.append("The police told someone something that was private or confidential without authorization.")
     plainNum = plainNum + 1 
 
   if improper_representation['misleading_statement']:
-    answers.append("The police made or signed a false or misleading statement. s. 5(2)(d)")
+    answers.append("The police made or signed a false or misleading statement.")
     plainNum = plainNum + 1 
 
   interference = False
@@ -281,11 +281,11 @@ code: |
     
 
   if helping_offenders['unrelated_warrant']:
-    answers.append("The police told someone there was or was about to be a warrant or court summons for their arrest, before they were supposed to tell them. s. 5(2)(a)")
+    answers.append("The police told someone there was or was about to be a warrant or court summons for their arrest, before they were supposed to tell them.")
     plainNum = plainNum + 1 
 
   if helping_offenders['unreported_offender']:
-    answers.append("The police knew the location of someone that was supposed to be arrested, but didn’t do anything to arrest that person. s. 5(2)(h)(iv).")
+    answers.append("The police knew the location of someone that was supposed to be arrested, but didn’t do anything to arrest that person.")
     plainNum = plainNum + 1 
 
   job_failure_flag = False
@@ -297,19 +297,19 @@ code: |
     
 
   if job_failure['failure_to_report_crime']:
-    answers.append("The police failed to report a crime or evidence about a crime. s. 5(2)(h)")
+    answers.append("The police failed to report a crime or evidence about a crime.")
     plainNum = plainNum + 1 
 
   if job_failure['disobeyed_superior']:
-    answers.append("The police disobeyed a command, rule, or policy of the police. s. 5(2)(g)")
+    answers.append("The police disobeyed a command, rule, or policy of the police.")
     plainNum = plainNum + 1 
 
   if job_failure['colluded_with_another_officer']:
-    answers.append("The police helped or did nothing to stop another police officer commit misconduct. s. 5(2)(e)")
+    answers.append("The police helped or did nothing to stop another police officer commit misconduct.")
     plainNum = plainNum + 1 
 
   if job_failure['failure_of_negligence']:
-    answers.append("The police didn't to do something else they should have done as part of their job as a police officer. s. 5(2)(h)")
+    answers.append("The police didn't to do something else they should have done as part of their job as a police officer.")
     plainNum = plainNum + 1 
 
   suppressing_flag = False
@@ -320,11 +320,11 @@ code: |
     unqualifiedPlainLang = False
 
   if suppressing['destroyed_official_document']:
-    answers.append("The police destroyed, damaged, hid or erased an official document or any other records. s. 5(2)(d)")
+    answers.append("The police destroyed, damaged, hid or erased an official document or any other records.")
     plainNum = plainNum + 1 
 
   if suppressing['suppressed_complaint_against_officer']:
-    answers.append("The police caused a complaint against another police officer to be ignored or prevented from being investigated. s. 5(2)(e)")
+    answers.append("The police caused a complaint against another police officer to be ignored or prevented from being investigated.")
     plainNum = plainNum + 1 
 
   bribesBenefits = False
@@ -338,11 +338,11 @@ code: |
     
 
   if request_receive['demanded_payment']:
-    answers.append("The police demanded or received money, favours, or any other type of payment, gift, or benefit, without authorization. s. 5(2)(c)")
+    answers.append("The police demanded or received money, favours, or any other type of payment, gift, or benefit, without authorization.")
     plainNum = plainNum + 1 
 
   if request_receive['demanded_illicit_drug']:
-    answers.append("The police tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty s. 5(2)(b)(iv)")
+    answers.append("The police tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty.")
     plainNum = plainNum + 1 
 
   firearms_flag = False
@@ -352,31 +352,31 @@ code: |
     unqualifiedPlainLang = False
 
   if firearms['had_gun']:
-    answers.append("The police had a gun they were not supposed to have. s. 5(2)(f)")
+    answers.append("The police had a gun they were not supposed to have.")
     plainNum = plainNum + 1 
 
   if firearms['fired_gun']:
-    answers.append("The police shot a gun they were not supposed to shoot. s. 5(2)(f)")
+    answers.append("The police shot a gun they were not supposed to shoot.")
     plainNum = plainNum + 1 
     
   if firearms['pointed_gun']:
-    answers.append("The police pointed a gun at you or someone else. s. 5(2)(f)")
+    answers.append("The police pointed a gun at you or someone else.")
     plainNum = plainNum + 1 
 
   if firearms['did_not_report_firing']:
-    answers.append("The police did not report that they fired a gun. s. 5(2)(f)")
+    answers.append("The police did not report that they fired a gun.")
     plainNum = plainNum + 1 
 
   if firearms['threatened_to_use_gun']:
-    answers.append("The police threatened to use a gun against you or someone else. s. 5(2)(f)")
+    answers.append("The police threatened to use a gun against you or someone else.")
     plainNum = plainNum + 1 
 
   if firearms['acted_erratic']:
-    answers.append("The police acted erratic or reckless with a gun, or did anything else involving a gun that was improper. s. 5(2)(f)")
+    answers.append("The police acted erratic or reckless with a gun, or did anything else involving a gun that was improper.")
     plainNum = plainNum + 1 
     
   if firearms['involving_a_gun']:
-    answers.append("The police did anything else involving a gun that they should not have done . s. 5(2)(f)")
+    answers.append("The police did anything else involving a gun that they should not have done.")
     plainNum = plainNum + 1 
 
 
@@ -392,14 +392,14 @@ code: |
   
   if force['too_much_force']: 
     force_flag = True
-    answers.append("The police used too much force. s. 5(2)(i)")
+    answers.append("The police used too much force.")
     plainNum = plainNum + 1 
   
   sexual_assault_flag = False
   
   if force['sexually_assaulted']: 
     sexual_assault_flag = True  
-    answers.append("The police sexually assaulted or sexually harassed me or someone else. s. 5(2)(e) + s. 46")
+    answers.append("The police sexually assaulted or sexually harassed me or someone else.")
     plainNum = plainNum + 1 
 
   injury_or_death_flag = False
@@ -409,15 +409,15 @@ code: |
     
 
   if force['seriously_injured']:
-    answers.append("The police seriously injured me or someone else. s. 5(2)(i) + s. 46")
+    answers.append("The police seriously injured me or someone else.")
     plainNum = plainNum + 1 
 
   if force['hospitalized']:
-    answers.append("The police hospitalized me or someone else. s. 5(2)(i) + s. 46")
+    answers.append("The police hospitalized me or someone else.")
     plainNum = plainNum + 1 
 
   if force['killed']:
-    answers.append("The police killed someone. s. 5(2)(i) + s. 46")
+    answers.append("The police killed someone.")
     plainNum = plainNum + 1 
 
   finalCatch = False
@@ -427,15 +427,15 @@ code: |
     unqualifiedPlainLang = False
 
   if final_catchall['unauthorised_by_law']:
-    answers.append("The police did something else I have not mentioned that was not authorized by law. s. 5(2)(i)")
+    answers.append("The police did something else I have not mentioned that was not authorized by law.")
     plainNum = plainNum + 1 
 
   if final_catchall['threatens_reputation']:
-    answers.append("The police did something else I have not mentioned that threatens or harms the reputation of the police. s. 5(2)(e)")
+    answers.append("The police did something else I have not mentioned that threatens or harms the reputation of the police.")
     plainNum = plainNum + 1 
     
   if final_catchall['illegal']:
-    answers.append("The police did something else I have not mentioned that is against the law. s. 5(2)(e)")
+    answers.append("The police did something else I have not mentioned that is against the law.")
     plainNum = plainNum + 1 
   
   # 5(2)(a)
