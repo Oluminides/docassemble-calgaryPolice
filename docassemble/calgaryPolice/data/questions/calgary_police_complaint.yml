@@ -3,9 +3,10 @@ include:
   - docassemble.AssemblyLine:assembly_line_unstyled.yml
 ---
 features:
+  hide standard menu: True
+  small screen navigation: False
   navigation: True
   progress bar: True
-  small screen navigation: dropdown
   navigation back button: False
   question back button: True
   javascript:
@@ -615,6 +616,12 @@ fields:
 
       [INDENTBY 0in]If you want to use this tool to complain about the Calgary Police, please select **Continue**.
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
 
 progress: 6
 continue button field: user_saw_intro_screen
@@ -673,6 +680,13 @@ fields:
       *  If you continue, you have to make sure all the information is true and accurate, and that you are aware of all legal issues and/or consequences that could arise because of using this service. 
       *  If you continue, you also agree this complaint tool is not liable for any consequence, legal or otherwise, that could potentially happen from you using this complaint tool.
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 12
 continue button field: user_saw_important_info
 section: Introduction
@@ -687,7 +701,8 @@ fields:
     choices:
       - Police in Calgary
       - Police outside Calgary
-
+  - note: |
+      <br/>
   - I am complaining about something that happened to: user.complaint_victim
     input type: radio
     choices:
@@ -697,6 +712,13 @@ fields:
       - Someone close to me, like a spouse, child, or romantic partner
       - Someone else
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 20
 continue button field: user_screening1
 section: Individuals
@@ -728,6 +750,13 @@ fields:
   - note: |
       *  **Note:** Section 43(11) of the *Police Act* limits filing complaints to either within one year of the date of the incident, or within one year you first knew or ought to have known that the misconduct occurred.
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 25   
 continue button field: user_screening2
 section: Time
@@ -755,6 +784,13 @@ subquestion: |
   
   [INDENTBY 0.6in]If an investigator says you can’t complain, your complaint will not be investigated. If this happens, you can talk to a lawyer for  advice about the investigator’s opinion.
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 35
 continue button field: user_signpost1
 ---
@@ -792,8 +828,6 @@ fields:
       variable: how_police_involved
       is: The police found out what was happening some other way.
   
-  - note: |
-      <br/>
   - <h4>The police:</h4>: showed_up
     input type: radio
     choices:
@@ -863,6 +897,13 @@ fields:
       variable: further_contact
       is: I had more contact with them.
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 45
 continue button field: user_targetted1
 section: Targetted Details
@@ -931,6 +972,13 @@ fields:
   - Please describe the most important point of your complaint in a few sentences if possible.: complaint_summary
     input type: area
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 60
 continue button field: user_targetted2
 section: Targetted Details
@@ -1021,6 +1069,13 @@ review:
   - note: |
       <br/><h4>Now that you told us what happened, the next section will ask you specific questions to figure out if there was any police misconduct.</h4>
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 65
 continue button field: user_signpost2
 section: Targetted Details
@@ -1093,6 +1148,13 @@ fields:
         help: |
           <h5>A false or misleading statement can take any form, including verbal, written, or digital content made by the officer. This includes false complaints against another police officer. <br/>s. 5(2)(d).</h5>
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 70
 continue button field: user_plainlang1
 section: Potential Breaches
@@ -1144,6 +1206,13 @@ fields:
         help: |
           <h5>For example, did you try to complain about a police officer’s conduct and they tried to force you to stop ? <br/>s. 5(2)(e)</h5>
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 75
 continue button field: user_plainlang2
 section: Potential Breaches
@@ -1168,7 +1237,7 @@ fields:
       - Tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty.: demanded_illicit_drug
 
 
-  - <h5>A police officer</h5>: firearms
+  - <h5>The police</h5>: firearms
     required: False
     none of the above: False
     datatype: checkboxes
@@ -1186,6 +1255,14 @@ fields:
       - Acted unstable or reckless with a gun.: acted_erratic
       
       - Did anything else involving a gun that they should not have done.: involving_a_gun
+      
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 80
 continue button field: user_plainlang3
 section: Potential Breaches
@@ -1237,6 +1314,13 @@ fields:
       
       - Threatens or harms the positive reputation of the police.: threatens_reputation
       
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 85
 continue button field: user_plainlang4
 section: Potential Breaches
@@ -1432,6 +1516,13 @@ review:
   - note: |
       <h5>The next page will tell you if you do or do not have grounds for a police misconduct complaint.</h5>
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 90
 continue button field: user_signpost3
 section: Potential Breaches
@@ -1476,6 +1567,13 @@ fields:
   - note: |
       [INDENTBY 0.6in]<h5>**Note:** Whether your complaint meets the legal preconditions will be decided by an investigator. CCF does not guarantee that your complaint will meet the legal preconditions for investigation. If your complaint does not meet the legal preconditions, you can choose to seek legal advice about next steps.</h5>
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 95
 continue button field: user_qualified
 section: Identity Confirmation
@@ -1512,6 +1610,13 @@ fields:
   - Postal code: user_postalCode
   - Country: user_country
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 progress: 95
 continue button field: user_details
 section: Identity Confirmation
@@ -1535,6 +1640,13 @@ subquestion: |
 signature: user_signature
 under: |
   ${ name } 
+  
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
   
 progress: 95
 continue button field: user_sign
@@ -1563,6 +1675,14 @@ under: |
   <br/>
   
   ${ kickout_resources }
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 
 field: user_saw_the_letter
 buttons:
@@ -1609,6 +1729,13 @@ subquestion: |
   
   ${ finalPageString }
  
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 buttons:
   - Exit: exit
   - Restart: restart
@@ -1628,6 +1755,13 @@ subquestion: |
 
   ${ kickout_resources }
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 buttons:
   - Exit: exit
   - Restart: restart
@@ -1646,6 +1780,13 @@ subquestion: |
   
   ${ kickout_resources }
 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+  </style>
+  
 buttons:
   - Exit: exit
   - Restart: restart
