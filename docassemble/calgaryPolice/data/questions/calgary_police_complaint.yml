@@ -56,6 +56,7 @@ code: |
   from datetime import datetime
   # Code-flow block
  
+  user_prototype
   user_saw_intro_screen
   user_saw_important_info
 
@@ -552,6 +553,15 @@ code: |
     command('exit')
   if user_saw_the_letter == 'restart':
     command('restart')
+---
+# ==================== Intro =================== #
+question: |
+  This is a prototype
+subquestion: |
+  This app is still undergoing user testing and final adjustments & demonstrations
+progress: 0
+continue button field: user_prototype
+section: Introduction
 ---
 # ==================== Intro =================== #
 question: |
