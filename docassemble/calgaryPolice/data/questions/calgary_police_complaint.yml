@@ -43,7 +43,6 @@ default screen parts:
     <div class="title-container" style="display: flex; flex-direction: row;">
       <div class="al-logo">
         <img src="${ ccf_logo.url_for() }"/>
-        <img src="${ cps_logo.url_for() }"/>
       </div>
       
       <div class="al-title" style="padding-left: 15px; padding-top: 5px;">
@@ -622,7 +621,7 @@ css: |
       display: none;
     }
     
-    .nav-link {
+    .navbar-collapse {
       display: none;
     }
   </style>
