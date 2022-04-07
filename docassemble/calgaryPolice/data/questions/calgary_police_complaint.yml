@@ -554,7 +554,7 @@ code: |
 question: |
   This is a prototype
 subquestion: |
-  This app is still undergoing user testing and final adjustments & demonstrations
+  This app is still undergoing user testing, final adjustments & demonstrations
   
 css: |
   <style>
