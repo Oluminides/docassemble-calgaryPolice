@@ -56,7 +56,7 @@ code: |
   from datetime import datetime
   # Code-flow block
  
-  #user_prototype
+  user_prototype
   user_saw_intro_screen
   user_saw_important_info
 
@@ -84,9 +84,9 @@ code: |
     unqualified = True
     
   if user.complaint_victim != me and user.complaint_victim != witness and user.complaint_victim != representative and user.complaint_victim != related:
-    if unqualified:
-		  kickout1_message += "<br/>"
-	  kickout1_message += "<li style=\"color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">Complaints must be directed sufficiently close to or witnessed by the person filing the complaint, as per section 42.1(2) of the <i>Police Act</i>.</li>"
+    #if unqualified:
+		 # kickout1_message += "<hr/>"
+	  kickout1_message += "<li style=\"padding-top: 10px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">Complaints must be directed sufficiently close to or witnessed by the person filing the complaint, as per section 42.1(2) of the <i>Police Act</i>.</li>"
 	  unqualified = True
     notClose = True
 
@@ -96,9 +96,9 @@ code: |
     user_is_complainant = "I was"
 
   if user.incident_time == "More than a year ago":
-    if unqualified:
-		  kickout1_message += "<br/>"
-    kickout1_message += "<li style=\"color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">Complaints must "
+    #if unqualified:
+		 # kickout1_message += "<hr/>"
+    kickout1_message += "<li style=\"padding-top: 10px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">Complaints must "
 	  if notClose:
       kickout1_message += "also " 
     kickout1_message += "be filed within a year of the incident, or within a year of becoming aware of the incident, as per section 43(11) of the <i>Police Act</i>.</li>"
@@ -524,10 +524,10 @@ code: |
     finalPageString += "<br/>__<h5>Section 5(1)(i)</h5>__<br/>Section 5(1)(i) governs misconduct where an officer exceeds their authority, uses force when it is not necessary, or uses force that is excessive. Breaches of s. 5(1)(i) may arise in a variety of circumstances, however, common examples are as follows, (1) where an officer uses force when it is not necessary to do so, or if force is necessary, the officer uses too much force (***Hodelin v Lehaney (No. 3662)***, 2008 CanLII 91554 (AB LERB), ***Ferguson v Cst. R. Abbot (No. 1986)***, 2010 CanLII 102171 (AB LERB), ***Pringle v Constable T. Eltom (2091)***, 2010 CanLII 102175 (AB LERB), ***R.E. v Cst. C. Tagg (No. 2211)***, 2012 CanLII 104690 (AB LERB), ***Quaidoo v Edmonton (Police Service)***, 2014 ABLERB 051), (2) where an officer conducts a search of a person (including strip searches), vehicle, or residence when it is not lawful to do so (***Williamson v Douglas***, 2008 CanLII 91552 (AB LERB), ***R.E. v Cst. C. Tagg (No. 2211)***, 2012 CanLII 104690 (AB LERB), ***Vuong v Edmonton (Police Service)***, 2019 ABLERB 13 (CanLII), ***Cardinal v Edmonton (Police Service)***, 2019 ABLERB 7 (CanLII)), (3) where an officer arrests or charges someone for an offence, or threatens to arrest or charge someone with an offence, when there are no grounds to do so (***Jackman v Edmonton (Police Service)***, 2015 ABLERB 15 (CanLII), ***AZ v Lethbridge Regional (Police Service)***, 2015 ABLERB 26 (CanLII) ***Shah v Edmonton (Police Service)***, 2019 ABLERB 017), and (4) commanding an individual do something, or not do something, when there officer has no lawful authority to do so (***Cardinal v Edmonton (Police Service)***, 2019 ABLERB 7 (CanLii), ***Shah v Edmonton (Police Service)***, 2019 ABLERB 017).<br/>"
     
     
-  final_options = "<span style=\"font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>1.  Send</strong> the complaint letter right now through this app.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">1</span></h5>}**</span>|<span style=\"font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>2.  Email</strong> the complaint letter to yourself or someone else.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">2</span></h5>}**</span>\n"
+  final_options = "<span style=\"font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>1.  Submit</strong> the complaint letter right now through this app.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">1</span></h5>}**</span>|<span style=\"font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>2.  Send</strong> the complaint letter as an <strong>email</strong> to yourself or someone else.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">2</span></h5>}**</span>\n"
   final_options += "------------------|------------------\n"
   final_options += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>3.  View</strong> the complaint letter with your computer.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:#F2F2F2\">3</span></h5>}**</span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>4.  Download</strong> the complaint letter to your computer.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:#F2F2F2\">4</span></h5>}**</span>\n"
-  final_options += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>5.  Restart</strong> the complaint letter.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">5</span></h5>}**</span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>6.  Exit</strong> the online tool.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">5</span></h5>}**</span>\n"
+  final_options += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>5.  Restart</strong> the complaint letter.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">5</span></h5>}**</span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>6.  Exit</strong> the online tool.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">6</span></h5>}**</span>\n"
     
   user_signpost3
   if unqualifiedPlainLang:
@@ -547,12 +547,8 @@ code: |
     if len(user_unitnum) > 0:
       user_unitnum = "Unit " + user_unitnum + ", "
     
-  if user_saw_the_letter == 'proceed':
-    last_page
-  if user_saw_the_letter == 'exit':
-    command('exit')
-  if user_saw_the_letter == 'restart':
-    command('restart')
+  user_saw_the_letter
+  
 ---
 # ==================== Intro =================== #
 question: |
@@ -698,14 +694,20 @@ question: |
   First, we need to figure out if you can file a complaint with this tool.
 
 fields: 
-  - <h5 style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">I am complaining about</h5>: user.complaint_about_cps
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">I am complaining about:</h5>: user.complaint_about_cps
     input type: radio
     choices:
       - Police in Calgary
       - Police outside Calgary
+  
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">Location of incident in Calgary:</h5>: user.incident_location
+    show if:
+      variable: user.complaint_about_cps
+      is: Police in Calgary
+
   - note: |
-      <br/>
-  - <h5 style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">I am complaining about something that happened to</h5>: user.complaint_victim
+      <hr/>
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">I am complaining about something that happened to:</h5>: user.complaint_victim
     input type: radio
     choices:
       - Me
@@ -750,7 +752,11 @@ fields:
   - <h5 style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">If you do not know the exact date, fill in the best you can to the best of your knowledge.</h5>: date_of_incident
   
   - note: |
-      <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;"><strong>Note:</strong> Section 43(11) of the <i>Police Act</i> limits filing complaints to either within one year of the date of the incident, or within one year you first knew or ought to have known that the misconduct occurred.</li>
+      <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;"><strong>Note:</strong> Section 43(11) of the <i>Police Act</i> limits filing complaints to either within one year of the date of the incident, or within one year you first knew or ought to have known that the misconduct occurred.</li>
+  
+    show if:
+      variable: user.incident_time
+      is: More than a year ago
 
 css: |
   <style>
@@ -808,15 +814,16 @@ subquestion: |
   <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">If you had contact with police.</li>
   
   **<span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Please be as detailed as possible.**</span> 
+  <hr/>
 
 fields:
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened before the police got involved:</h4>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened before the police got involved:</h4>
   - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Answer here</span>: before_police_involved
     input type: area
   
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is how the police got involved:</h4><br/>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is how the police got involved:</h4>
   - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Answer here<span>: how_police_involved
     input type: radio
     choices:
@@ -824,7 +831,7 @@ fields:
       - The police found out what was happening some other way.
   
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is how the police found out what was happening:</h4>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is how the police found out what was happening:</h4>
   
     show if:
       variable: how_police_involved
@@ -843,7 +850,7 @@ fields:
       - Did not come in person.
       
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened when the police arrived:</h4>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened when the police arrived:</h4>
   
     show if:
       variable: showed_up
@@ -854,14 +861,14 @@ fields:
       variable: showed_up
       is: Came in person to the scene.
      
-  - <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">I personally:</h4>: had_contact
+  - <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">I personally:</h4>: had_contact
     input type: radio
     choices:
       - Had contact with the police.
       - Did not have any contact with the police.
   
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened when I first personally had contact with the police:</h4>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened when I first personally had contact with the police:</h4>
   
     show if: 
       variable: had_contact
@@ -875,7 +882,7 @@ fields:
       
   
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">After my first contact with the police:</h4>      
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">After my first contact with the police:</h4>      
   
     show if:
       variable: had_contact
@@ -893,7 +900,7 @@ fields:
     
       
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened when I had more contact after with the police:</h4>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened when I had more contact after with the police:</h4>
   
     show if: 
       variable: further_contact
@@ -929,10 +936,11 @@ subquestion: |
   <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">A summary of the complaint.</li>
   
   **<span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Please be as detailed as possible.**</span> 
+  <hr/>
 
 fields:
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">${ after_question }:</h4> 
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">${ after_question }:</h4> 
       
   - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Answer here</span>: anything_after_left
     input type: radio
@@ -941,7 +949,7 @@ fields:
       - Nothing else happened.
       
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what else happened that might help with investigating my complaint:</h4>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what else happened that might help with investigating my complaint:</h4>
   
     show if: 
       variable: anything_after_left
@@ -954,7 +962,7 @@ fields:
       is: Something else happened that might help with investigating my complaint.
        
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Witnesses who are not police:</h4>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Witnesses who are not police:</h4>
       
   - Answer here: saw_witnesses
     input type: radio
@@ -964,7 +972,7 @@ fields:
 
 
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These are witnesses who are willing to talk to the police:</h4>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These are witnesses who are willing to talk to the police:</h4>
   
     show if: 
       variable: saw_witnesses
@@ -978,14 +986,14 @@ fields:
       is: Saw or heard what happened.
        
   - note: |
-       <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These are names and badge numbers of officers that were involved or that I was in contact with:</h4>
+       <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These are names and badge numbers of officers that were involved or that I was in contact with:</h4>
        
   - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">If you have no names or badge numbers, leave blank</span>: officers_ids
     required: False
     input type: area
        
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">In a few short sentences, I am complaining because: </h4>
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">In a few short sentences, I am complaining because: </h4>
        
   - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Please describe the most important point of your complaint in a few sentences if possible:</span>: complaint_summary
     input type: area
@@ -1085,7 +1093,7 @@ review:
       In a few short sentences, I am complaining because: **${ complaint_summary }**
 
   - note: |
-      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Now that you told us what happened, the next section will ask you specific questions to figure out if there was any police misconduct.</h4>
+      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size: 20px;">Now that you told us what happened, the next section will ask you specific questions to figure out if there was any police misconduct.</h4>
 
 css: |
   <style>
@@ -1100,10 +1108,9 @@ section: Targetted Details
 ---
 # ==================== Plain Lang Questions 1 =================== #
 question: |  
-  These questions ask about unlawful searches, detentions, and communications, and alcohol/drugs.
-
+  Select any that apply.
 subquestion: |
-  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Select any that apply. You can pick more than one if you need. </span>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These questions ask about unlawful searches, detentions, and communications, and alcohol/drugs. You can pick more than one if you need.</span>
   
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Page 1/4</span>
 
@@ -1141,7 +1148,7 @@ fields:
       
       - Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.: discrimination
         help: |
-          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">If you have been discriminated against by the police for any of the above reasons, or any other reasons, you may also be able to file a human rights complaint with the Alberta Human Rights Commission. For more info, visit: <br/>albertahumanrights.ab.ca/complaints/forms/Pages/complaint_form_and_guide.aspx</h5>
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">If you have been discriminated against by the police for any of the above reasons, or any other reasons, you may also be able to file a human rights complaint with the Alberta Human Rights Commission. <br/>For more info, <a href="https://albertahumanrights.ab.ca/complaints/forms/Pages/complaint_form_and_guide.aspx" target="_blank">click here</a></h5>
 
 
   - note: |
@@ -1187,10 +1194,10 @@ section: Potential Breaches
 ---
 # ==================== Plain Lang Questions 2 =================== #
 question: |  
-  These questions ask about failing to do the job, telling a potential offender something, and suppressing information.
+  Select any that apply.
 
 subquestion: |
-  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Select any that apply. You can pick more than one if you need. </span>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These questions ask about failing to do the job, telling a potential offender something, and suppressing information. You can pick more than one if you need. </span>
   
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Page 2/4</span>
 
@@ -1251,10 +1258,9 @@ section: Potential Breaches
 ---
 # ==================== Plain Lang Questions 3 =================== #
 question: |  
-  These questions ask about bribes, favours, and payments, as well as gun-related issues.
-  
+  Select any that apply. 
 subquestion: |
-  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Select any that apply. You can pick more than one if you need. </span>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These questions ask about bribes, favours, and payments, as well as gun-related issues. You can pick more than one if you need. </span>
   
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Page 3/4</span>
 
@@ -1304,10 +1310,10 @@ section: Potential Breaches
 ---
 # ==================== Plain Lang Questions 4 =================== #
 question: |  
-  These final questions ask about excessive force, sexual assault, injury, death, and anything else.
+  Select any that apply.
 
 subquestion: |
-  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Select any that apply. You can pick more than one if you need. </span>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These final questions ask about excessive force, sexual assault, injury, death, and anything else. You can pick more than one if you need. </span>
   
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Page 4/4</span>
 
@@ -1678,6 +1684,7 @@ continue button field: user_sign
 section: Identity Confirmation
 ---
 # ===================== Final Review =============================== #
+#event: user_saw_the_letter
 question: |
   We wrote your complaint letter for you. 
 
@@ -1686,9 +1693,7 @@ subquestion: |
   
   ${ final_options}
    
-  ${ download_bundle.download_list_html() }
-   
-  ${ download_bundle.send_button_html() }
+  
   
 terms: 
   <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">1</span></h5>: |
@@ -1712,29 +1717,74 @@ terms:
 
   
 under: |
+  ${ download_bundle.download_list_html() }
+  ${ download_bundle.send_button_html(show_editable_checkbox = False) }
   <br/>
   
   ${ complaint_letter.as_pdf() }
   
-  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#ffffff;">Click here for a list of free and low-cost legal resources.</a></h5></div>
+  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#e8e8e8; text-decoration: underline;">Click here for a list of free and low-cost legal resources.</a></h5></div>
 
+script: |
+  <script>
+    var fieldset = document.getElementsByTagName("fieldset")[0];
+    fieldset.insertBefore(document.getElementsByClassName("btn-darevisit")[1], fieldset.children[4]); 
+    fieldset.insertBefore(document.getElementsByClassName("btn-darevisit")[1], fieldset.children[4]);
+  </script>
 css: |
   <style>
     legend {
       display: none;
     }
+    .btn-primary {
+      display: none;
+    }
+    .btn-darevisit {
+      display: inline-block;
+      margin-right: 5px;
+    }
+    .al_doc_title {
+      display: none;
+    }
+    #al_doc_email_header {
+      display: none;
+    }
+    
   </style>
   
 
 field: user_saw_the_letter
-buttons:
-  - Send Complaint: proceed
-  - Exit: exit
-  - Restart: restart
+
+action buttons:
+  - label: Submit
+    color: success
+    action: submit_complaint
+
+  - label: Restart
+    color: warning
+    action: restart_complaint
+    
+  - label: Exit
+    color: danger
+    action: exit_complaint
   
 progress: 95
 section: Preview
----     
+---   
+event: submit_complaint
+code: |
+  email_sent = send_email(to=['olumideolabimtan@yahoo.com'],attachments=complaint_letter[0])
+  
+  last_page
+---  
+event: exit_complaint
+code: |
+  command('exit')
+---
+event: restart_complaint
+code: |
+  command('restart')
+---
 # ==================================================== #
 attachment:
   name: Formal Complaint Letter
@@ -1809,7 +1859,7 @@ subquestion: |
   
   <br/>
   
-  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#ffffff;">Click here for a list of free and low-cost legal resources.</a></h5></div>
+  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#e8e8e8; text-decoration: underline;">Click here for a list of free and low-cost legal resources.</a></h5></div>
   
   <br/>
   
@@ -1850,7 +1900,7 @@ subquestion: |
    
    <br/>
   
-  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#ffffff;">Click here for a list of free and low-cost legal resources.</a></h5></div>
+  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#e8e8e8; text-decoration: underline;">Click here for a list of free and low-cost legal resources.</a></h5></div>
   
   <br/>
 
