@@ -25,10 +25,10 @@ metadata:
 sections:
   - Introduction
   - Screening:
-    - Individuals Involved
-    - When
-  - What Happened
-  - Potential Police Misconduct
+    - individuals: Individuals Involved
+    - when: When
+  - targetted: What Happened
+  - plainLang: Potential Police Misconduct
   - Identity Confirmation
   - Preview of Letter
   - Educational Case Law
@@ -63,6 +63,7 @@ code: |
   user_screening1
   user_screening2
   cps = "Police in Calgary"
+  about_cps = True
   me = "Me"
   witness = "Someone I witnessed"
   representative = "Someone I represent as a social worker, advocate, or lawyer"
@@ -81,6 +82,7 @@ code: |
   
   if user.complaint_about_cps != cps:
     kickout1_message += "<li style=\"color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">This online tool is currently only for complaints about the Calgary Police Service. We are hoping to expand to other jurisdictions soon.</li>"
+    about_cps = False
     unqualified = True
     
   if user.complaint_victim != me and user.complaint_victim != witness and user.complaint_victim != representative and user.complaint_victim != related:
@@ -719,6 +721,10 @@ css: |
       display: none;
     }
     
+    .btn-primary {
+      display: inline-block;
+    }
+    
     .nav-item {
       display: none;
     }
@@ -730,7 +736,7 @@ css: |
   
 progress: 20
 continue button field: user_screening1
-section: Individuals Involved
+section: individuals
 ---
 # ==================== Screening 2 =================== #
 question: |
@@ -769,6 +775,10 @@ css: |
       display: none;
     }
     
+    .btn-primary {
+      display: inline-block;
+    }
+    
     .nav-item {
       display: none;
     }
@@ -780,7 +790,7 @@ css: |
   
 progress: 25   
 continue button field: user_screening2
-section: When
+section: when
 ---
 # ==================== Signpost 1 =================== #
 question: |
@@ -794,15 +804,16 @@ subquestion: |
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:20px;">WHAT YOU SAID:</span>
   
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Your complaint is about the: <strong>Police in Calgary</strong></span><br/>
-  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The Incident happened to: <strong>${ user.complaint_victim }</strong></span><br/>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened at: <strong>${ user.incident_location } in Calgary</strong></span><br/>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened to: <strong>${ user.complaint_victim }</strong></span><br/>
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened: <strong>on ${ date_of_incident }</strong></span>
-  
+
+
   <hr/>
-  
+      
   [INDENTBY 0.6in]<span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><strong>Note</strong>: Until an investigator confirms your eligibility, there is no guarantee that you are qualified to submit this complaint.If an investigator says you can’t complain, your complaint will not be investigated. If this happens, you can talk to a lawyer for  advice about the investigator’s opinion.
-  
+      
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:20px;">The next section will ask you to describe what happened in your own words.</span> 
-  
   
 
 css: |
@@ -1048,6 +1059,7 @@ continue button field: user_targetted2
 section: What Happened
 ---
 # ==================== Signpost 2 =================== #
+event: targetted
 question: |
   Thank you for those details
 
@@ -1055,7 +1067,6 @@ subquestion: |
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size: 20px;">Here is what you told us so far</span>
   
 review:
-
   - Edit: before_police_involved
     button: |
        This is what happened before police got involved: **${ before_police_involved }** 
@@ -1150,7 +1161,7 @@ css: |
   
 progress: 65
 continue button field: user_signpost2
-section: What Happened
+section: targetted
 ---
 # ==================== Plain Lang Questions 1 =================== #
 question: |  
@@ -1447,6 +1458,7 @@ continue button field: user_plainlang4
 section: Potential Police Misconduct
 ---
 # ==================== Signpost 3 =================== #
+event: plainLang
 question: |
   Thank you for sharing this information
 
@@ -1654,7 +1666,7 @@ css: |
   
 progress: 90
 continue button field: user_signpost3
-section: Potential Police Misconduct
+section: plainLang
 ---
 # ==================== Qualified Complainant =================== #
 question: |
@@ -1681,7 +1693,7 @@ fields:
       - To be anonymous, even if it means my complaint probably won’t be investigated.
     
   - note: |
-      <div style="padding-top: 10px; padding-left: 7.5px; padding-right: 7.5px; padding-bottom: 7.5px; margin: auto; background-color: #4473C4; width: 100%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:17px;"><strong>Warning:</strong> If you choose to remain anonymous, the likely result is your complaint will not be investigated. That is because a precondition of a complaint under s. 42.1(4)(a) of the <i>Police Act</i> is that the person making the complaint provide their full name. If your full name is not provided, your complaint may not be investigated. If you refuse to be contacted, investigators will be unable to contact you and conduct a proper investigation, which may lead to the complaint being considered “abandoned”.</h5></div>
+      <div style="padding-top: 10px; padding-left: 7.5px; text-align: center; padding-right: 7.5px; padding-bottom: 7.5px; margin: auto; background-color: #4473C4; width: 100%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:16px;"><strong>Warning:</strong> If you choose to remain anonymous, the likely result is your complaint will not be investigated. That is because a precondition of a complaint under s. 42.1(4)(a) of the <i>Police Act</i> is that the person making the complaint provide their full name. If your full name is not provided, your complaint may not be investigated. If you refuse to be contacted, investigators will be unable to contact you and conduct a proper investigation, which may lead to the complaint being considered “abandoned”.</h5></div>
        
       
       <br/><h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">Click <strong>Continue</strong> if you are ready to have the app write your complaint letter for you. This may take a minute.</h5>
@@ -2038,7 +2050,7 @@ section: Educational Case Law
 # ===================== Kickout 1 =============================== #
 event: kickout1
 question: |
-  Baesd on what you said:
+  Based on what you said:
 subquestion: |
   
   <h3><strong><span style="color:#585858">Unfortunately, you can’t file a police complaint with this tool.</span></strong></h3>
@@ -2047,8 +2059,11 @@ subquestion: |
   
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:20px;">WHAT YOU SAID:</span>
   
-  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Your complaint is about the: <strong>Police in Calgary</strong></span><br/>
-  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The Incident happened to: <strong>${ user.complaint_victim }</strong></span><br/>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Your complaint is about the: <strong>${ user.complaint_about_cps }</strong></span><br/>
+  % if user.complaint_about_cps == "Police outside Calgary":
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened at: <strong>${ user.incident_location }</strong></span><br/>
+  % endif
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened to: <strong>${ user.complaint_victim }</strong></span><br/>
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened: <strong>on ${ date_of_incident }</strong></span>
   
   <hr/>
@@ -2059,7 +2074,7 @@ subquestion: |
   
   <br/>
   
-  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#e8e8e8; text-decoration: underline;">Click here for a list of free and low-cost legal resources.</a></h5></div>
+  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":test2.yml") }){:target="_blank"}</h5></div>
   
   <br/>
   
@@ -2069,9 +2084,19 @@ css: |
     legend {
       display: none;
     }
-    
+
     .nav-item {
       display: none;
+    }
+    
+    a {
+      color:#e8e8e8; 
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color:#e8e8e8; 
+      text-decoration: underline;
     }
     
     .damynavbar-right {
@@ -2084,6 +2109,14 @@ buttons:
   - Restart: restart
   
 progress: 100
+---
+event: exit_complaint
+code: |
+  command('exit')
+---
+event: restart_complaint
+code: |
+  command('restart')
 ---
 # ===================== Kickout 2 =============================== #
 event: kickout2
