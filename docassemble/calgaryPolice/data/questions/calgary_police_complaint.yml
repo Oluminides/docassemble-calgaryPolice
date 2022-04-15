@@ -63,7 +63,6 @@ code: |
   user_screening1
   user_screening2
   cps = "Police in Calgary"
-  about_cps = True
   me = "Me"
   witness = "Someone I witnessed"
   representative = "Someone I represent as a social worker, advocate, or lawyer"
@@ -82,13 +81,10 @@ code: |
   
   if user.complaint_about_cps != cps:
     kickout1_message += "<li style=\"color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">This online tool is currently only for complaints about the Calgary Police Service. We are hoping to expand to other jurisdictions soon.</li>"
-    about_cps = False
     unqualified = True
     
   if user.complaint_victim != me and user.complaint_victim != witness and user.complaint_victim != representative and user.complaint_victim != related:
-    #if unqualified:
-		 # kickout1_message += "<hr/>"
-	  kickout1_message += "<li style=\"padding-top: 10px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">Complaints must be directed sufficiently close to or witnessed by the person filing the complaint, as per section 42.1(2) of the <i>Police Act</i>.</li>"
+    kickout1_message += "<li style=\"padding-top: 10px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">Complaints must be directed sufficiently close to or witnessed by the person filing the complaint, as per section 42.1(2) of the <i>Police Act</i>.</li>"
 	  unqualified = True
     notClose = True
 
@@ -98,8 +94,6 @@ code: |
     user_is_complainant = "I was"
 
   if user.incident_time == "More than a year ago":
-    #if unqualified:
-		 # kickout1_message += "<hr/>"
     kickout1_message += "<li style=\"padding-top: 10px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">Complaints must "
 	  if notClose:
       kickout1_message += "also " 
@@ -1845,7 +1839,7 @@ under: |
   
   ${ complaint_letter.as_pdf() }
   
-  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#e8e8e8; text-decoration: underline;">Click here for a list of free and low-cost legal resources.</a></h5></div>
+  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":free_resources.yml") }){:target="_blank"}</h5></div>
 
 script: |
   <script>
@@ -2060,7 +2054,7 @@ subquestion: |
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:20px;">WHAT YOU SAID:</span>
   
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Your complaint is about the: <strong>${ user.complaint_about_cps }</strong></span><br/>
-  % if user.complaint_about_cps == "Police outside Calgary":
+  % if user.complaint_about_cps == "Police in Calgary":
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened at: <strong>${ user.incident_location }</strong></span><br/>
   % endif
   <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened to: <strong>${ user.complaint_victim }</strong></span><br/>
@@ -2074,7 +2068,7 @@ subquestion: |
   
   <br/>
   
-  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":test2.yml") }){:target="_blank"}</h5></div>
+  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":free_resources.yml") }){:target="_blank"}</h5></div>
   
   <br/>
   
@@ -2110,14 +2104,6 @@ buttons:
   
 progress: 100
 ---
-event: exit_complaint
-code: |
-  command('exit')
----
-event: restart_complaint
-code: |
-  command('restart')
----
 # ===================== Kickout 2 =============================== #
 event: kickout2
 question: |
@@ -2141,7 +2127,7 @@ subquestion: |
    
    <br/>
   
-  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#e8e8e8; text-decoration: underline;">Click here for a list of free and low-cost legal resources.</a></h5></div>
+  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":free_resources.yml") }){:target="_blank"}</h5></div>
   
   <br/>
 
@@ -2153,6 +2139,16 @@ css: |
     
     .nav-item {
       display: none;
+    }
+    
+    a {
+      color:#e8e8e8; 
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color:#e8e8e8; 
+      text-decoration: underline;
     }
     
     .damynavbar-right {
