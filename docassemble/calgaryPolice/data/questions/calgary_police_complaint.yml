@@ -1898,7 +1898,7 @@ section: Preview of Letter
 ---   
 event: submit_complaint
 code: |
-  email_sent = send_email(to=['olumideolabimtan@yahoo.com'],attachments=complaint_letter[0])
+  email_sent = send_email(to=['dram@completecomplaints.ca','oluolabimtan@icloud.com'],attachments=complaint_letter[0])
   
   last_page
 ---  
