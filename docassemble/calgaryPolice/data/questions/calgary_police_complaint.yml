@@ -1839,13 +1839,34 @@ under: |
   
   ${ complaint_letter.as_pdf() }
   
-  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":free_resources.yml") }){:target="_blank"}</h5></div>
+  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":test1.yml") }){:target="_blank"}</h5></div>
 
 script: |
   <script>
     var fieldset = document.getElementsByTagName("fieldset")[0];
     fieldset.insertBefore(document.getElementsByClassName("btn-darevisit")[1], fieldset.children[4]); 
     fieldset.insertBefore(document.getElementsByClassName("btn-darevisit")[1], fieldset.children[4]);
+    var email_button = document.createElement("a");
+    email_button.classList.add("btn");
+    email_button.classList.add("btn-primary");
+    email_button.classList.add("btn-darevisit");
+    
+    email_button.innerHTML = '<i class="fas fa-envelope"></i> Email'
+    
+    
+    email_button.style.color = "white";
+    email_button.onclick = function(){
+      document.getElementsByClassName("al_email_container")[0].style.display = "inline-block"; 
+      email_button.style.display = "none";
+    }
+    fieldset.insertBefore(email_button, fieldset.children[5]);
+    
+    var send_email = document.getElementById("al_send_email_button_download_bundle");
+    
+    send_email.onclick = function(){
+      document.getElementsByClassName("al_email_container")[0].style.display = "none"; 
+      email_button.style.display = "inline-block";
+    }
   </script>
 css: |
   <style>
@@ -1874,9 +1895,11 @@ css: |
     #al_doc_email_header {
       display: none;
     }
+    .al_email_container {
+      display: none;
+    }
     
   </style>
-  
 
 field: user_saw_the_letter
 
