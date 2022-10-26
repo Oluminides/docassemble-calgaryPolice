@@ -83,7 +83,7 @@ code: |
 
   how_police_involvedString = ""
 
-  if how_police_involved == "I called 911 or the police" or "Someone else called 911 or the police":
+  if how_police_involved == "I called 911 or the police" or how_police_involved == "Someone else called 911 or the police":
     how_police_involvedString += how_police_involved
     how_police_involvedString += phone_call_details
 
@@ -2075,7 +2075,7 @@ css: |
     }
     
     .btn-primary {
-      display: none;
+      display: inline-block;
     }
     .btn-darevisit {
       display: inline-block;
