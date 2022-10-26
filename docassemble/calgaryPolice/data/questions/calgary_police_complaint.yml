@@ -6,7 +6,7 @@ features:
   hide standard menu: True
   small screen navigation: False
   #navigation: True
-  #progress bar: True
+  progress bar: True
   #navigation back button: False
   question back button: True   
 ---
@@ -646,7 +646,7 @@ terms:
     **<span style="padding-top:5px; color:#696969; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Legal advice can only be provided by a lawyer**, and is specific to your circumstances. A lawyer can provide legal advice by reviewing the specific circumstances of your case, and applying it to the law, for the purposes of giving opinions and making recommendations about your specific case.</span>
   
 
-#progress: 6
+progress: 10
 continue button field: user_saw_intro_screen
 #section: Introduction
 ---
@@ -715,7 +715,7 @@ css: |
     }
   </style>
 
-#progress: 6
+progress: 10
 continue button field: user_saw_stages
 #section: Introduction
 ---
@@ -792,7 +792,7 @@ fields:
       val("user.criminally_charged") != "No one was charged with a criminal offence during the incident" && val("user.criminally_charged") != null
       
 
-#progress: 6
+progress: 23
 continue button field: user_stage1
 #section: Introduction
 ---
@@ -1001,7 +1001,7 @@ fields:
       is: Yes, I have videos, photos, audio recordings, or another record that could be evidence
       
       
-#progress: 6
+progress: 36
 continue button field: user_stage2
 #section: Introduction
 
@@ -1221,7 +1221,7 @@ fields:
       - Threatened or decreased the positive reputation of the police. s. 5(2)(e): threatens_reputation
     
 
-#progress: 6
+progress: 50
 continue button field: user_stage3
 #section: Introduction
 
@@ -1645,7 +1645,7 @@ review:
       <span style="color: #3F4D88; font-size: 17px;"><strong>Threatened or decreased the positive reputation of the police. s. 5(2)(e)</strong></span>
     show if: final_questions['threatens_reputation']
       
-#progress: 6
+progress: 65
 continue button field: user_stage4
 #section: Introduction
 
@@ -1728,7 +1728,7 @@ css: |
   
 continue button field: unqualified
   
-#progress: 100
+progress: 80
 
 ---
 # ===================== QUALIFIED =============================== #
@@ -1788,7 +1788,7 @@ css: |
   
 continue button field: qualified
   
-#progress: 100
+progress: 80
 
 ---   
 # ==================== Non-Anonymous =================== #
@@ -1822,7 +1822,7 @@ css: |
     }
   </style>
   
-#progress: 95
+progress: 90
 continue button field: user_details
 #section: Identity Confirmation
 ---
@@ -1853,7 +1853,7 @@ css: |
     }
   </style>
   
-#progress: 95
+progress: 90
 continue button field: user_sign
 #section: Identity Confirmation
 
@@ -1932,7 +1932,7 @@ css: |
     }
   </style>
 
-#progress: 6
+progress: 100
 continue button field: final_page
 #section: Introduction
 ---
@@ -2090,7 +2090,7 @@ action buttons:
     color: danger
     action: exit_complaint
   
-progress: 95
+progress: 100
 # section: Preview of Letter
 ---   
 event: submit_complaint
