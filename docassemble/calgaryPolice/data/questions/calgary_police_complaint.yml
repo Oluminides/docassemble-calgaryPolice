@@ -625,7 +625,7 @@ question: |
   <span style="font-size: 30px; display: block; margin: auto; text-align: center;">Complaints about Calgary Police</span>
   
   <br/>
-  <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; line-height: 2; display: block; margin: auto; text-align: center;">TThis FREE tool will help you organize and write your complaint letter. This tool automatically flags and includes any breaches of the Police Act detected in your complaint letter (if any breaches are detected).<br/><strong style="line-height: 3;">ESTIMATED TIME TO FINISH: 15 to 45 minutes</strong></span>
+  <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; line-height: 2; display: block; margin: auto; text-align: center;">This FREE tool will help you organize and write your complaint letter. This tool automatically flags and includes any breaches of the Police Act detected in your complaint letter (if any breaches are detected).<br/><strong style="line-height: 3;">ESTIMATED TIME TO FINISH: 15 to 45 minutes</strong></span>
   
 subquestion: |
   <div style="border-style: solid; border-radius: 10px; border-color: #3F4D88; padding-left: 5px; padding-right: 5px; padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align: center; width: 100%"><p width: 80%; padding-top: 10px; padding-left: 5px; style="font-family:Arial, Helvetica, sans-serif; font-size:17px;"><strong style="font-size:19px; color: #3F4D88;">You will not be punished for filing a complaint.</strong><br/>Your complaint letter will be sent to the Calgary Police Service’s Professional Standards Branch, Calgary Police Commission’s Public Complaint Director, Chief of Calgary Police, and (depending on the complaint) the Alberta Minister of Justice via the Provincial Complaints Director.<br/><br/>Once you submit your complaint letter, a human investigator will review your complaint letter to decide whether the police will investigate the complaint or not.<br/><br/>There is no guarantee an investigation will be opened for your complaint.</p></div>
@@ -2105,7 +2105,7 @@ progress: 95
 ---   
 event: submit_complaint
 code: |
-  email_sent = send_email(to=['dram@completecomplaints.ca','oluolabimtan@icloud.com'],attachments=complaint_letter)
+  email_sent = send_email(to=['olumideolabimtan@yahoo.com'],attachments=complaint_letter)
   
   final_page
 ---  
