@@ -2044,16 +2044,6 @@ css: |
       display: none;
     }
 
-    a.purpleBox {
-      color:#e8e8e8; 
-      text-decoration: underline;
-    }
-    
-    a.purpleBox:hover {
-      color:#e8e8e8; 
-      text-decoration: underline;
-    }
-    
     .nav-item {
       display: none;
     }
@@ -2062,7 +2052,7 @@ css: |
       display: none;
     }
 
-    a.daquestionactionbutton {
+    a {
       text-decoration: none;
     }
     
