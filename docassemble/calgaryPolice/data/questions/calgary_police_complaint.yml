@@ -104,7 +104,7 @@ code: |
     else:
       duringString += "There were no physical interactions with the police."
 
-    if use_of_weapons == "Yes, they used guns or weapons or threatened to use them":
+    if (verbal_interactions == "Yes, there were verbal interactions with the police" or physical_interactions == "Yes, there were physical interactions with the police") and use_of_weapons == "Yes, they used guns or weapons or threatened to use them":
       duringString += "The police used guns or weapons or threatened to use them."
     else:
       duringString += "The police did not use guns or weapons nor did they threaten to use them."
@@ -124,12 +124,18 @@ code: |
 
   elif showed_up == "No, the police did not come to the scene":
     duringString += "The police did not come to the scene."
+
+    if what_happened_next:
+      duringString += what_happened_next
     
   else:
     duringString += "I don’t know if the police came to the scene."
 
+    if what_happened_next:
+      duringString += what_happened_next
+
   if personal_contact:
-    duringString += police_left
+    duringString += personal_contact
 
   if anyone_else_involved:
     duringString += anyone_else_involved
@@ -2015,6 +2021,7 @@ buttons:
 #progress: 100
 
 ---
+# ===================== Submit Letter =============================== #
 question: |
   <span style="font-size: 30px; display: block; margin: auto; text-align: center;"><strong style="color: #3F4D88;">YOUR COMPLAINT LETTER IS COMPLETE</strong>.</span> 
 
@@ -2052,7 +2059,18 @@ css: |
       display: none;
     }
 
+    .purpleBox a {
+      color:#e8e8e8; 
+      text-decoration: underline;
+    }
+    
+    .purpleBox a:hover {
+      color:#e8e8e8; 
+      text-decoration: underline;
+    }
+
     a {
+      color:##3e4e88; 
       text-decoration: none;
     }
     
