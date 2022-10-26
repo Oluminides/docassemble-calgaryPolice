@@ -1,0 +1,2215 @@
+---
+include:
+  - docassemble.AssemblyLine:assembly_line_unstyled.yml
+---
+features:
+  hide standard menu: True
+  small screen navigation: False
+  navigation: True
+  progress bar: True
+  navigation back button: False
+  question back button: True
+  javascript:
+    - docassemble.AssemblyLine:al_audio.js  
+  css:
+    - docassemble.AssemblyLine:al_audio.css    
+---
+metadata:
+  title: |
+    Calgary Police Complaints
+  short title: |
+    Calgary Police Complaints
+  description: |
+    A complaint filing system for the Calgary Police Service
+---
+sections:
+  - Introduction
+  - Screening:
+    - individuals: Individuals Involved
+    - when: When
+  - targetted: What Happened
+  - plainLang: Potential Police Misconduct
+  - Identity Confirmation
+  - Preview of Letter
+  - Educational Case Law
+---
+objects:
+  - user: Individual
+  - ccf_logo: DAStaticFile.using(filename="ccf_logo.png")
+  - cps_logo: DAStaticFile.using(filename="cps_logo.png")
+---
+default screen parts:
+  logo: |
+    <div class="title-container" style="display: flex; flex-direction: row;">
+      <div class="al-logo">
+        <img src="${ ccf_logo.url_for() }"/>
+      </div>
+      
+      <div class="al-title" style="padding-left: 15px; padding-top: 5px;">
+        <div class="title-row-2">${all_variables(special='metadata').get('title','').rstrip()}</div>
+      </div>
+    </div> 
+    
+---
+mandatory: true
+code: |
+  from datetime import datetime
+  # Code-flow block
+ 
+  user_prototype
+  user_saw_intro_screen
+  user_saw_important_info
+
+  user_screening1
+  user_screening2
+  cps = "Police in Calgary"
+  me = "Me"
+  witness = "Someone I witnessed"
+  representative = "Someone I represent as a social worker, advocate, or lawyer"
+  related = "Someone close to me, like a spouse, child, or romantic partner"
+  
+  kickout1_message = ""
+    
+  kickout_resources = " <span style=\"font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size:15px; color:#585858;\">**The Law Society of Alberta**<br/>**Phone**: 403-228-1722 <br/>**Website**: [Click here](https://www.lawsociety.ab.ca/public/lawyer-referral/) <br/>**Address**: 700-333 11 Ave SW, Calgary, AB <li>You’ll be given contact information for up to 3 lawyers, no charge for the first half hour.</span>|<span style=\"font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color:#585858;\">**Calgary Legal Guidance**<br/>**Phone**: 403-234-9266 <br/>**Website**: [Click here](https://www.clg.ab.ca) <br/>**Address**: 100-840 7th Ave SW, Calgary, AB <li>Free legal advice, assistance, information, and advocacy for low-income individuals.</span>\n"
+  kickout_resources +=  "-----------------------|-------------------------------\n"
+  kickout_resources += "<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#585858;\">**Legal Aid Society of Alberta**<br/>**Phone**: 403-297-2260<br/>**Website**: [Click here](https://www.legalaid.ab.ca) <br/>**Address**: 665 - 8th Street SW.<li>Provides legal aid in civil and criminal matters for individuals who cannot afford to pay a lawyer.</span>|<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#585858;\">**Student Legal Services**<br/>**Phone**: 780-492-2226 <br/> **Website**: [Click here](https://www.slacalgary.com) <br/>**Address**: 3390 Murray Fraser Hall, Calgary, AB <li>Free help by law students to students and others in Calgary that cannot afford a lawyer.</span>\n"
+  kickout_resources += "<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#585858;\">**Mustard Seed Legal Clinic**<br/>**Phone**: 403-269-1319 <br/>**Website**: [Click here](https://www.clg.ab.ca/event/homeless-outreach-	program-legal-clinic/) <br/>**Address**: 102 11 Ave SE, Calgary, AB <li>Free advice and court representation for evictions/landlord-tenant issues, criminal charges, tickets, and other issues.</span>|<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#585858;\">**Elizabeth Fry Society**<br/>**Phone**: 403-294-0737<br/>**Website**: [Click here](https://www.elizabethfrycalgary.ca) <br/>**Address**: 1731 10 Ave SW, Calgary, AB <li>Offers support and advocacy for women who are or have been involved in the criminal system.</span>\n"
+  kickout_resources += "<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#585858;\">**Centre for Newcomers**<br/>**Phone**: 403-569-3325 <br/>**Website**: [Click here](https://www.centrefornewcomers.ca) <br/>**Address**: 1010-999 36 St NE, Calgary, AB <li> Provides legal support in the areas of Family and Immigration Law for immigrants and newcomers.</span>|<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#585858;\">**Calgary John Howard Society**<br/>**Phone**: 403-266-4566<br/>**Website**: [Click here](https://www.cjhs.ca) <br/>**Address**: 917 9 Ave SE, Calgary, AB <li>Provides direct services and advocacy to individuals who have been involved in the corrections system.</span>\n"
+
+  unqualified = False
+  notClose = False
+  
+  if user.complaint_about_cps != cps:
+    kickout1_message += "<li style=\"color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">This online tool is currently only for complaints about the Calgary Police Service. We are hoping to expand to other jurisdictions soon.</li>"
+    unqualified = True
+    
+  if user.complaint_victim != me and user.complaint_victim != witness and user.complaint_victim != representative and user.complaint_victim != related:
+    kickout1_message += "<li style=\"padding-top: 10px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">Complaints must be directed sufficiently close to or witnessed by the person filing the complaint, as per section 42.1(2) of the <i>Police Act</i>.</li>"
+	  unqualified = True
+    notClose = True
+
+  user_is_complainant = "They were"
+
+  if user.complaint_victim == me:
+    user_is_complainant = "I was"
+
+  if user.incident_time == "More than a year ago":
+    kickout1_message += "<li style=\"padding-top: 10px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;\">Complaints must "
+	  if notClose:
+      kickout1_message += "also " 
+    kickout1_message += "be filed within a year of the incident, or within a year of becoming aware of the incident, as per section 43(11) of the <i>Police Act</i>.</li>"
+    unqualified = True
+    
+    
+  if unqualified:
+	  event: kickout1
+  else: 
+    user_signpost1
+    
+  
+  user_targetted1
+  
+  
+  how_police_involvedString = ""
+  
+  how_police_discoveredBool = False
+  
+  if how_police_involved == "I personally called the police.":
+    how_police_involvedString += how_police_involved
+    how_police_involvedString += phone_call_details
+  elif how_police_involved == "The police found out what was happening some other way.":
+    how_police_involvedString += how_police_discovered
+    how_police_discoveredBool = True
+  
+  after_showed_upBool = False
+  not_showed_upBool = True
+  
+  showed_upString = ""
+  after_question = ""
+  
+  if showed_up == "Came in person to the scene.":
+    showed_upString += "The police then came in person to the scene. "
+    showed_upString += after_showed_up
+    after_showed_upBool = True
+    not_showed_upBool = False
+    after_question = "After the police left the scene:"
+  elif showed_up == "Did not come in person.":
+    showed_upString += "The police did not come to the scene in person."
+    after_question = "After last contact with the police:"
+  
+  involved_string = how_police_involvedString + " " + showed_upString
+  
+  had_contactBool = False
+  
+  if had_contact == "Had contact with the police.":
+    had_contactBool = True
+    during_initial_contactString1  = "This is what happened when I first personally had contact with the police:"
+    during_initial_contactString2 = "**" + during_initial_contact + "**"
+  else:
+    during_initial_contactString1 = ""
+    during_initial_contactString2 = ""
+   
+  further_contactBool = False
+  if had_contact == "Had contact with the police." and further_contact == "I had more contact with them.":
+    further_contactBool = True
+    after_initial_contactString1  = "This is what happened when I had more contact after with the police:"
+    after_initial_contactString2 = "**" + after_initial_contact + "**"
+  else:
+    after_initial_contactString1 = ""
+    after_initial_contactString2 = ""
+    
+  user_targetted2
+  
+  anything_after_leftBool = False  
+  if anything_after_left == "Something else happened that might help with investigating my complaint.":
+    anything_after_leftBool = True
+    after_left_sceneString1 = "This is what else happened that might help with investigating my complaint:"
+    after_left_sceneString2 = "**" + after_left_scene + "**"
+  else:
+    after_left_sceneString1 = ""
+    after_left_sceneString2 = ""
+     
+  saw_witnessesBool = False
+  if saw_witnesses  == "Saw or heard what happened.":
+    saw_witnessesBool = True
+    saw_witnessesString1 = "Witnesses who are not police:"
+    saw_witnessesString2 = "**" + saw_witnesses + "**"
+    the_witnessesString1 = "The names and contact information of the witnesses:"
+    the_witnessesString2 = "**" + witnesses + "**"
+  else:
+    saw_witnessesString1 = "Witnesses who are not police:"
+    saw_witnessesString2 = "**" + saw_witnesses + "**"
+    the_witnessesString1 = ""
+    the_witnessesString2 = ""
+    
+  officers_string1 = "These are names and badge numbers of officers that were involved or that I was in contact with:"
+  officers_len = len(officers_ids)
+  if officers_len != 0:
+    officers_string2 = "**" + officers_ids + "**"
+  else:
+    officers_string2 = ""
+    
+  user_signpost2
+    
+  user_plainlang1
+  user_plainlang2
+  user_plainlang3
+  user_plainlang4
+
+  answers = []
+  breaches = []
+  plainNum = 0
+  
+  unqualifiedPlainLang = True
+
+  serious_accident = False
+
+  protocol = False
+  unlawful_search_flag = False
+
+  if unlawful_search['searched_without_warrant'] or unlawful_search['arrested_without_warrant']:
+    protocol = True
+    unqualifiedPlainLang = False
+    unlawful_search_flag = True
+    
+    
+  if unlawful_search['searched_without_warrant']:  
+    answers.append("The police searched me or someone else without a warrant or a legal reason. [s. 5(2)(i)]")
+    plainNum = plainNum + 1 
+
+  if unlawful_search['arrested_without_warrant']:
+    answers.append("The police arrested me or someone else without a warrant or a lawful reason. [s. 5(2)(i)]")
+    plainNum = plainNum + 1 
+
+  unethical_behaviour_flag = False
+
+  if unethical_behaviour['profane_language'] or unethical_behaviour['strip_searched'] or unethical_behaviour['discrimination']:
+    protocol = True
+    unqualifiedPlainLang = False
+    unethical_behaviour_flag = True
+  
+  if unethical_behaviour['profane_language']:
+    answers.append("The police used abusive or insulting language. [s. 5(2)(e)]")
+    plainNum = plainNum + 1 
+
+  if unethical_behaviour['strip_searched']:
+    answers.append("The police strip searched me or someone else without a legal reason. [s. 5(2)(i)]")
+    plainNum = plainNum + 1 
+
+  if unethical_behaviour['discrimination']:
+    answers.append("The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. [s. 5(2)(e)]")
+    plainNum = plainNum + 1 
+
+
+  underTheInfluence = False
+
+  if under_the_influence['intoxicated']:
+    answers.append("The police consumed alcohol, marijuana, or an illegal drug or acted like they were not sober while on duty. [s. 5(2)(b)]")
+    underTheInfluence = True
+    unqualifiedPlainLang = False
+    plainNum = plainNum + 1 
+
+  outwardComms = False
+
+  improper_representation_flag = False
+
+  if improper_representation['unauthorised_communication'] or improper_representation['misleading_statement']:
+    outwardComms = True
+    improper_representation_flag = True
+    unqualifiedPlainLang = False
+    
+
+  if improper_representation['unauthorised_communication']:
+    answers.append("The police told someone something that was private or confidential without authorization. [s. 5(2)(a)]")
+    plainNum = plainNum + 1 
+
+  if improper_representation['misleading_statement']:
+    answers.append("The police made or signed a false or misleading statement. [s. 5(2)(d)]")
+    plainNum = plainNum + 1 
+
+  interference = False
+
+  helping_offenders_flag = False
+
+  if helping_offenders['unrelated_warrant'] or helping_offenders['unreported_offender']:
+    interference = True
+    helping_offenders_flag = True
+    unqualifiedPlainLang = False
+    
+
+  if helping_offenders['unrelated_warrant']:
+    answers.append("The police told someone there was or was about to be a warrant or court summons for their arrest, before they were supposed to tell them. [s. 5(2)(a)]")
+    plainNum = plainNum + 1 
+
+  if helping_offenders['unreported_offender']:
+    answers.append("The police knew the location of someone that was supposed to be arrested, but didn’t do anything to arrest that person. [s. 5(2)(h)(iv)]")
+    plainNum = plainNum + 1 
+
+  job_failure_flag = False
+
+  if job_failure['failure_to_report_crime'] or job_failure['disobeyed_superior'] or job_failure['colluded_with_another_officer'] or job_failure['failure_of_negligence']:
+    interference = True
+    job_failure_flag = True
+    unqualifiedPlainLang = False
+    
+
+  if job_failure['failure_to_report_crime']:
+    answers.append("The police failed to report a crime or evidence about a crime. [s. 5(2)(h)]")
+    plainNum = plainNum + 1 
+
+  if job_failure['disobeyed_superior']:
+    answers.append("The police disobeyed a command, rule, or policy of the police. [s. 5(2)(g)]")
+    plainNum = plainNum + 1 
+
+  if job_failure['colluded_with_another_officer']:
+    answers.append("The police helped or did nothing to stop another police officer commit misconduct. [s. 5(2)(e)]")
+    plainNum = plainNum + 1 
+
+  if job_failure['failure_of_negligence']:
+    answers.append("The police didn't to do something else they should have done as part of their job as a police officer. [s. 5(2)(h)]")
+    plainNum = plainNum + 1 
+
+  suppressing_flag = False
+
+  if suppressing['destroyed_official_document'] or suppressing['suppressed_complaint_against_officer']:
+    interference = True
+    suppressing_flag = True
+    unqualifiedPlainLang = False
+
+  if suppressing['destroyed_official_document']:
+    answers.append("The police destroyed, damaged, hid or erased an official document or any other records. [s. 5(2)(d)]")
+    plainNum = plainNum + 1 
+
+  if suppressing['suppressed_complaint_against_officer']:
+    answers.append("The police caused a complaint against another police officer to be ignored or prevented from being investigated. [s. 5(2)(e)]")
+    plainNum = plainNum + 1 
+
+  bribesBenefits = False
+
+  request_receive_flag = False
+
+  if request_receive['demanded_payment'] or request_receive['demanded_illicit_drug']:
+    bribesBenefits = True
+    request_receive_flag = True
+    unqualifiedPlainLang = False
+    
+
+  if request_receive['demanded_payment']:
+    answers.append("The police demanded or received money, favours, or any other type of payment, gift, or benefit, without authorization. [s. 5(2)(c)]")
+    plainNum = plainNum + 1 
+
+  if request_receive['demanded_illicit_drug']:
+    answers.append("The police tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty. [s. 5(2)(b)(iv)]")
+    plainNum = plainNum + 1 
+
+  firearms_flag = False
+
+  if firearms['had_gun'] or firearms['fired_gun'] or firearms['did_not_report_firing'] or firearms['pointed_gun'] or firearms['threatened_to_use_gun'] or firearms['acted_erratic'] or firearms['involving_a_gun']:
+    firearms_flag = True
+    unqualifiedPlainLang = False
+
+  if firearms['had_gun']:
+    answers.append("The police had a gun they were not supposed to have. [s. 5(2)(f)]")
+    plainNum = plainNum + 1 
+
+  if firearms['fired_gun']:
+    answers.append("The police shot a gun they were not supposed to shoot. [s. 5(2)(f)]")
+    plainNum = plainNum + 1 
+    
+  if firearms['pointed_gun']:
+    answers.append("The police pointed a gun at you or someone else. [s. 5(2)(f)]")
+    plainNum = plainNum + 1 
+
+  if firearms['did_not_report_firing']:
+    answers.append("The police did not report that they fired a gun. [s. 5(2)(f)]")
+    plainNum = plainNum + 1 
+
+  if firearms['threatened_to_use_gun']:
+    answers.append("The police threatened to use a gun against you or someone else. [s. 5(2)(f)]")
+    plainNum = plainNum + 1 
+
+  if firearms['acted_erratic']:
+    answers.append("The police acted erratic or reckless with a gun, or did anything else involving a gun that was improper. [s. 5(2)(f)]")
+    plainNum = plainNum + 1 
+    
+  if firearms['involving_a_gun']:
+    answers.append("The police did anything else involving a gun that they should not have done. [s. 5(2)(f)]")
+    plainNum = plainNum + 1 
+
+
+  excessiveForce = False  
+  excessiveForceString = ""
+
+  if force['too_much_force'] or force['sexually_assaulted'] or force['seriously_injured'] or force['hospitalized'] or force['killed']:
+    excessiveForce = True
+    unqualifiedPlainLang = False
+    serious_accident = True
+  
+  force_flag = False  
+  
+  if force['too_much_force']: 
+    force_flag = True
+    answers.append("The police used too much force. [s. 5(2)(i)]")
+    plainNum = plainNum + 1 
+  
+  sexual_assault_flag = False
+  
+  if force['sexually_assaulted']: 
+    sexual_assault_flag = True  
+    answers.append("The police sexually assaulted or sexually harassed me or someone else. [s. 5(2)(e) + s. 46]")
+    plainNum = plainNum + 1 
+
+  injury_or_death_flag = False
+  
+  if force['seriously_injured'] or force['hospitalized'] or force['killed']:
+    injury_or_death_flag = True
+    
+
+  if force['seriously_injured']:
+    answers.append("The police seriously injured me or someone else. [s. 5(2)(i) + s. 46]")
+    plainNum = plainNum + 1 
+
+  if force['hospitalized']:
+    answers.append("The police hospitalized me or someone else. [s. 5(2)(i) + s. 46]")
+    plainNum = plainNum + 1 
+
+  if force['killed']:
+    answers.append("The police killed someone. [s. 5(2)(i) + s. 46]")
+    plainNum = plainNum + 1 
+
+  finalCatch = False
+
+  if final_catchall['unauthorised_by_law'] or final_catchall['threatens_reputation'] or final_catchall['illegal']:
+    finalCatch = True
+    unqualifiedPlainLang = False
+
+  if final_catchall['unauthorised_by_law']:
+    answers.append("The police did something else I have not mentioned that was not authorized by law. [s. 5(2)(i)]")
+    plainNum = plainNum + 1 
+
+  if final_catchall['threatens_reputation']:
+    answers.append("The police did something else I have not mentioned that threatens or harms the reputation of the police. [s. 5(2)(e)]")
+    plainNum = plainNum + 1 
+    
+  if final_catchall['illegal']:
+    answers.append("The police did something else I have not mentioned that is against the law. [s. 5(2)(e)]")
+    plainNum = plainNum + 1 
+    
+  caseLaw_num = 0;
+  
+  # 5(2)(a)
+  sectionA = False
+  if improper_representation['unauthorised_communication'] or helping_offenders['unrelated_warrant']:
+    breaches.append("(a) Breach of confidence")
+    sectionA = True
+    caseLaw_num = caseLaw_num + 1;
+
+  sectionB = False
+  # 5(2)(b)
+  if under_the_influence['intoxicated'] or request_receive['demanded_illicit_drug']:
+    breaches.append("(b) Consumption or use of liquor or drugs in a manner that is prejudicial to duty")
+    sectionB = True
+    caseLaw_num = caseLaw_num + 1;
+
+  sectionC = False
+  # 5(2)(c)
+  if request_receive['demanded_payment']:
+    breaches.append("(c) Corrupt practice")
+    sectionC = True
+    caseLaw_num = caseLaw_num + 1;
+
+  sectionD = False
+  # 5(2)(d)
+  if improper_representation['misleading_statement'] or suppressing['destroyed_official_document']: 
+    breaches.append("(d) Deceit")
+    sectionD = True
+    caseLaw_num = caseLaw_num + 1;
+
+  sectionE = False
+  # 5(2)(e)
+  if unethical_behaviour['profane_language'] or unethical_behaviour['discrimination'] or job_failure['colluded_with_another_officer'] or suppressing['suppressed_complaint_against_officer'] or force['sexually_assaulted'] or final_catchall['threatens_reputation'] or final_catchall['illegal']:
+    breaches.append("(e) Discreditable conduct")
+    sectionE = True
+    caseLaw_num = caseLaw_num + 1;
+
+  sectionF = False
+  # 5(2)(f)
+  if firearms['had_gun'] or firearms['fired_gun'] or firearms['did_not_report_firing'] or firearms['pointed_gun'] or firearms['threatened_to_use_gun'] or firearms['acted_erratic'] or firearms['involving_a_gun']: 
+    breaches.append("(f) Improper use of firearms")
+    sectionF = True
+    caseLaw_num = caseLaw_num + 1;
+
+  sectionG = False
+  # 5(2)(g)
+  if job_failure['disobeyed_superior']:
+    breaches.append("(g) Insubordination")
+    sectionG = True
+    caseLaw_num = caseLaw_num + 1;
+
+  sectionH = False
+  # 5(2)(h)
+  if helping_offenders['unreported_offender'] or job_failure['failure_to_report_crime'] or job_failure['failure_of_negligence']:
+    breaches.append("(h) Neglect of duty")
+    sectionH = True
+    caseLaw_num = caseLaw_num + 1;
+
+  sectionI = False
+  # 5(2)(i)
+  if unlawful_search['searched_without_warrant'] or unlawful_search['arrested_without_warrant'] or unethical_behaviour['strip_searched'] or force['too_much_force'] or force['killed'] or force['seriously_injured'] or force['hospitalized'] or final_catchall['unauthorised_by_law']:
+    breaches.append("(i) Unlawful or unnecessary exercise of authority")
+    sectionI = True
+    caseLaw_num = caseLaw_num + 1;
+        
+  final_options = "<span style=\"font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>1.  Submit</strong> the complaint letter right now through this app.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">1</span></h5>}**</span>|<span style=\"font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>2.  Send</strong> the complaint letter as an <strong>email</strong> to yourself or someone else.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">2</span></h5>}**</span>\n"
+  final_options += "------------------|------------------\n"
+  final_options += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>3.  View</strong> the complaint letter with your computer.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:#F2F2F2\">3</span></h5>}**</span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>4.  Download</strong> the complaint letter to your computer.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:#F2F2F2\">4</span></h5>}**</span>\n"
+  final_options += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>5.  Restart</strong> the complaint letter.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">5</span></h5>}**</span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;\"><strong>6.  Exit</strong> the online tool.<br/>**{<h5 style=\"padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;\"><span style=\"text-decoration:underline;\">More info</span><span style=\"color:white\">6</span></h5>}**</span>\n"
+    
+  user_signpost3
+  if unqualifiedPlainLang:
+    anonymous = True
+    kickout2
+  else:
+    user_qualified
+  
+  date = datetime.today().strftime('%Y-%m-%d')
+
+  name = ""
+  if anonymous == "To include my full name and contact information.":
+    user_details
+    name = user_firstname + " " + user_lastname
+    user_sign
+    
+    if len(user_unitnum) > 0:
+      user_unitnum = "Unit " + user_unitnum + ", "
+    
+  user_saw_the_letter
+  
+---
+# ==================== Intro =================== #
+question: |
+  This is a prototype
+subquestion: |
+  This app is still undergoing user testing and final adjustments & demonstrations
+  
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+    
+    
+  </style>
+progress: 6
+continue button field: user_prototype
+section: Introduction
+---
+# ==================== Intro =================== #
+question: |
+  Complaints about Calgary Police
+subquestion: |
+  <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">This tool is <strong>designed to help you</strong> with legal information so your complaint letter is as complete as possible. Your complaint letter will be automatically written after you answer some questions, and then you can review and submit the complaint letter.</span>
+  
+  <hr/>
+  
+  <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">HOW THIS WORKS</span>
+  
+  |**<span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">STEP 1**</span>	<span style="font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;"><br/>We ask you some questions.</span> <br/>**{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">1</span></h5>}**</span> | **<span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">STEP 2**</span>	<span style="font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;"><br/>This tool writes your complaint letter.</span> <br/>**{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">2</span></h5>}**</span>|
+  -----------------------|-------------------------------
+  **<span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">STEP 3**</span>	<span style="font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;"><br/>You can send your letter with one click.</span> <br/>**{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">3</span></h5>}**</span>|**<span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">STEP 4**</span>	<span style="font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;"><br/>An investigator will review your complaint.</span> <br/>**{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">4</span></h5>}**</span>
+  
+terms: 
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">1</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Some questions will ask you to describe what happened, some will just be checking off boxes if true.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">2</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">This <strong>professionally-written letter will specifically mention any laws or regulations</strong> the police may have breached based on what you tell us.
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">3</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Note that if you file a complaint anonymously (without your name and information) it probably won’t be investigated.
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can also print the complaint letter and take it to a lawyer for legal advice first.
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">4</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Once you complete this online complaint tool, and if an investigator says you cannot complain or that you do not have ground for police misconduct, your complaint will not be investigated. If this happens, you have the right to talk to a lawyer about the investigator’s decision.
+  
+  
+fields:
+  - note: |
+        <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;"><strong>Total time: 15 to 35 minutes</strong></span>
+
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+
+progress: 6
+continue button field: user_saw_intro_screen
+section: Introduction
+---
+# ==================== Important Info =================== #
+question: |
+  Important notes before you start.
+subquestion: |
+  <span style="font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">1. There is usually a one year time limit for complaining about the police.</span> **{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">1</span></h5>}**</span> | <span style="font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">2.  You don’t get money if your complaint is successful.</span> <br/><br/>**{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">2</span></h5>}**</span>
+  -----------------------|-------------------------------
+  <span style="font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">3. You cannot lie in your complaint. Try to be as accurate as possible when filling in details.</span> **{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">3</span></h5>}**</span> | <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">4.  You can ask the police for your entire file if you want it for more information.</span> **{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">4</span></h5>}**</span>  
+  <span style="font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">5. This app passed security reviews, so everything you say is as safe as possible.</span><br/><br/>	**{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">5</span></h5>}**</span> |<span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">6. This tool gives you legal information, not legal advice. For legal advice, you can talk to a lawyer.</span> **{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">6</span></h5>}**</span> 
+  <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">7. If you were charged with a criminal offence, whatever you say in your complaint can be used against you in court. <br/> You should consider talking to a lawyer if you were charged during the incident being complained about.</span> **{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">7</span></h5>}**</span> | <span style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">8. There is no guarantee that police will open an investigation based on your complaint. <br/> If an investigator says they won’t investigate your complaint, you can talk to a lawyer for advice about the investigator’s opinion.</span> **{<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">8</span></h5>}**</span> 
+  
+  
+terms:
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">1</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">A complaint must be made within <strong>1 year of the date of the police misconduct</strong>, or within <strong>1 year you became aware of the police misconduct.</strong> <br/><br/> If this date has passed, you will <strong>no longer have a right to complain.</strong> This website does not, and cannot, give you advice on the timeline to make a complaint in your specific case.</li>
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">2</span></h5>: |
+    <li>The primary goal of a police complaint is accountability. <strong>There is no financial compensation available through the complaint process.</strong></li>
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">3</span></h5>: |
+    Do your best to provide accurate information, this helps our tool develop the best Formal Complaint Letter possible for your circumstances. If you cannot recall something, it is okay to leave the information you cannot recall out.
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">4</span></h5>: |
+    <li style="; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><strong>Everyone has the right to request their personal information from the police,</strong> thanks to the <i>Freedom of Information and Protection of Privacy Act.</i></li> <br/><br/>Sometimes requesting police records <strong>can uncover more information</strong> about an incident. <strong>To learn more about requesting your police records, <a href="https://www.calgary.ca/cps/public-services/freedom-of-information-and-protection-of-privacy-act-request.html">click here.</a> 
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">5</span></h5>: |
+    This app was designed with banking level encryption. Once you submit a complaint, it gets sent to parties who need to review it and then automatically deletes from our online tool system. All of your personal information is safe.
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">6</span></h5>: |
+    **<span style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">This online tool provides legal information, not legal advice.** Legal information is not the same as legal advice. Legal information on this service is **limited to information about the complaint process, generally, and what acts, generally, may or may not constitute misconduct.**</span>
+    
+    **<span style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Legal advice can only be provided by a lawyer**, and is specific to your circumstances. A lawyer can provide legal advice by reviewing the specific circumstances of your case, and applying it to the law, for the purposes of giving opinions and making recommendations about your specific case.</span>
+    
+    <span style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Legal information is general information about legal processes. Unlike legal advice, **legal information is not specific to any person’s particular circumstances and cannot be relied on as a legal opinion or recommendation.**</span>
+    
+    <span style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">To help in understanding the difference between legal information and legal advice, the following **two examples may help.**</span>
+    
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><strong>Example 1</strong> - Our online tool provides legal information about the time limit to make a complaint under the <i>Police Act</i>, but does not provide legal advice about whether your complaint is within that time limit.
+    
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><strong>Example 2</strong> - Our online tool provides legal information about what types of misconduct can be complained about under the <i>Police Act</i>, but does not provide legal advice about what types of misconduct apply to your specific case.
+    
+    <span style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">While a lawyer is not necessary to use this service or to make a complaint, <strong>you might find it helpful to speak to a lawyer before submitting a complaint.</strong> Speaking to a lawyer is <strong>entirely your decision</strong> and this online tool makes no recommendation about that.</span>
+    
+    <strong><span style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The purpose of this service is to help an individual’s right to complain about police misconduct and increase access to justice.</strong> This service is <strong>not intended to provide an individual with legal representation, or provide legal advice.</strong></span>
+    
+    <strong><span style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">None of the information submitted by you through this service is reviewed by lawyers.</strong> The information you provide is only reviewed after you submit your final complaint, and the review is not done by lawyers and is done solely for the purpose of investigating your complaints or determining if your complaints should be investigated.</span>
+      
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">7</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">If the incident you want to complain about <strong>resulted in you being charged with criminal offences,</strong> and those criminal charges have not been resolved, you <strong>might want to speak to a lawyer before making a complaint</strong> because the <strong>information you give police during the complaint process can be used against you in court and may affect your defence of the criminal charges.</strong>
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">8</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Whether your complaint meets the legal preconditions will be decided by an investigator. If your complaint does not meet the legal preconditions, you can choose to seek legal advice about <a href="${ url_action('free_resources') }" target="_blank" style="color:#3D4F88; text-decoration: underline;">next steps</a>.</li>
+    
+fields:
+  - note: |
+      <h5 style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Click <strong>Continue</strong> if:</h5>
+      
+      <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You have read everything above and you are aware of all legal issues and consequences that could arise because of using this tool; and you agree this tool is not liable for any consequence, legal or otherwise, that could potentially happen from you using this tool.</li>
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 12
+continue button field: user_saw_important_info
+section: Introduction
+---
+# ==================== Screening 1 =================== #
+question: |
+  First, we need to figure out if you can file a complaint with this tool.
+
+fields: 
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">I am complaining about:</h5>: user.complaint_about_cps
+    input type: radio
+    choices:
+      - Police in Calgary
+      - Police outside Calgary
+  
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">Location of incident in Calgary:</h5>: user.incident_location
+    show if:
+      variable: user.complaint_about_cps
+      is: Police in Calgary
+
+  - note: |
+      <hr/>
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">I am complaining about something that happened to:</h5>: user.complaint_victim
+    input type: radio
+    choices:
+      - Me
+      - Someone I witnessed
+      - Someone I represent as a social worker, advocate, or lawyer
+      - Someone close to me, like a spouse, child, or romantic partner
+      - Someone else
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .btn-primary {
+      display: inline-block;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 20
+continue button field: user_screening1
+section: individuals
+---
+# ==================== Screening 2 =================== #
+question: |
+  When did it happen?
+
+fields: 
+  - <h5 style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">I am complaining about something that happened</h5>: user.incident_time
+    input type: radio
+    choices:
+      - This year (Within 12 months)
+      - More than a year ago
+
+  - <h5 style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">I found out about what happened</h5>: user.incident_time
+    input type: radio
+    choices:
+      - This year (Within 12 months)
+      - More than a year ago
+    show if: 
+      variable: user.incident_time
+      is: More than a year ago
+  - note: |  
+      <h5 style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:22px;">It happened on this date:</h5>
+      
+  - <h5 style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">If you do not know the exact date, fill in the best you can to the best of your knowledge.</h5>: date_of_incident
+  
+  - note: |
+      <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;"><strong>Note:</strong> Section 43(11) of the <i>Police Act</i> limits filing complaints to either within one year of the date of the incident, or within one year you first knew or ought to have known that the misconduct occurred.</li>
+  
+    show if:
+      variable: user.incident_time
+      is: More than a year ago
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .btn-primary {
+      display: inline-block;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 25   
+continue button field: user_screening2
+section: when
+---
+# ==================== Signpost 1 =================== #
+question: |
+  Based on what you said:
+  
+subquestion: |
+  <h3><strong><span style="color:#2fbd39">You can potentially file a police complaint.</span></strong></h3>
+  
+  <hr/>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:20px;">WHAT YOU SAID:</span>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Your complaint is about the: <strong>Police in Calgary</strong></span><br/>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened at: <strong>${ user.incident_location } in Calgary</strong></span><br/>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened to: <strong>${ user.complaint_victim }</strong></span><br/>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened: <strong>on ${ date_of_incident }</strong></span>
+
+
+  <hr/>
+      
+  [INDENTBY 0.6in]<span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><strong>Note</strong>: Until an investigator confirms your eligibility, there is no guarantee that you are qualified to submit this complaint.If an investigator says you can’t complain, your complaint will not be investigated. If this happens, you can talk to a lawyer for  advice about the investigator’s opinion.
+      
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:20px;">The next section will ask you to describe what happened in your own words.</span> 
+  
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 35
+section: Screening
+continue button field: user_signpost1
+---
+
+# ==================== Targetted Text Boxes 1 =================== #
+question: |
+  Tell us what happened so this tool can write your complaint letter for you.
+subquestion: |
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">THIS SECTION ASKS WHAT HAPPENED:</span>
+  
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Before police got involved;</li>
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">If police got involved; and</li>
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">If you had contact with police.</li>
+  
+  **<span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Please be as detailed as possible.**</span> 
+  <hr/>
+
+fields:
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened before the police got involved:</h4>
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Answer here</span>: before_police_involved
+    input type: area
+  
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is how the police got involved:</h4>
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Answer here<span>: how_police_involved
+    input type: radio
+    choices:
+      - I personally called the police.
+      - The police found out what was happening some other way.
+  
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is how the police found out what was happening:</h4>
+  
+    show if:
+      variable: how_police_involved
+      is: The police found out what was happening some other way.
+      
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This might involve you or someone else going to a police station</span>: how_police_discovered 
+    input type: area
+    show if:
+      variable: how_police_involved
+      is: The police found out what was happening some other way.
+  
+  - <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">The police:</h4>: showed_up
+    input type: radio
+    choices:
+      - Came in person to the scene.
+      - Did not come in person.
+      
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened when the police arrived:</h4>
+  
+    show if:
+      variable: showed_up
+      is: Came in person to the scene.
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Answer here</span>: after_showed_up
+    input type: area
+    show if:
+      variable: showed_up
+      is: Came in person to the scene.
+     
+  - <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">I personally:</h4>: had_contact
+    input type: radio
+    choices:
+      - Had contact with the police.
+      - Did not have any contact with the police.
+  
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened when I first personally had contact with the police:</h4>
+  
+    show if: 
+      variable: had_contact
+      is: Had contact with the police.
+      
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Answer here</span>: during_initial_contact
+    input type: area
+    show if: 
+      variable: had_contact
+      is: Had contact with the police.
+      
+  
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">After my first contact with the police:</h4>      
+  
+    show if:
+      variable: had_contact
+      is: Had contact with the police.
+        
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Answer here</span>: further_contact
+    input type: radio
+    choices:
+      - I had more contact with them.
+      - I did not have any more contact with them.
+      
+    show if:
+      variable: had_contact
+      is: Had contact with the police.
+    
+      
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what happened when I had more contact after with the police:</h4>
+  
+    show if: 
+      variable: further_contact
+      is: I had more contact with them.
+      
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Include any dates if you had contact after the day of the incident</span>: after_initial_contact 
+    input type: area
+    show if: 
+      variable: further_contact
+      is: I had more contact with them.
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 45
+continue button field: user_targetted1
+section: What Happened
+---
+# ==================== Targetted Text Boxes 2 =================== #
+question: |
+  Tell us a bit more
+
+subquestion: |
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">THIS SECTION ASKS ABOUT:</span>
+  
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Anything else that may have happened;</li>
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Potential witnesses;</li>
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Potential names of police officers; and</li>
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">A summary of the complaint.</li>
+  
+  **<span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Please be as detailed as possible.**</span> 
+  <hr/>
+
+fields:
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">${ after_question }:</h4> 
+      
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Answer here</span>: anything_after_left
+    input type: radio
+    choices:
+      - Something else happened that might help with investigating my complaint.
+      - Nothing else happened.
+      
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This is what else happened that might help with investigating my complaint:</h4>
+  
+    show if: 
+      variable: anything_after_left
+      is: Something else happened that might help with investigating my complaint.
+       
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Please describe what happened</span>:: after_left_scene
+    input type: area
+    show if:
+      variable: anything_after_left
+      is: Something else happened that might help with investigating my complaint.
+       
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Witnesses who are not police:</h4>
+      
+  - Answer here: saw_witnesses
+    input type: radio
+    choices:
+      - Saw or heard what happened.
+      - Did not see or hear what happened.
+
+
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These are witnesses who are willing to talk to the police:</h4>
+  
+    show if: 
+      variable: saw_witnesses
+      is: Saw or heard what happened.
+       
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">If no one is willing to talk to police, leave blank.<br/>Please provide names and phone numbers or any other contact information.</span>: witnesses
+    required: False
+    input type: area
+    show if: 
+      variable: saw_witnesses
+      is: Saw or heard what happened.
+       
+  - note: |
+       <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These are names and badge numbers of officers that were involved or that I was in contact with:</h4>
+       
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">If you have no names or badge numbers, leave blank</span>: officers_ids
+    required: False
+    input type: area
+       
+  - note: |
+      <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">In a few short sentences, I am complaining because: </h4>
+       
+  - <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Please describe the most important point of your complaint in a few sentences if possible:</span>: complaint_summary
+    input type: area
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 60
+continue button field: user_targetted2
+section: What Happened
+---
+# ==================== Signpost 2 =================== #
+event: targetted
+question: |
+  Thank you for those details
+
+subquestion: |
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size: 20px;">Here is what you told us so far</span>
+  
+review:
+  - Edit: before_police_involved
+    button: |
+       This is what happened before police got involved: **${ before_police_involved }** 
+
+  - Edit: how_police_involved
+    button: |
+      This is how the police got involved: **${ how_police_involvedString }**
+      
+  - Edit: how_police_discovered
+    button: |
+      This is how the police found out what was happening: **${ how_police_discovered }**
+    show if: how_police_discoveredBool
+    
+  - Edit: showed_up
+    button: |
+      The police: **${ showed_up }**
+      
+  - Edit: after_showed_up
+    button: |
+      This is what happened when the police arrived: **${ after_showed_up }**
+    show if: after_showed_upBool 
+      
+  - Edit: had_contact
+    button: |
+      I personally: **${ had_contact }**
+      
+  - Edit: during_initial_contact
+    button: |
+      ${ during_initial_contactString1 } ${ during_initial_contactString2 }  
+    show if: had_contactBool
+  
+  - Edit: further_contact
+    button: |
+      After my first contact with the police: **${ further_contact }**
+    show if: had_contactBool
+      
+  - Edit: after_initial_contact
+    button: |
+     ${ after_initial_contactString1 } ${ after_initial_contactString2 } 
+    show if: further_contactBool
+  
+  - Edit: anything_after_left
+    button: |
+      After last contact with the police: **${ anything_after_left }**
+    show if: not_showed_upBool
+      
+  - Edit: anything_after_left
+    button: |
+      After the police left the scene: **${ anything_after_left }**
+    show if: after_showed_upBool
+    
+  
+  - Edit: after_left_scene
+    button: |
+      ${ after_left_sceneString1 } ${ after_left_sceneString2 }
+    show if: anything_after_leftBool
+   
+  - Edit: saw_witnesses
+    button: |
+      ${ saw_witnessesString1 } ${ saw_witnessesString2 }
+
+  - Edit: witnesses
+    button: |
+      ${ the_witnessesString1 } ${ the_witnessesString2 }
+    show if: saw_witnessesBool
+
+  - Edit: officers_ids
+    button: |
+      ${ officers_string1 } ${ officers_string2 }
+
+  - Edit: complaint_summary
+    button: |
+      In a few short sentences, I am complaining because: **${ complaint_summary }**
+
+  - note: |
+      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size: 20px;">Now that you told us what happened, the next section will ask you specific questions to figure out if there was any police misconduct.</h4>
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 65
+continue button field: user_signpost2
+section: targetted
+---
+# ==================== Plain Lang Questions 1 =================== #
+question: |  
+  Select any that apply.
+subquestion: |
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These questions ask about unlawful searches, detentions, and communications, and alcohol/drugs. You can pick more than one if you need.</span>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Page 1/4</span>
+
+  
+fields:
+
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">The police:</h5>: unlawful_search
+    datatype: checkboxes
+    required: False
+    none of the above: False
+    choices:
+      - Searched me or someone else without a warrant or a legal reason.: searched_without_warrant
+        help: |
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">A search may include a search of your body, your bag, your car, your home, or any of your personal belongings.</h5>
+      
+      - Arrested or detained me or someone else without a warrant or lawful reason.: arrested_without_warrant
+        help: |
+          <h6 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">If you are not sure if you were arrested or detained, think about whether you were free to leave. If you weren’t free or felt you weren’t free to leave, then you could have been detained or arrested.</h6>
+         
+          [INDENTBY 0.6in]<h6 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">If the incident you want to complain about resulted in you being charged with criminal offences, and those criminal charges have not been resolved, you may want to speak to a lawyer before making a complaint through this service or otherwise, as information you provide during the complaint process may affect your defence of the criminal charges.</h6>
+
+  - note: |
+      <hr/>
+      
+  - <h5>       </h5>: unethical_behaviour
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Used abusive or insulting language: profane_language
+      
+      - Strip searched me or someone else without a lawful reason: strip_searched
+        help: |
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">A strip search is when a police officer removes or rearrange some or all of the clothing of the person to do a visual inspection.</h5>
+      
+      - Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.: discrimination
+        help: |
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">If you have been discriminated against by the police for any of the above reasons, or any other reasons, you may also be able to file a human rights complaint with the Alberta Human Rights Commission. <br/>For more info, <a href="https://albertahumanrights.ab.ca/complaints/forms/Pages/complaint_form_and_guide.aspx" target="_blank">click here</a></h5>
+
+
+  - note: |
+      <hr/>
+      
+  - <h5>       </h5>: under_the_influence
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Consumed alcohol, marijuana, or an illegal drug or acted like they were not sober while on duty.: intoxicated
+
+  - note: |
+      <hr/>
+      
+  - <h5>       </h5>: improper_representation
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Told someone something that was private or confidential without authorization.: unauthorised_communication
+        help: |
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This includes showing anyone a police record without proper authorization from the police.</h5>
+          
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This also includes making or sharing a petition or statement about the police service that was not authorized.</h5>
+          
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">This also includes saying something improper to the media that was not authorized.</h5>
+          
+      - Made or signed a false or misleading statement.: misleading_statement
+        help: |
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">A false or misleading statement can take any form, including verbal, written, or digital content made by the officer. This includes false complaints against another police officer.</h5>
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 70
+continue button field: user_plainlang1
+section: Potential Police Misconduct
+---
+# ==================== Plain Lang Questions 2 =================== #
+question: |  
+  Select any that apply.
+
+subquestion: |
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These questions ask about failing to do the job, telling a potential offender something, and suppressing information. You can pick more than one if you need. </span>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Page 2/4</span>
+
+  
+fields:
+
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">The police:</h5>: job_failure
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Failed to report a crime or evidence about a crime.: failure_to_report_crime
+      
+      - Disobeyed a command, rule, or policy of the police.: disobeyed_superior
+      
+      - Helped or did nothing to stop another police officer commit misconduct.: colluded_with_another_officer 
+      
+      - Didn’t do something else they should have done as part of their job as a police officer.: failure_of_negligence
+
+  - note: |
+      <hr/>
+      
+  - <h5>       </h5>: helping_offenders
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Told someone there was or was about to be a warrant or court summons for their arrest, before they were supposed to tell them.: unrelated_warrant
+        help: |
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">One such example of misconduct under this section could be if a police officer disclosed the existence of a warrant for the purposes of assisting the person avoid arrest.</h5>
+      
+      - Knew the location of someone that was supposed to be arrested, but didn’t do anything to arrest that person.: unreported_offender 
+
+  - note: |
+      <hr/>
+      
+  - <h5>       </h5>: suppressing
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Destroyed, damaged, hid or erased an official document or any other records.: destroyed_official_document
+      
+      - Caused a complaint against another police officer to be ignored or prevented from being investigated.: suppressed_complaint_against_officer
+        help: |
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">For example, did you try to complain about a police officer’s conduct and they tried to force you to stop?</h5>
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 75
+continue button field: user_plainlang2
+section: Potential Police Misconduct
+---
+# ==================== Plain Lang Questions 3 =================== #
+question: |  
+  Select any that apply. 
+subquestion: |
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These questions ask about bribes, favours, and payments, as well as gun-related issues. You can pick more than one if you need. </span>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Page 3/4</span>
+
+fields:
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">The police:</h5>: request_receive
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Demanded or received money, favours, or any other type of payment, gift, or benefit, without authorization.: demanded_payment
+      
+      - Tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty.: demanded_illicit_drug
+
+
+  - note: |
+      <hr/>
+      
+  - <h5>       </h5>: firearms
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Had a gun they were not supposed to have.: had_gun
+      
+      - Shot a gun they were not supposed to shoot.: fired_gun
+      
+      - Did not report they fired a gun.: did_not_report_firing
+      
+      - Pointed a gun at you or someone else.: pointed_gun
+      
+      - Threatened to use a gun against you or someone else.: threatened_to_use_gun
+      
+      - Acted unstable or reckless with a gun.: acted_erratic
+      
+      - Did anything else involving a gun that they should not have done.: involving_a_gun
+      
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 80
+continue button field: user_plainlang3
+section: Potential Police Misconduct
+---
+# ==================== Plain Lang Questions 4 =================== #
+question: |  
+  Select any that apply.
+
+subquestion: |
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">These final questions ask about excessive force, sexual assault, injury, death, and anything else. You can pick more than one if you need. </span>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Page 4/4</span>
+
+
+fields:
+ 
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">The police:</h5>: force
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Used too much force.: too_much_force
+        help: |
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Includes when:
+          <li style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Force was not needed but was still used.
+          <li style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Force was needed but was too much force.</h5>
+          
+      - Seriously injured me or someone else.: seriously_injured 
+        help: |
+          <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">A serious injury includes a fractured bone, a major burn, or a loss of vision, hearing or body part.</h5>
+      
+      - Hospitalized me or someone else.: hospitalized
+      
+      - Sexually assaulted or sexually harassed me or someone else.: sexually_assaulted
+      
+      - Killed someone.: killed
+    
+  - note: |
+      <hr/>
+      
+  - <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">The police did something else I have not previously mentioned that:</h5>: final_catchall
+    required: False
+    none of the above: False
+    datatype: checkboxes
+    choices:
+      - Was not authorized by law.: unauthorised_by_law
+      
+      - Is against the law.: illegal
+        help: |
+          <h5>For example, an officer’s conduct may constitute a criminal offence, a traffic offence, a bylaw offence, and so forth. <br/>s. 5(2)(e)</h5>
+      
+      - Threatens or harms the positive reputation of the police.: threatens_reputation
+      
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 85
+continue button field: user_plainlang4
+section: Potential Police Misconduct
+---
+# ==================== Signpost 3 =================== #
+event: plainLang
+question: |
+  Thank you for sharing this information
+
+subquestion: |
+  <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">Submitting a complaint can lead to a meaningful resolution.</h4>
+  
+  <h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;"><strong>Here is what you selected in the previous section:</strong></h4>
+  
+review:
+  - Edit: unlawful_search['searched_without_warrant']
+    button: |
+      The police searched me or someone else without a warrant or a legal reason.
+    show if: unlawful_search['searched_without_warrant']
+    
+  - Edit: unlawful_search['arrested_without_warrant']
+    button: |
+      The police arrested or detained me or someone else without a warrant or legal reason.
+    show if: unlawful_search['arrested_without_warrant']
+    
+  - Edit: unethical_behaviour['profane_language']
+    button: |
+      The police used abusive or insulting language.
+    show if: unethical_behaviour['profane_language']
+
+  - Edit: unethical_behaviour['strip_searched']
+    button: |
+      The police strip searched me or someone else without a legal reason.
+    show if: unethical_behaviour['strip_searched']
+
+  - Edit: unethical_behaviour['discrimination']
+    button: |
+      The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.
+    show if: unethical_behaviour['discrimination']
+    
+  - Edit: under_the_influence['intoxicated']
+    button: |
+      The police consumed alcohol, marijuana, or an illegal drug or acted like they were not sober while on duty.
+    show if: under_the_influence['intoxicated']
+    
+  - Edit: improper_representation['unauthorised_communication']
+    button: |
+      The police told someone something that was private or confidential without authorization.
+    show if: improper_representation['unauthorised_communication']
+
+  - Edit: improper_representation['misleading_statement']
+    button: |
+      The police made or signed a false or misleading statement.
+    show if: improper_representation['misleading_statement']
+
+  - Edit: job_failure['failure_to_report_crime']
+    button: |
+      The police failed to report a crime or evidence about a crime.
+    show if: job_failure['failure_to_report_crime']
+
+  - Edit: job_failure['disobeyed_superior']
+    button: |
+      The police disobeyed a command, rule, or policy of the police.
+    show if: job_failure['disobeyed_superior']
+
+
+  - Edit: job_failure['colluded_with_another_officer']
+    button: |
+      The police helped or did nothing to stop another police officer commit misconduct.
+    show if: job_failure['colluded_with_another_officer']
+
+  - Edit: job_failure['failure_of_negligence']
+    button: |
+      The police didn't do something else they should have done as part of their job as a police officer.
+    show if: job_failure['failure_of_negligence']
+    
+  
+  - Edit: helping_offenders['unrelated_warrant']
+    button: |
+      The police told someone there was or was about to be a warrant or court summons for their arrest, before they were supposed to tell them.
+    show if: helping_offenders['unrelated_warrant']
+
+  - Edit: helping_offenders['unreported_offender']
+    button: |
+      The police knew the location of someone that was supposed to be arrested, but didn’t do anything to arrest that person.
+    show if: helping_offenders['unreported_offender']
+    
+
+  - Edit: suppressing['destroyed_official_document']
+    button: |
+      The police destroyed, damaged, hid or erased an official document or any other records.
+    show if: suppressing['destroyed_official_document']
+
+  - Edit: suppressing['suppressed_complaint_against_officer']
+    button: |
+      The police caused a complaint against another police officer to be ignored or prevented from being investigated.
+    show if: suppressing['suppressed_complaint_against_officer']
+
+
+  - Edit: request_receive['demanded_payment']
+    button: |
+      The police demanded or received money, favours, or any other type of payment, gift, or benefit, without authorization. 
+    show if: request_receive['demanded_payment']
+
+  - Edit: request_receive['demanded_illicit_drug']
+    button: |
+      The police tried to convince me or someone else to get them alcohol, marijuana, or an illegal drug while they were on duty.
+    show if: request_receive['demanded_illicit_drug']
+
+
+  - Edit: firearms['had_gun']
+    button: |
+      The police had a gun they were not supposed to have.
+    show if: firearms['had_gun']
+  
+  - Edit: firearms['fired_gun']
+    button: |
+      The police shot a gun they were not supposed to shoot.
+    show if: firearms['fired_gun']
+    
+  - Edit: firearms['pointed_gun']
+    button: |
+      The police pointed a gun at you or someone else.
+    show if: firearms['pointed_gun']
+
+  - Edit: firearms['did_not_report_firing']
+    button: |
+      The police did not report that they fired a gun.
+    show if: firearms['did_not_report_firing']
+
+  - Edit: firearms['threatened_to_use_gun']
+    button: |
+      The police threatened to use a gun against you or someone else. 
+    show if: firearms['threatened_to_use_gun']
+
+  - Edit: firearms['acted_erratic']
+    button: |
+      The police acted unstable or reckless with a gun.
+    show if: firearms['acted_erratic']
+    
+  - Edit: firearms['involving_a_gun']
+    button: |
+      The police did anything else involving a gun that they should not have done.
+    show if: firearms['involving_a_gun']
+
+  - Edit: force['too_much_force']
+    button: |
+      The police used too much force.
+    show if: force['too_much_force']
+
+  - Edit: force['sexually_assaulted']
+    button: |
+      The police sexually assaulted or sexually harassed me or someone else. 
+    show if: force['sexually_assaulted']
+
+  - Edit: force['seriously_injured']
+    button: |
+      The police seriously injured me or someone else.
+    show if: force['seriously_injured']
+
+  - Edit: force['hospitalized']
+    button: |
+      The police hospitalized me or someone else.
+    show if: force['hospitalized']
+
+  - Edit: force['killed']
+    button: |
+      The police killed someone.
+    show if: force['killed']
+ 
+
+  - Edit: final_catchall['unauthorised_by_law']
+    button: |
+      The police did something else I have not mentioned yet that was not authorized by law. 
+    show if: final_catchall['unauthorised_by_law']
+
+  - Edit: final_catchall['illegal']
+    button: |
+      The police did something else I have not mentioned yet that is against the law.
+    show if: final_catchall['illegal']
+    
+  - Edit: final_catchall['threatens_reputation']
+    button: |
+      The police did something else I have not mentioned yet that threatens or harms the reputation of the police.
+    show if: final_catchall['threatens_reputation']
+
+
+  - note: |
+      <br/>__<h3 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">You did not select any answers</h3>__
+  
+    show if: unqualifiedPlainLang
+
+  
+  - note: |
+      <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">The next page will tell you if you do or do not have grounds for a police misconduct complaint.</h5>
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 90
+continue button field: user_signpost3
+section: plainLang
+---
+# ==================== Qualified Complainant =================== #
+question: |
+  Based on what you said:
+
+subquestion: |
+  <h3><strong><span style="color:#2fbd39">Your complaint could potentially be police misconduct.</span></strong></h3>
+  
+  <hr/>
+  
+  <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">POTENTIAL BREACHES DETECTED: <span style="color:#2fbd39; font-family:Arial, Helvetica, sans-serif; font-size:17px;"><strong>${ plainNum }</strong></span></h5>
+  
+  [INDENTBY 0.6in]<span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><strong>Note:</strong> Whether your complaint meets the legal preconditions will be decided by an investigator. If your complaint does not meet the legal preconditions, you can talk to a lawyer for legal advice.</span>
+  
+   <hr/>
+
+fields:
+  - note: |
+      <br/><h4 style="color:#585858; font-family:Arial, Helvetica, sans-serif;">I want my complaint:</h4>
+  - Answer here: anonymous
+    input type: radio
+    choices:
+      - To include my full name and contact information.
+      - To be anonymous, even if it means my complaint probably won’t be investigated.
+    
+  - note: |
+      <div style="padding-top: 10px; padding-left: 7.5px; text-align: center; padding-right: 7.5px; padding-bottom: 7.5px; margin: auto; background-color: #4473C4; width: 100%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:16px;"><strong>Warning:</strong> If you choose to remain anonymous, the likely result is your complaint will not be investigated. That is because a precondition of a complaint under s. 42.1(4)(a) of the <i>Police Act</i> is that the person making the complaint provide their full name. If your full name is not provided, your complaint may not be investigated. If you refuse to be contacted, investigators will be unable to contact you and conduct a proper investigation, which may lead to the complaint being considered “abandoned”.</h5></div>
+       
+      
+      <br/><h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">Click <strong>Continue</strong> if you are ready to have the app write your complaint letter for you. This may take a minute.</h5>
+      <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">By clicking <strong>Continue</strong>, you also confirm all the information in the complaint is as true and accurate as possible; you are aware of all legal issues and consequences that could arise because of using this tool; and agree this tool is not liable for any consequence, legal or otherwise, that could potentially happen from you using this tool.</li>
+  
+    show if: 
+      variable: anonymous
+      is: To be anonymous, even if it means my complaint probably won’t be investigated.
+  
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 95
+continue button field: user_qualified
+section: Identity Confirmation
+---
+objects:
+  - complaint_letter: ALDocument.using(
+          title="Formal Complaint Letter", 
+          filename="Formal_Complaint_Letter", 
+          enabled=True, 
+          has_addendum=False
+        )
+---
+objects:
+  - download_bundle: ALDocumentBundle.using(
+        elements=[complaint_letter], 
+        filename="Formal_Complaint_Letter", 
+        enabled=True,
+        title="Formal Complaint Letter"
+      )
+---   
+# ==================== Non-Anonymous =================== #
+question: |
+  Please provide the following personal information
+
+fields:
+  - First Name: user_firstname
+  - Last Name: user_lastname
+  - Email: user_email
+  - Address: user_address
+  - Apt/Unit: user_unitnum
+    required: False
+  - City: user_city
+  - Province: user_province
+  - Postal code: user_postalCode
+  - Country: user_country
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 95
+continue button field: user_details
+section: Identity Confirmation
+---
+# ===================== Sign =============================== #
+question: |
+  Sign your name
+subquestion: |
+  <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">Sign and click <strong>Continue</strong> if you are ready to have the app write your complaint letter for you. This may take a minute.</h5>
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">By clicking <strong>Continue</strong>, you also confirm all the information in the complaint is as true and accurate as possible; you are aware of all legal issues and consequences that could arise because of using this tool; and agree this tool is not liable for any consequence, legal or otherwise, that could potentially happen from you using this tool.</li>
+
+  <br/>
+      
+signature: user_signature
+under: |
+  ${ name } 
+  
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+progress: 95
+continue button field: user_sign
+section: Identity Confirmation
+---
+# ===================== Final Review =============================== #
+#event: user_saw_the_letter
+question: |
+  We wrote your complaint letter for you. 
+
+subquestion: |
+  <h4>You can choose to either:</h4> 
+  
+  ${ final_options}
+   
+  
+  
+terms: 
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">1</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Send a copy of the formal complaint letter (see below) directly to the Calgary Police, Chief of Calgary Police, the Calgary Police Commission, and the Minister of Justice via the email function by clicking <strong>Email the letter</strong>.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">2</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Additionally, you can email this letter to yourself by placing your email address in the space below and clicking <strong>Send</strong>.
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">3</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Print the letter, and then mail it to the addresses listed in the letterhead.
+  
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:#F2F2F2">4</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Download and email the letter from your email account or keep it for the future.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">5</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">If you would like to redo this online tool, you have the option as well.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">6</span></h5>: |
+    <li style="padding-top:5px; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Everything you entered will be deleted if you didn’t submit the letter.
+  
+
+  
+under: |
+  ${ download_bundle.download_list_html() }
+  ${ download_bundle.send_button_html(show_editable_checkbox = False) }
+  <br/>
+  
+  ${ complaint_letter.as_pdf() }
+  
+  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":test1.yml") }){:target="_blank"}</h5></div>
+
+script: |
+  <script>
+    var fieldset = document.getElementsByTagName("fieldset")[0];
+    fieldset.insertBefore(document.getElementsByClassName("btn-darevisit")[1], fieldset.children[4]); 
+    fieldset.insertBefore(document.getElementsByClassName("btn-darevisit")[1], fieldset.children[4]);
+    var email_button = document.createElement("a");
+    email_button.classList.add("btn");
+    email_button.classList.add("btn-primary");
+    email_button.classList.add("btn-darevisit");
+    
+    email_button.innerHTML = '<i class="fas fa-envelope"></i> Email'
+    
+    
+    email_button.style.color = "white";
+    email_button.onclick = function(){
+      document.getElementsByClassName("al_email_container")[0].style.display = "inline-block"; 
+      email_button.style.display = "none";
+    }
+    fieldset.insertBefore(email_button, fieldset.children[5]);
+    
+    var send_email = document.getElementById("al_send_email_button_download_bundle");
+    
+    send_email.onclick = function(){
+      document.getElementsByClassName("al_email_container")[0].style.display = "none"; 
+      email_button.style.display = "inline-block";
+    }
+  </script>
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+    
+    .btn-primary {
+      display: none;
+    }
+    .btn-darevisit {
+      display: inline-block;
+      margin-right: 5px;
+    }
+    .al_doc_title {
+      display: none;
+    }
+    #al_doc_email_header {
+      display: none;
+    }
+    .al_email_container {
+      display: none;
+    }
+    
+  </style>
+
+field: user_saw_the_letter
+
+action buttons:
+  - label: Submit
+    color: success
+    action: submit_complaint
+
+  - label: Restart
+    color: warning
+    action: restart_complaint
+    
+  - label: Exit
+    color: danger
+    action: exit_complaint
+  
+progress: 95
+section: Preview of Letter
+---   
+event: submit_complaint
+code: |
+  email_sent = send_email(to=['dram@completecomplaints.ca','oluolabimtan@icloud.com'],attachments=complaint_letter[0])
+  
+  last_page
+---  
+event: exit_complaint
+code: |
+  command('exit')
+---
+event: restart_complaint
+code: |
+  command('restart')
+---
+# ==================================================== #
+attachment:
+  name: Formal Complaint Letter
+  filename: Formal_Complaint_Letter
+  variable name: complaint_letter[i]
+  docx template file: Final_Template.docx
+  valid formats:
+    - pdf
+    - docx
+---
+# ===================== After Submission =============================== #
+event: last_page
+question: |
+  Your complaint letter has been: 
+  
+subquestion: |
+  
+  <h3><strong><span style="color:#2fbd39">Successfully sent</span></strong></h3>
+  
+  <hr/>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">WHAT NEXT</span>
+  
+  <ol><li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">An investigator will review your complaint. The investigator will choose if they open an investigation after reviewing your complaint.</li>
+  
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Once an investigation is completed, if the complaint leads to an investigation, the Chief of the Calgary Police Service will determine whether or not there is enough evidence to prove misconduct.</li>
+  
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The Chief then directs the form of discipline, if any, if misconduct is proven. This discipline can range from a warning to full dismissal without pay.</li></ol>
+  
+  
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">HOW TO APPEAL A DECISION</span>
+  
+  <ol><li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">If you are not happy with how the Chief of Police or the Commission’s resolves your complaint, you have the right to appeal their decision to the Law Enforcement and Review Board. This Board is an independent non-police body consisting of a chairperson and two members appointed by the provincial government. This appeal can relate to the final disposition of a complaint after a formal investigation or hearing, or a summary dismissal of a complaint. </li>
+  
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">To appeal a decision, you have to file a written notice explaining why you are appealing, within 30 days of being told of the decision. </li>
+  
+  <li style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The Review Board will let you know in writing if anything more is required. If you appeal a decision you also have the right to a lawyer if you want. </li></ol>
+ 
+  <br/>
+    
+  <div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> <a href="${ url_action('free_resources') }" target="_blank" style="color:#e8e8e8; text-decoration: underline;">Click here for a list of free and low-cost legal resources.</a></h5></div>
+  
+  <br/>
+  
+  
+  
+  % if caseLaw_num > 0:
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><strong>Here are some case law examples of previous police misconduct that is similar to what this tool was able to detect for you. These are examples based on the laws this tool was able to detect for you based on what you said.</strong></span>
+  
+  <ol>
+  % if sectionA:
+  <li style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">Section 5(1)(a) <br/> {<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">1</span></h5>}
+  % endif
+  % if sectionB:
+  <li style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">Section 5(1)(b) <br/> {<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">2</span></h5>}
+  % endif
+  % if sectionC:
+  <li style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">Section 5(1)(c) <br/> {<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">3</span></h5>}
+  % endif
+  % if sectionD:
+  <li style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">Section 5(1)(d) <br/> {<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">4</span></h5>}
+  % endif
+  % if sectionE:
+  <li style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">Section 5(1)(e) <br/> {<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">5</span></h5>}
+  % endif
+  % if sectionF:
+  <li style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">Section 5(1)(f) <br/> {<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">6</span></h5>}
+  % endif
+  % if sectionG:
+  <li style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">Section 5(1)(g) <br/> {<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">7</span></h5>}
+  % endif
+  % if sectionH:
+  <li style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">Section 5(1)(h) <br/> {<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">8</span></h5>}
+  % endif
+  % if sectionI:
+  <li style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #585858;">Section 5(1)(i) <br/> {<h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">9</span></h5>}
+  % endif
+  </ol>
+  % endif
+  
+  
+terms:
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">1</span></h5>: |
+    Section 5(1)(a) governs unlawful disclosures of information and breaches of a person’s privacy. Police are given ready access to a significant amount of highly sensitive and confidential information and therefore must ensure they exercise their authority to use and disclose this information lawfully. Examples of breaches of confidence may include, but are not limited to, (1) disclosing information to a third-party about criminal history or suspected criminal activity (***Best v Pearce***, 2009 CanLII 94176 (AB LERB), ***Saunder v Cst. M. Elliot (No. 2564)***, 2012 CanLII 104693 (AB LERB), ***CH v Brodeur***, 2013 CanLII 69156 (AB LERB), ***GH v Edmonton (Police Service)***, 2018 ABLERB 029), (2) disseminating information about internal EPS matters to third-parties including the media (***EPS Officer AB v Chief of Police***, 2013 CanLII 74399 (AB LERB), ***Fermaniuk v Edmonton (Police Service)***, 2014 ABLERB 52), or (3) disclosing information to a third- party about a person’s whereabouts, contact information, or other personal details without authorization (***DC v Mortensen***, 2013 CanLII 60846).
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">2</span></h5>: |
+    Section 5(1)(b) relates to scenarios where an officer consumes alcohol on duty, is impaired by  alcohol or non-prescribed drugs on duty (such as marijuana), or consumes an illegal drug on or off duty. Examples of breaches of s. 5(1)(b) may include the following, without limitation, (1)  consuming alcohol or lawful recreational drugs while on duty, (2) consuming alcohol or lawful recreational drugs while off duty to the point of impairment, and then attending work while still impaired, and/or (3) consuming illegal drugs at any time, whether the officer is on or off duty.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">3</span></h5>: |
+    Section 5(1)(c) governs corrupt practice and involves misconduct where an officer abuses their position to benefit themselves or others. Examples of corrupt practice may include, without limitation, (1) using their position as a police officer to gather information from third- party sources for the purposes of benefitting the officer personally (***Fingers v Calgary (Police Service)***, 2005 CanLII 92637 (AB LERB)), (2) using their position as a police officer to obtain gifts, discounts, or other similar benefits (***Hoover (Re)***, 2012 CanLII 104624 (AB LERB)), (3) using their position as a police officer to benefit someone else, for example, lying to persons in authority about another person’s criminal conduct for the purposes of protecting the person from liability (***Kube (Re)***, 2013 CanLII 96217 (AB LERB)), (4) using their position as a police officer, and using police equipment, to stalk or harass an individual (***Phillips v Lethbridge (Police Service)***, 2021 ABLERB 003), or (5) using police information databases to query information relating to personal matters.<br/>Breaches of s. 5(1)(c) may also include scenarios where an officer takes, or fails to account for, money received in the course of their duties. For example, if an officer seizes money in the course of a criminal investigation and does not account for the full amount of the money seized, that is corrupt practice. This is especially so as these circumstances suggest the officer may have stolen the money unaccounted for.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">4</span></h5>: |
+    Section 5(1)(d) governs deceit. Deceit occurs where an officer makes or signs a false, misleading or inaccurate statement or entry in an official document or record, or if the officer makes or signs a false, misleading or inaccurate statement pertaining to the officer’s duties. Deceit may also occur if the officer destroys, mutilates, or conceals an official document or record, or alters or erases an entry in an official document or record.<br/>Examples of deceit may include, without limitation, (1) entering false or misleading information in police notes, reports, search warrant documents, or any other police record about events occurring in the context of a police investigation (***Quaidoo v Edmonton (Police Service)***, 2014 ABLERB 51, ***MF et al v Edmonton (Police Service)***, 2016 ABLERB 18), (2) making false or misleading statements about the behaviour of a subject to justify unlawful use of force against that subject (***Quaidoo v Edmonton (Police Service)***, 2014 ABLERB 51), (3) lying or misleading investigators in an internal affairs investigation (***Berube v Chief of Police***, 2013 CanLII 78547 (AB LERB)), (4) fraudulently claiming expenses and/or overtime pay (***MacDonald v Camrose (Police Service)***, 2014 ABLERB 55)), (5) giving false or misleading evidence in legal proceedings (***M.C. v Calgary (Police Service)***, 2015 ABLERB 5), (6) lying or misrepresenting an officer’s authority to arrest or charge an individual (***MF et al v Edmonton (Police Service)***, 2016 ABLERB 18, ***Shah v Edmonton (Police Service)***, 2019 ABLERB 17), and (7) generally, destroying, damaging, concealing, altering, or erasing an official document or record, such as a police report, police notes, or any other official police document or record.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">5</span></h5>: |
+    Section 5(1)(e) governs any conduct that could discredit the police service. Discreditable conduct may arise in the following situations, without limitation, (1) where police use language or gestures that are disrespectful, inflammatory, profane, threatening, or generally unprofessional (***Czapp v Cst. S. Zeilie***, 2011 CanLII 102080 (AB LERB), ***Goree v Park***, 2013 CanLII 27268 (AB LERB), ***EF v Lethbridge (Police Service)***, 2017 ABLERB 24 (CanLII)), (2) where police contravene Federal or Provincial laws, for example, driving while intoxicated, driving while prohibited, harassment, assault, and generally any conduct that is criminal or in breach of the law, (3) where police discriminate against any member of the public due to race (***EF v Lethbridge (Police Service)***, 2017 ABLERB 24 (CanLII)), (4) where an officer assists another officer in committing any misconduct (***Phillips v Lethbridge (Police Service)***, 2021 ABLERB 003), (5) where an officer relies on inappropriate myths and stereotypes to dismiss an allegation of sexual assault (***BA v Edmonton (Police Service)***, 2021 ABLERB 10 (CanLII)), (6) where an officer pursues an intimate relationship with a complainant, suspect, witness, or accused in a criminal matter, (7) where an officer engages in sexual activity on duty, and (8) where an officer makes inappropriate posts on social media.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">6</span></h5>: |
+    Section 5(1)(f) governs misconduct by officers relating to possession and use of firearms. Breaches of s. 5(1)(f) may arise in the following scenarios, without limitation, (1) where an officer, in the course of their duties, points a firearm at an individual when it is unnecessary to do so (***Persaud v Sgt. D. Hunter (No. 2030)***, 2011 CanLII 102117 (AB LERB), ***Yousif v Hamel***, 2014 CanLII 13817 (AB LERB)), (2) where an officer uses a firearm to shoot, or shoot at, an individual where it is unnecessary to do so (***Steele v Edmonton (Police Service)***, 2015 ABLERB 28), (3) where an officer discharges his/her firearm by accident, (4) improper storage of a firearm, (5) improper handling of a firearm, (6) purchasing a firearm without proper documentation, and (7) while on duty, possessing a firearm that is not issued by the police service.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">7</span></h5>: |
+    Section 5(1)(g) governs insubordination. Generally, there are two scenarios where insubordination may occur. The first is where a police officer is insubordinate to a superior police officer by refusing to follow a direction or order of the superior officer (***Fingers v Calgary (Police Service)***, 2005 CanLII 92637 (AB LERB), ***Tait v Chief of Police***, Blood Tribe Police Service, 2013 CanLII 69158 (AB LERB)). The second is where a police officer breaches a policy, directive, or lawful order of the police service (***R.F. v Wasylyshen***, 2010 CanLII 102195 (AB LERB), ***Engel v Cst. S. Zeilie (No. 2017)***, 2011 CanLII 102103 (AB LERB), ***Moffat v Edmonton (Police Service)***, 2019 ABLERB 29).
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">8</span></h5>: |
+    Section 5(1)(h) governs misconduct where an officer is negligent in their duties. Breaches of s. 5(1)(h) may arise in a variety of circumstances. Examples of neglect of duty are, without limitation, (1) conducting a negligent investigation by failing to undertake reasonable investigative steps (***Babchishin and Keith v Edmonton (Police Service)***, 2021 ABLERB 14 (CanLII)), (2) failing to arrest and charge an individual where there are grounds to do so (***Meyer v Chief of Police of the Lethbridge Regional Police Service***, 2009 CanLII 94044 (AB LERB)), (3) failure to advise a person of the reasons for their arrest, and/or failure to advise a person of their right to a lawyer (***Lucas v Amschler***, 2009 CanLII 94031 (AB LERB), ***Kolson v Edmonton (Police Service)***, 2014 ABLERB 040),(4) failure to provide medical attention (***Williamson v Douglas***, 2008 CanLII 91552 (AB LERB), (5) failing to control a police service dog (***Pettersson v Edmonton (Police Service)***, 2014 ABLERB 024, (6) failing to report for scheduled duty (***Tait v Chief of Police, Blood Tribe Police Service***, 2013 CanLII 69158 (AB LERB), (7) failing to appear as a witness for trial or other legal proceeding when required to do so (***Lonsdale v Cst. M. Lay (No. 3264)***, 2011 CanLII 102072 (AB LERB), ***EPS Officer AB v Chief of Police***, 2013 CanLII 74399 (AB LERB)), (8) failing to disclose relevant evidence in the context of a criminal prosecution (***Vuong and Shah v Edmonton (Police Service)***, 2019 ABLERB 22 (CanLII)), (9) failing to arrest persons who have outstanding warrants, (10) failing to report matters, for example, failure to report criminal conduct, failure to report seized property, and generally failure to report any matter which the officer has an obligation to report, and (11) failing to submit a warrant for a person’s arrest in a timely manner.
+    
+  <h5 style="padding-top:5px; color:#3D4F88; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><span style="text-decoration:underline;">More info</span><span style="color:white">9</span></h5>: |
+    Section 5(1)(i) governs misconduct where an officer exceeds their authority, uses force when it is not necessary, or uses force that is excessive. Breaches of s. 5(1)(i) may arise in a variety of circumstances, however, common examples are as follows, (1) where an officer uses force when it is not necessary to do so, or if force is necessary, the officer uses too much force (***Hodelin v Lehaney (No. 3662)***, 2008 CanLII 91554 (AB LERB), ***Ferguson v Cst. R. Abbot (No. 1986)***, 2010 CanLII 102171 (AB LERB), ***Pringle v Constable T. Eltom (2091)***, 2010 CanLII 102175 (AB LERB), ***R.E. v Cst. C. Tagg (No. 2211)***, 2012 CanLII 104690 (AB LERB), ***Quaidoo v Edmonton (Police Service)***, 2014 ABLERB 051), (2) where an officer conducts a search of a person (including strip searches), vehicle, or residence when it is not lawful to do so (***Williamson v Douglas***, 2008 CanLII 91552 (AB LERB), ***R.E. v Cst. C. Tagg (No. 2211)***, 2012 CanLII 104690 (AB LERB), ***Vuong v Edmonton (Police Service)***, 2019 ABLERB 13 (CanLII), ***Cardinal v Edmonton (Police Service)***, 2019 ABLERB 7 (CanLII)), (3) where an officer arrests or charges someone for an offence, or threatens to arrest or charge someone with an offence, when there are no grounds to do so (***Jackman v Edmonton (Police Service)***, 2015 ABLERB 15 (CanLII), ***AZ v Lethbridge Regional (Police Service)***, 2015 ABLERB 26 (CanLII) ***Shah v Edmonton (Police Service)***, 2019 ABLERB 017), and (4) commanding an individual do something, or not do something, when there officer has no lawful authority to do so (***Cardinal v Edmonton (Police Service)***, 2019 ABLERB 7 (CanLii), ***Shah v Edmonton (Police Service)***, 2019 ABLERB 017).
+ 
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+buttons:
+  - Exit: exit
+  - Restart: restart
+progress: 100
+section: Educational Case Law
+---
+# ===================== Kickout 1 =============================== #
+event: kickout1
+question: |
+  Based on what you said:
+subquestion: |
+  
+  <h3><strong><span style="color:#585858">Unfortunately, you can’t file a police complaint with this tool.</span></strong></h3>
+  
+  <hr/>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:20px;">WHAT YOU SAID:</span>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Your complaint is about the: <strong>${ user.complaint_about_cps }</strong></span><br/>
+  % if user.complaint_about_cps == "Police in Calgary":
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened at: <strong>${ user.incident_location }</strong></span><br/>
+  % endif
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened to: <strong>${ user.complaint_victim }</strong></span><br/>
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">The incident happened: <strong>on ${ date_of_incident }</strong></span>
+  
+  <hr/>
+  
+  <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">WHY THIS TOOL CAN'T HELP:
+
+  ${ kickout1_message }
+  
+  <br/>
+  
+  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":free_resources.yml") }){:target="_blank"}</h5></div>
+  
+  <br/>
+  
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+
+    .nav-item {
+      display: none;
+    }
+    
+    a {
+      color:#e8e8e8; 
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color:#e8e8e8; 
+      text-decoration: underline;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+buttons:
+  - Exit: exit
+  - Restart: restart
+  
+progress: 100
+---
+# ===================== Kickout 2 =============================== #
+event: kickout2
+question: |
+  Based on what you said: 
+  
+subquestion: |
+  
+  <h3><strong><span style="color:#585858">Your complaint might not be police misconduct.</span></strong></h3>
+  
+  <hr/>
+  
+  <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">POTENTIAL BREACHES DETECTED: <span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;"><strong>${ plainNum }</strong></span></h5>
+  
+  [INDENTBY 0.6in]<span style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;"><strong>Note:</strong> Whether your complaint meets the legal preconditions will be decided by an investigator. If your complaint does not meet the legal preconditions, you can talk to a lawyer for legal advice.</span>
+  
+   <hr/>
+   
+   <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:17px;">OPTION TO SUBMIT COMPLAINT FOR REVIEW</h5>
+   
+   <h5 style="color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:15px;">Investigators may open an investigation after reviewing your complaint letter if you click <strong>Submit Anyway</strong>, even if this tool was unable to detect any misconduct.</h5>
+   
+   <br/>
+  
+  #####<div style="padding-top: 10px; padding-bottom: 7.5px; margin: auto; text-align:center; background-color: #4473C4; width: 80%"><h5 padding-top: 10px; style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:15px;">You can talk to a lawyer for help if you want legal advice. <br/><br/> [Click here for a list of free and low-cost legal resources.](${ interview_url(i=user_info().package + ":free_resources.yml") }){:target="_blank"}</h5></div>
+  
+  <br/>
+
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    a {
+      color:#e8e8e8; 
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      color:#e8e8e8; 
+      text-decoration: underline;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+buttons:
+  - Exit: exit
+  - Restart: restart
+  - Submit Anyway: user_saw_the_letter
+progress: 100
+---
+event: free_resources
+question: |
+  Free and low-cost legal resources
+subquestion: |
+  ${ kickout_resources }
+  
+  <span style="margin: auto; color:#585858; font-family:Arial, Helvetica, sans-serif; font-size:14px;"><strong>WE ARE NOT AFFILIATED WITH THESE RESOURCES, AND ONLY PROVIDE THESE RESOURCES TO INCREASE ACCESS TO JUSTICE FOR EVERYONE.</strong></span>
+  
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+  </style>
+  
+buttons:
+  - Exit: exit
+  
+---

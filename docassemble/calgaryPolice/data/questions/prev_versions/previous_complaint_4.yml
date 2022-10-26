@@ -1,6 +1,6 @@
----
-include:
-  - docassemble.AssemblyLine:assembly_line_unstyled.yml
+#---
+#include:
+#  - docassemble.AssemblyLine:assembly_line_unstyled.yml
 ---
 features:
   hide standard menu: True
@@ -9,10 +9,10 @@ features:
   progress bar: True
   navigation back button: False
   question back button: True
-  javascript:
-    - docassemble.AssemblyLine:al_audio.js  
-  css:
-    - docassemble.AssemblyLine:al_audio.css    
+  #javascript:
+  #  - docassemble.AssemblyLine:al_audio.js  
+  #css:
+  #  - docassemble.AssemblyLine:al_audio.css    
 ---
 metadata:
   title: |

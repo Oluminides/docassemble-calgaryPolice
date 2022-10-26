@@ -1,0 +1,104 @@
+---
+#include:
+#  - docassemble.AssemblyLine:assembly_line_unstyled.yml
+---
+features:
+  javascript:
+    - docassemble.AssemblyLine:al_audio.js  
+  css:
+    - docassemble.AssemblyLine:al_audio.css    
+---
+metadata:
+  title: |
+    Calgary Police Complaints
+  short title: |
+    Calgary Police Complaints
+  description: |
+    A complaint filing system for the Calgary Police Service
+---
+objects:
+  - user: Individual
+  - ccf_logo: DAStaticFile.using(filename="ccf_logo.png")
+  - cps_logo: DAStaticFile.using(filename="cps_logo.png")
+---
+default screen parts:
+  logo: |
+    <div class="title-container" style="display: flex; flex-direction: row;">
+      <div class="al-logo">
+        <img src="${ ccf_logo.url_for() }"/>
+      </div>
+      
+      <div class="al-title" style="padding-left: 15px; padding-top: 5px;">
+        <div class="title-row-2">${all_variables(special='metadata').get('title','').rstrip()}</div>
+      </div>
+    </div> 
+    
+---
+mandatory: true
+code: |
+  resources = ":free_resources.yml"
+
+  terms = "<span style=\"font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size:17px; color:white;\"><strong>YOU AGREE THAT:</strong></span>|<span style=\"font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size:17px; color:white;\"><strong>WE AGREE THAT:</strong></span>\n"
+  terms += "-----------------------|-------------------------------\n"
+  terms += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:17px; color:black;\"><strong>THERE IS NO GUARANTEE YOUR COMPLAINT WILL LEAD TO AN INVESTIGATION. WE DON’T CONTROL THAT.</strong></span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:17px; color:black;\"><strong>WE DO NOT STORE ANY DATA OR INFORMATION YOU GIVE US FOR YOUR COMPLAINT LETTERS. PERIOD.</strong></span>\n"
+  terms += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:15px; color:black;\">There is <strong>no guarantee police will open an investigation</strong> based on your complaint. This will be decided by police. If an investigation is opened and misconduct is proven, the Chief of Police chooses the discipline, if any.<br/> If an investigator says they won’t investigate your complaint, you can talk to a lawyer for advice about the investigator’s opinion, and potentially appeal the investigator’s decision. <br/> [For free and low-cost legal advice from a lawyer, click here.](${ interview_url(i=user_info().package + \":free_resources.yml\")})</span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:15px; color:black;\">We physically can’t. We have nowhere to store it. We don’t even have a server database to store it. So if anyone asked us what your complaint letter was containing, we wouldn’t have any information to show them. With the Complete Complaints Foundations, <strong>what happens on your computer stays on your computer.</strong><br/> The information you can choose to tell us, so we can write your complaint letter, can include your name, contact details, and other sensitive information regarding a complaint. <br/> Once you submit your complaint, the letter is guarded by the police and government and is out of our hands. If you choose to download the letter, it is up to you to store it securely. <br/></span>\n"
+  terms += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:17px; color:black;\"><strong> THIS APP IS LEGAL INFORMATION, NOT ADVICE. THIS APP ISN’T A LAWYER.</strong></span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:17px; color:black;\"><strong>WE USE BANK-LEVEL AND MILITARY-LEVEL SECURITY. IT’S AS SAFE AS POSSIBLE.</strong></span>\n"
+  terms += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:15px; color:black;\"><strong>Only a lawyer can give legal advice.</strong> Legal information is not the same as legal advice. Legal information on this app is limited to information about the complaint process, generally, and what acts, generally, may or may not be misconduct. <br/> A lawyer can provide legal advice by reviewing the specific circumstances of your case, and applying it to the law, for the purposes of giving opinions and making recommendations about your specific case.</span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:15px; color:black;\"> We use the best encryption and security setting we can. We also <strong>put our apps through independent reviews from privacy and security experts</strong>, to ensure we have done everything we can. Once your complaint is sent, police and government use similar encryption. <br/> We have additional safety features to keep your information safe. Our apps save all the information you input locally on your computer, not on ours, so we never save it. After 90 minutes, or after you close the window, the information locally saved will be deleted from your computer. Only if you download your complaint letter will you have any information saved after completing the app. </span>\n"
+  terms += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:17px; color:black;\"><strong> YOU WERE HONEST AND UNDERSTAND ALL POTENTIAL ISSUES WITH USING OUR APP. </strong></span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:17px; color:black;\"><strong>SOME ANONYMOUS INFORMATION IS TRACKED TO MAKE OUR APPS BETTER. NOTHING PERSONAL.</strong></span>\n"
+  terms += "<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:15px; color:black;\">You cannot lie in your complaint, and you need to <strong>be as honest and accurate as possible.</strong><br/>If the incident you want to complain about resulted in you or someone else being charged criminally, the information you provide could be used against you. There may also be other things, so <strong> talk to a lawyer if you do not know and understand all the potential issues and consequences.</strong> <br/> You also agree this app and its creators are not liable for any potential consequences or issues you have or may have in the future.</span>|<span style=\"font-family: Arial, Helvetica, sans-serif; font-size:15px; color:black;\">Since we are always trying to make our apps as easy and accessible as possible, we might track some other information automatically. This includes anonymous information such as whether certain questions/answers are being clicked more often than others. We never keep any text you enter.<strong>We never collect or save any of your personal information or any information about your complaint you tell us </strong> beyond what’s described above regarding clicks. <br/> We use this anonymous information to improve, operate, maintain, expand, analyze, and develop our apps. <br/> We will not contact you. Our apps and company comply with all anti-spam legislation.</span>\n"
+
+ 
+
+# kickout_resources += "<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#696969;\"><strong style=\"color: #3F4D88; font-size: 17px;\" >Legal Aid Society of Alberta</strong><br/>**Phone**: 403-297-2260<br/>**Website**: [click here](https://www.legalaid.ab.ca) <br/>**Address**: 665 - 8th Street SW.<li>Provides legal aid in civil and criminal matters for individuals who cannot afford to pay a lawyer.</span>|<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#696969;\"><strong style=\"color: #3F4D88; font-size: 17px;\" >Student Legal Assistance</strong><br/>**Phone**: 780-492-2226 <br/> **Website**: [click here](https://www.slacalgary.com) <br/>**Address**: 3390 Murray Fraser Hall, Calgary, AB <li>Free help by law students for Calgarians that cannot afford a lawyer.</span>\n"
+
+---
+mandatory: true
+question: |
+  <div style="border-radius: 10px; background-color: #3F4D88; padding-top: 15px; padding-bottom: 2px; margin: auto; text-align: center; width: 80%"><p style="font-family:Arial, Helvetica, sans-serif; font-size:30px;"><strong style="color: #ffffff;">CPS App Terms & Privacy Summary</strong></p></div>
+
+subquestion: |
+  ${ terms }
+  
+  
+css: |
+  <style>
+    legend {
+      display: none;
+    }
+    
+    .nav-item {
+      display: none;
+    }
+    
+    .al_audio_controls {
+      padding-top: 10px;
+    }
+    
+    .damynavbar-right {
+      display: none;
+    }
+
+    tr > th:first-child {
+      background-color: #3F4D88;
+    }
+
+    tr > th:nth-child(2) {
+      background-color: #3F4D88;
+    }
+
+    td {
+      background-color: #D9E2F3;
+    }
+    
+    tr:nth-child(even) > td {
+      background-color: white;
+    }
+    
+
+
+  </style>
+  
+buttons:
+  - Exit: exit
+  
+---
