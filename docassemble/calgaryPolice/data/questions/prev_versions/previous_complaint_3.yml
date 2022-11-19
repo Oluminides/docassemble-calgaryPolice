@@ -1852,13 +1852,13 @@ script: |
     email_button.classList.add("btn-primary");
     email_button.classList.add("btn-darevisit");
     
-    email_button.innerHTML = '<i class="fas fa-envelope"></i> Email'
+    email_button.innerHTML = '<i class="fas fa-pencil-alt"></i> Email'
     
     
     email_button.style.color = "white";
     email_button.onclick = function(){
       document.getElementsByClassName("al_email_container")[0].style.display = "inline-block"; 
-      email_button.style.display = "none";
+      email_button.style.display = "none";  
     }
     fieldset.insertBefore(email_button, fieldset.children[5]);
     
