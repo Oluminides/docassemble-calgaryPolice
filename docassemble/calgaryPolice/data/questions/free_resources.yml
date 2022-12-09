@@ -36,7 +36,7 @@ default screen parts:
 ---
 mandatory: true
 code: |
-   kickout_resources = "<span style=\"font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size:17px; color:white;\"><strong>YOU AGREE THAT:</strong></span>|<span style=\"font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size:17px; color:white;\"><strong>WE AGREE THAT:</strong></span>\n"
+   kickout_resources = " <span style=\"font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size:15px; color:#696969;\"><strong style=\"color: #3F4D88; font-size: 17px;\" >The Law Society of Alberta</strong><br/>**Phone**: 403-228-1722 <br/>**Website**: [click here](https://www.lawsociety.ab.ca/public/lawyer-referral/) <br/>**Address**: 700-333 11 Ave SW, Calgary, AB <li>You’ll be given contact information for up to 3 lawyers, no charge for the first half hour.</span>|<span style=\"font-weight:normal; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color:#696969;\"><strong style=\"color: #3F4D88; font-size: 17px;\" >Calgary Legal Guidance</strong><br/>**Phone**: 403-234-9266 <br/>**Website**: [click here](https://www.clg.ab.ca) <br/>**Address**: 100-840 7th Ave SW, Calgary, AB <li>Free legal advice, assistance, information, and advocacy for low-income individuals.</span>\n"
    kickout_resources +=  "-----------------------|-------------------------------\n"
    kickout_resources += "<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#696969;\"><strong style=\"color: #3F4D88; font-size: 17px;\" >Legal Aid Society of Alberta</strong><br/>**Phone**: 403-297-2260<br/>**Website**: [click here](https://www.legalaid.ab.ca) <br/>**Address**: 665 - 8th Street SW.<li>Provides legal aid in civil and criminal matters for individuals who cannot afford to pay a lawyer.</span>|<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#696969;\"><strong style=\"color: #3F4D88; font-size: 17px;\" >Student Legal Assistance</strong><br/>**Phone**: 780-492-2226 <br/> **Website**: [click here](https://www.slacalgary.com) <br/>**Address**: 3390 Murray Fraser Hall, Calgary, AB <li>Free help by law students for Calgarians that cannot afford a lawyer.</span>\n"
    kickout_resources += "<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#696969;\"><strong style=\"color: #3F4D88; font-size: 17px;\" >Mustard Seed Legal Clinic</strong><br/>**Phone**: 403-269-1319 <br/>**Website**: [click here](https://www.clg.ab.ca/event/homeless-outreach-	program-legal-clinic/) <br/>**Address**: 102 11 Ave SE, Calgary, AB <li>Free advice and court representation for evictions/landlord-tenant issues, criminal charges, tickets, and other issues.</span>|<span style=\"font-size: 15px; font-family: Arial, Helvetica, sans-serif; color:#696969;\"><strong style=\"color: #3F4D88; font-size: 17px;\" >Elizabeth Fry Society</strong><br/>**Phone**: 403-294-0737<br/>**Website**: [click here](https://www.elizabethfrycalgary.ca) <br/>**Address**: 1731 10 Ave SW, Calgary, AB <li>Offers support and advocacy for women who are or have been involved in the criminal system.</span>\n"   
@@ -68,14 +68,6 @@ css: |
     
     .damynavbar-right {
       display: none;
-    }
-
-    tr > th:first-child {
-      background-color: #3F4D88;
-    }
-
-    tr > th:second-child {
-      background-color: #3F4D88;
     }
   </style>
   
