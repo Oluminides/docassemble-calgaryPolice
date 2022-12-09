@@ -237,83 +237,92 @@ code: |
       user_is_unqualified = False
 
     if at_the_scene['searched_without_warrant']:
-      answers.append("The police searched without a warrant or a lawful reason. s. 5(2)(i)")
+      answers.append("The police searched without a warrant or a lawful reason.")
       plainNum = plainNum + 1
 
       # 5(2)(i)
-      breaches.append("(i) Unlawful or unnecessary exercise of authority")
+      if breaches.count("(i) Unlawful or unnecessary exercise of authority") <= 0:
+        breaches.append("(i) Unlawful or unnecessary exercise of authority")
       sectionI = True
       caseLaw_num = caseLaw_num + 1;
 
     if at_the_scene['arrested_without_warrant']:
-      answers.append("The police arrested or detained someone without a warrant or lawful reason. s. 5(2)(i)")
+      answers.append("The police arrested or detained someone without a warrant or lawful reason.")
       plainNum = plainNum + 1
 
       # 5(2)(i)
-      breaches.append("(i) Unlawful or unnecessary exercise of authority")
+      if breaches.count("(i) Unlawful or unnecessary exercise of authority") <= 0:
+        breaches.append("(i) Unlawful or unnecessary exercise of authority")
       sectionI = True
       caseLaw_num = caseLaw_num + 1;
 
     if at_the_scene['discrimination']:
-      answers.append("The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. s. 5(2)(e)")
+      answers.append("The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.")
       plainNum = plainNum + 1
 
       # 5(2)(e)
-      breaches.append("(e) Discreditable conduct")
+      if breaches.count("(e) Discreditable conduct") <= 0:
+        breaches.append("(e) Discreditable conduct")
       sectionE = True
       caseLaw_num = caseLaw_num + 1;
 
     if at_the_scene['intoxicated']:
-      answers.append("The police consumed alcohol, marijuana, or an illegal narcotic drug while on duty, or appeared to be intoxicated. s. 5(2)(b)")
+      answers.append("The police consumed alcohol, marijuana, or an illegal narcotic drug while on duty, or appeared to be intoxicated.")
       plainNum = plainNum + 1
 
       # 5(2)(b)
-      breaches.append("(b) Consumption or use of liquor or drugs in a manner that is prejudicial to duty")
+      if breaches.count("(b) Consumption or use of liquor or drugs in a manner that is prejudicial to duty") <= 0:
+        breaches.append("(b) Consumption or use of liquor or drugs in a manner that is prejudicial to duty")
       sectionB = True
       caseLaw_num = caseLaw_num + 1;
 
     if at_the_scene['disobeyed_superior']:
-      answers.append("The police disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police s. 5(2)(g)")
+      answers.append("The police disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police.")
       plainNum = plainNum + 1
 
       # 5(2)(g)
-      breaches.append("(g) Insubordination")
+      if breaches.count("(g) Insubordination") <= 0:
+        breaches.append("(g) Insubordination")
       sectionG = True
       caseLaw_num = caseLaw_num + 1;
 
     if at_the_scene['destroyed_official_document']:
-      answers.append("The police destroyed, damaged, hid or erased an official document or any other record. s. 5(2)(d) ")
+      answers.append("The police destroyed, damaged, hid or erased an official document or any other record.")
       plainNum = plainNum + 1
 
       # 5(2)(d)
-      breaches.append("(d) Deceit")
+      if breaches.count("(d) Deceit") <= 0:
+        breaches.append("(d) Deceit")
       sectionD = True
       caseLaw_num = caseLaw_num + 1;
 
     if at_the_scene['suppressed_complaint_against_officer']:
-      answers.append("The police caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated. s. 5(2)(e)")
+      answers.append("The police caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated.")
       plainNum = plainNum + 1
 
       # 5(2)(e)
-      breaches.append("(e) Discreditable conduct")
+      if breaches.count("(e) Discreditable conduct") <= 0:
+        breaches.append("(e) Discreditable conduct")
       sectionE = True
       caseLaw_num = caseLaw_num + 1;
 
     if at_the_scene['unauthorised_communication']:
-      answers.append("The police communicated something private, confidential, or improper to the media or any other person without authorization from the police. s. 5(2)(a)")
+      answers.append("The police communicated something private, confidential, or improper to the media or any other person without authorization from the police.")
       plainNum = plainNum + 1
 
       # 5(2)(a)
-      breaches.append("(a) Breach of confidence")
+      if breaches.count("(a) Breach of confidence") <= 0:
+        breaches.append("(a) Breach of confidence")
       sectionA = True
       caseLaw_num = caseLaw_num + 1;
 
     if at_the_scene['misleading_statement']:
-      answers.append("The police made or signed a false or misleading statement. s. 5(2)(d)")
+      answers.append("The police made or signed a false or misleading statement.")
       plainNum = plainNum + 1
 
       # 5(2)(d)
-      breaches.append("(d) Deceit")
+      if breaches.count("(d) Deceit") <= 0:
+        breaches.append("(d) Deceit")
       sectionD = True
       caseLaw_num = caseLaw_num + 1;
 
@@ -322,56 +331,62 @@ code: |
       user_is_unqualified = False
 
     if no_police_at_the_scene['discrimination']:
-      answers.append("The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. s. 5(2)(e)")
+      answers.append("The police treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.")
       plainNum = plainNum + 1
 
       # 5(2)(e)
-      breaches.append("(e) Discreditable conduct")
+      if breaches.count("(e) Discreditable conduct") <= 0:
+        breaches.append("(e) Discreditable conduct")
       sectionE = True
       caseLaw_num = caseLaw_num + 1;
 
     if no_police_at_the_scene['disobeyed_superior']:
-      answers.append("The police disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police s. 5(2)(g)")
+      answers.append("The police disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police.")
       plainNum = plainNum + 1
 
       # 5(2)(g)
-      breaches.append("(g) Insubordination")
+      if breaches.count("(g) Insubordination") <= 0:
+        breaches.append("(g) Insubordination")
       sectionG = True
       caseLaw_num = caseLaw_num + 1;
 
     if no_police_at_the_scene['destroyed_official_document']:
-      answers.append("The police destroyed, damaged, hid or erased an official document or any other record. s. 5(2)(d) ")
+      answers.append("The police destroyed, damaged, hid or erased an official document or any other record. ")
       plainNum = plainNum + 1
 
       # 5(2)(d)
-      breaches.append("(d) Deceit")
+      if breaches.count("(d) Deceit") <= 0:
+        breaches.append("(d) Deceit")
       sectionD = True
       caseLaw_num = caseLaw_num + 1;
 
     if no_police_at_the_scene['suppressed_complaint_against_officer']:
-      answers.append("The police caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated. s. 5(2)(e)")
+      answers.append("The police caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated.")
       plainNum = plainNum + 1
 
       # 5(2)(e)
-      breaches.append("(e) Discreditable conduct")
+      if breaches.count("(e) Discreditable conduct") <= 0:
+        breaches.append("(e) Discreditable conduct")
       sectionE = True
       caseLaw_num = caseLaw_num + 1;
 
     if no_police_at_the_scene['unauthorised_communication']:
-      answers.append("The police communicated something private, confidential, or improper to the media or any other person without authorization from the police. s. 5(2)(a)")
+      answers.append("The police communicated something private, confidential, or improper to the media or any other person without authorization from the police.")
       plainNum = plainNum + 1
 
       # 5(2)(a)
-      breaches.append("(a) Breach of confidence")
+      if breaches.count("(a) Breach of confidence") <= 0:
+        breaches.append("(a) Breach of confidence")
       sectionA = True
       caseLaw_num = caseLaw_num + 1;
 
     if no_police_at_the_scene['misleading_statement']:
-      answers.append("The police made or signed a false or misleading statement. s. 5(2)(d)")
+      answers.append("The police made or signed a false or misleading statement.")
       plainNum = plainNum + 1
 
       # 5(2)(d)
-      breaches.append("(d) Deceit")
+      if breaches.count("(d) Deceit") <= 0:
+        breaches.append("(d) Deceit")
       sectionD = True
       caseLaw_num = caseLaw_num + 1;
 
@@ -380,24 +395,26 @@ code: |
       user_is_unqualified = False
 
     if verbal_interactions_specific['profane_language']:
-      answers.append("The police used profane, abusive, or insulting language. s. 5(2)(e)")
+      answers.append("The police used profane, abusive, or insulting language.")
       plainNum = plainNum + 1
 
     if verbal_interactions_specific['demanded_payment']:
-      answers.append("The police demanded, received, or tried to convince me or another person to provide them with money, favour, or any other form of payment, gift, or benefit, without authorization. s. 5(2)(c)")
+      answers.append("The police demanded, received, or tried to convince me or another person to provide them with money, favour, or any other form of payment, gift, or benefit, without authorization.")
       plainNum = plainNum + 1
 
       # 5(2)(c)
-      breaches.append("(c) Corrupt practice")
+      if breaches.count("(c) Corrupt practice") <= 0:
+        breaches.append("(c) Corrupt practice")
       sectionC = True
       caseLaw_num = caseLaw_num + 1;
 
     if verbal_interactions_specific['demanded_illicit_drug']:
-      answers.append("The police demanded, received or tried to convince me or another person to provide them with liquor, marijuana, or an illicit drug for  themself or any other police officer on duty. s. 5(2)(b)(iv)")
+      answers.append("The police demanded, received or tried to convince me or another person to provide them with liquor, marijuana, or an illicit drug for  themself or any other police officer on duty.")
       plainNum = plainNum + 1
 
       # 5(2)(b)
-      breaches.append("(b) Consumption or use of liquor or drugs in a manner that is prejudicial to duty")
+      if breaches.count("(b) Consumption or use of liquor or drugs in a manner that is prejudicial to duty") <= 0:
+        breaches.append("(b) Consumption or use of liquor or drugs in a manner that is prejudicial to duty")
       sectionB = True
       caseLaw_num = caseLaw_num + 1;
 
@@ -407,31 +424,34 @@ code: |
       user_is_unqualified = False
 
     if physical_interactions_specific['strip_searched']:
-      answers.append("The police strip searched me or someone else without a lawful reason. s. 5(2)(i)")
+      answers.append("The police strip searched me or someone else without a lawful reason.")
       plainNum = plainNum + 1
 
-      # 5(2)(i)
-    breaches.append("(i) Unlawful or unnecessary exercise of authority")
+    # 5(2)(i)
+    if breaches.count("(i) Unlawful or unnecessary exercise of authority") <= 0:
+      breaches.append("(i) Unlawful or unnecessary exercise of authority")
     sectionI = True
     caseLaw_num = caseLaw_num + 1;
 
     if physical_interactions_specific['too_much_force']:
-      answers.append("The police used too much force s. 5(2)(i)")
+      answers.append("The police used too much force.")
       serious_accident = True
       plainNum = plainNum + 1
 
       # 5(2)(i)
-      breaches.append("(i) Unlawful or unnecessary exercise of authority")
+      if breaches.count("(i) Unlawful or unnecessary exercise of authority") <= 0:
+        breaches.append("(i) Unlawful or unnecessary exercise of authority")
       sectionI = True
       caseLaw_num = caseLaw_num + 1;
 
     if physical_interactions_specific['sexually_assaulted']:
-      answers.append("The police sexually harassed or sexually assaulted someone. 5(2)(e) & s. 46")
+      answers.append("The police sexually harassed or sexually assaulted someone.")
       serious_accident = True
       plainNum = plainNum + 1
 
       # 5(2)(e)
-      breaches.append("(e) Discreditable conduct")
+      if breaches.count("(e) Discreditable conduct") <= 0:
+        breaches.append("(e) Discreditable conduct")
       sectionE = True
       caseLaw_num = caseLaw_num + 1;
 
@@ -440,47 +460,52 @@ code: |
       user_is_unqualified = False
 
     if helping_criminals_specific['unrelated_warrant']:
-      answers.append("The police told someone there was a warrant for their arrest, or that there was a court summons that had been or was about to be issued for that person, and disclosed this information for a purpose unrelated to the lawful execution of the warrant or service of the court summons. s. 5(2)(a)")
+      answers.append("The police told someone there was a warrant for their arrest, or that there was a court summons that had been or was about to be issued for that person, and disclosed this information for a purpose unrelated to the lawful execution of the warrant or service of the court summons.")
       plainNum = plainNum + 1
 
       # 5(2)(a)
-      breaches.append("(a) Breach of confidence")
+      if breaches.count("(a) Breach of confidence") <= 0:
+        breaches.append("(a) Breach of confidence")
       sectionA = True
       caseLaw_num = caseLaw_num + 1;
 
     if helping_criminals_specific['unreported_offender']:
-      answers.append("The police knew the location of an offender but failed to report the offender or do anything to bring the offender into custody. s. 5(2)(h)(iv)")
+      answers.append("The police knew the location of an offender but failed to report the offender or do anything to bring the offender into custody.")
       plainNum = plainNum + 1
 
       # 5(2)(h)
-      breaches.append("(h) Neglect of duty")
+      if breaches.count("(h) Neglect of duty") <= 0:
+        breaches.append("(h) Neglect of duty")
       sectionH = True
       caseLaw_num = caseLaw_num + 1;
 
     if helping_criminals_specific['failure_to_report_crime']:
-      answers.append("The police failed to report a crime or evidence about a crime to the police or Crown Prosecutor. s. 5(2)(h)")
+      answers.append("The police failed to report a crime or evidence about a crime to the police or Crown Prosecutor.")
       plainNum = plainNum + 1
 
       # 5(2)(h)
-      breaches.append("(h) Neglect of duty")
+      if breaches.count("(h) Neglect of duty") <= 0:
+        breaches.append("(h) Neglect of duty")
       sectionH = True
       caseLaw_num = caseLaw_num + 1;
 
     if helping_criminals_specific['colluded_with_another_officer']:
-      answers.append("The police helped another police officer commit misconduct against you or someone else, or the police did nothing to stop another police officer from committing misconduct against you or someone else. s. 5(2)(e)")
+      answers.append("The police helped another police officer commit misconduct against you or someone else, or the police did nothing to stop another police officer from committing misconduct against you or someone else.")
       plainNum = plainNum + 1
 
       # 5(2)(e)
-      breaches.append("(e) Discreditable conduct")
+      if breaches.count("(e) Discreditable conduct") <= 0:
+        breaches.append("(e) Discreditable conduct")
       sectionE = True
       caseLaw_num = caseLaw_num + 1;
 
     if helping_criminals_specific['indebted_themself']:
-      answers.append("The police indebted themself to a person the police officer was expected to report to police or testify against in a legal proceeding. s. 5(2)(c)")
+      answers.append("The police indebted themself to a person the police officer was expected to report to police or testify against in a legal proceeding.")
       plainNum = plainNum + 1
 
       # 5(2)(c)
-      breaches.append("(c) Corrupt practice")
+      if breaches.count("(c) Corrupt practice") <= 0:
+        breaches.append("(c) Corrupt practice")
       sectionC = True
       caseLaw_num = caseLaw_num + 1;
 
@@ -489,56 +514,62 @@ code: |
       user_is_unqualified = False
 
     if firearms['had_gun']:
-      answers.append("The police had a gun that was not issued by the police service. s. 5(2)(f)")
+      answers.append("The police had a gun that was not issued by the police service.")
       plainNum = plainNum + 1
 
       # 5(2)(f)
-      breaches.append("(f) Improper use of firearms")
+      if breaches.count("(f) Improper use of firearms") <= 0:
+        breaches.append("(f) Improper use of firearms")
       sectionF = True
       caseLaw_num = caseLaw_num + 1;
 
     if firearms['fired_gun']:
-      answers.append("The police fired a gun. s. 5(2)(f)")
+      answers.append("The police fired a gun.")
       plainNum = plainNum + 1
 
       # 5(2)(f)
-      breaches.append("(f) Improper use of firearms")
+      if breaches.count("(f) Improper use of firearms") <= 0:
+        breaches.append("(f) Improper use of firearms")
       sectionF = True
       caseLaw_num = caseLaw_num + 1;
 
     if firearms['did_not_report_firing']:
-      answers.append("The police did not report that they fired a gun. s. 5(2)(f)")
+      answers.append("The police did not report that they fired a gun.")
       plainNum = plainNum + 1
 
       # 5(2)(f)
-      breaches.append("(f) Improper use of firearms")
+      if breaches.count("(f) Improper use of firearms") <= 0:
+        breaches.append("(f) Improper use of firearms")
       sectionF = True
       caseLaw_num = caseLaw_num + 1;
 
     if firearms['pointed_gun']:
-      answers.append("The police pointed a gun at you or someone else. s. 5(2)(f)")
+      answers.append("The police pointed a gun at you or someone else.")
       plainNum = plainNum + 1
 
       # 5(2)(f)
-      breaches.append("(f) Improper use of firearms")
+      if breaches.count("(f) Improper use of firearms") <= 0:
+        breaches.append("(f) Improper use of firearms")
       sectionF = True
       caseLaw_num = caseLaw_num + 1;
 
     if firearms['threatened_to_use_gun']:
-      answers.append("The police threatened to use a gun against you or someone else, in any manner. s. 5(2)(f)")
+      answers.append("The police threatened to use a gun against you or someone else, in any manner.")
       plainNum = plainNum + 1
 
       # 5(2)(f)
-      breaches.append("(f) Improper use of firearms")
+      if breaches.count("(f) Improper use of firearms") <= 0:
+        breaches.append("(f) Improper use of firearms")
       sectionF = True
       caseLaw_num = caseLaw_num + 1;
 
     if firearms['acted_erratic']:
-      answers.append("The police acted erratic or reckless with a gun, or did anything else involving a gun that was improper. s. 5(2)(f)")
+      answers.append("The police acted erratic or reckless with a gun, or did anything else involving a gun that was improper.")
       plainNum = plainNum + 1
 
       # 5(2)(f)
-      breaches.append("(f) Improper use of firearms")
+      if breaches.count("(f) Improper use of firearms") <= 0:
+        breaches.append("(f) Improper use of firearms")
       sectionF = True
       caseLaw_num = caseLaw_num + 1;
 
@@ -548,48 +579,51 @@ code: |
       serious_accident = True
 
     if injuries['seriously_injured']:
-      answers.append("The police seriously injured someone (such as fractured bone, major burn, or a loss of vision, hearing, or body part). s 5(2)(i) & s. 46")
+      answers.append("The police seriously injured someone (such as fractured bone, major burn, or a loss of vision, hearing, or body part).")
       plainNum = plainNum + 1
 
     if injuries['hospitalized']:
-      answers.append("The police hospitalized someone. s 5(2)(i) & s. 46")
+      answers.append("The police hospitalized someone.")
       plainNum = plainNum + 1
 
     if injuries['killed']:
-      answers.append("The police killed someone. s 5(2)(i) & s. 46")
+      answers.append("The police killed someone.")
       plainNum = plainNum + 1
 
   if final_questions['failure_of_negligence'] or final_questions['unauthorised_by_law'] or final_questions['illegal'] or final_questions['threatens_reputation']:
     user_is_unqualified = False
 
   if final_questions['failure_of_negligence']:
-    answers.append("The police failed to do something else they should have done as part of their duties and responsibilities as a police officer. s. 5(2)(h)")
+    answers.append("The police failed to do something else they should have done as part of their duties and responsibilities as a police officer.")
     plainNum = plainNum + 1
 
     # 5(2)(h)
-    breaches.append("(h) Neglect of duty")
+    if breaches.count("(h) Neglect of duty") <= 0:
+        breaches.append("(h) Neglect of duty")
     sectionH = True
     caseLaw_num = caseLaw_num + 1;
 
   if final_questions['unauthorised_by_law']:
-    answers.append("The police did something not authorized by law. s. 5(2)(i)")
+    answers.append("The police did something not authorized by law.")
     plainNum = plainNum + 1
 
     # 5(2)(i)
-    breaches.append("(i) Unlawful or unnecessary exercise of authority")
+    if breaches.count("(i) Unlawful or unnecessary exercise of authority") <= 0:
+      breaches.append("(i) Unlawful or unnecessary exercise of authority")
     sectionI = True
     caseLaw_num = caseLaw_num + 1;
 
   if final_questions['illegal']:
-    answers.append("The police did something against the law. s. 5(2)(e)")
+    answers.append("The police did something against the law.")
     plainNum = plainNum + 1
 
   if final_questions['threatens_reputation']:
-    answers.append("The police threatened or decreased the positive reputation of the police. s. 5(2)(e)")
+    answers.append("The police threatened or decreased the positive reputation of the police.")
     plainNum = plainNum + 1
 
     # 5(2)(e)
-    breaches.append("(e) Discreditable conduct")
+    if breaches.count("(e) Discreditable conduct") <= 0:
+        breaches.append("(e) Discreditable conduct")
     sectionE = True
     caseLaw_num = caseLaw_num + 1;
 
@@ -768,6 +802,7 @@ fields:
     choices:
       - Police in Calgary
       - Police outside of Calgary
+ 
  
   - <h5 style="color:#696969; font-family:Arial, Helvetica, sans-serif; font-size:17px;">Who is the victim of the incident you are complaining about?:</h5>: user.complaint_victim
     input type: radio
@@ -1073,23 +1108,23 @@ fields:
     required: False
     none of the above: False
     choices:
-      - Searched without a warrant or lawful reason. s. 5(2)(i): searched_without_warrant
+      - Searched without a warrant or lawful reason.: searched_without_warrant
       
-      - Arrested or detained someone without a warrant or lawful reason. s. 5(2)(i): arrested_without_warrant
+      - Arrested or detained someone without a warrant or lawful reason.: arrested_without_warrant
       
-      - Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. s. 5(2)(e): discrimination
+      - Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.: discrimination
       
-      - Consumed alcohol, marijuana, or an illegal narcotic drug while on duty or appeared to be intoxicated. s. 5(2)(b): intoxicated
+      - Consumed alcohol, marijuana, or an illegal narcotic drug while on duty or appeared to be intoxicated.: intoxicated
       
-      - Disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police. s. 5(2)(g): disobeyed_superior
+      - Disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police.: disobeyed_superior
       
-      - Destroyed, damaged, hid or erased an official document or any other records. s. 5(2)(d) : destroyed_official_document
+      - Destroyed, damaged, hid or erased an official document or any other records. : destroyed_official_document
       
-      - Caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated. s. 5(2)(e): suppressed_complaint_against_officer
+      - Caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated.: suppressed_complaint_against_officer
       
-      - Communicated something private, confidential, or improper to the media or any other person without authorization from the police. s. 5(2)(a): unauthorised_communication
+      - Communicated something private, confidential, or improper to the media or any other person without authorization from the police.: unauthorised_communication
       
-      - Made or signed a false or misleading statement. s. 5(2)(d): misleading_statement
+      - Made or signed a false or misleading statement.: misleading_statement
       
     show if:
       code: |
@@ -1108,17 +1143,17 @@ fields:
     required: False
     none of the above: False
     choices:
-      - Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. s. 5(2)(e): discrimination
+      - Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.: discrimination
       
-      - Disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police. s. 5(2)(g): disobeyed_superior
+      - Disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police.: disobeyed_superior
       
-      - Destroyed, damaged, hid or erased an official document or any other records. s. 5(2)(d) : destroyed_official_document
+      - Destroyed, damaged, hid or erased an official document or any other records.: destroyed_official_document
       
-      - Caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated. s. 5(2)(e): suppressed_complaint_against_officer
+      - Caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated.: suppressed_complaint_against_officer
       
-      - Communicated something private, confidential, or improper to the media or any other person without authorization from the police. s. 5(2)(a): unauthorised_communication
+      - Communicated something private, confidential, or improper to the media or any other person without authorization from the police.: unauthorised_communication
       
-      - Made or signed a false or misleading statement. s. 5(2)(d): misleading_statement
+      - Made or signed a false or misleading statement.: misleading_statement
       
     show if:
       code: |
@@ -1137,11 +1172,11 @@ fields:
     required: False
     none of the above: False
     choices:
-      - Used profane, abusive, or insulting language. s. 5(2)(e): profane_language
+      - Used profane, abusive, or insulting language.: profane_language
       
-      - Demanded, received, or tried to convince me or another person to provide them with money, favours, or any other type of payment, gift, or benefit, without authorization. s. 5(2)(c): demanded_payment
+      - Demanded, received, or tried to convince me or another person to provide them with money, favours, or any other type of payment, gift, or benefit, without authorization.: demanded_payment
       
-      - Demanded, received or tried to convince me or another person to provide them with liquor, marijuana, or an illicit drug for  themself or any other police officer on duty. s. 5(2)(b)(iv): demanded_illicit_drug
+      - Demanded, received or tried to convince me or another person to provide them with liquor, marijuana, or an illicit drug for  themself or any other police officer on duty.: demanded_illicit_drug
         
     show if:
       code: |
@@ -1160,11 +1195,11 @@ fields:
     required: False
     none of the above: False
     choices:
-      - Strip searched me or someone else without a lawful reason. s. 5(2)(i): strip_searched
+      - Strip searched me or someone else without a lawful reason.: strip_searched
       
-      - Used too much force. s. 5(2)(i): too_much_force
+      - Used too much force.: too_much_force
       
-      - Sexually assaulted or sexually harassed someone. s. 5(2)(e) & s. 46: sexually_assaulted
+      - Sexually assaulted or sexually harassed someone.: sexually_assaulted
         
     show if:
       code: |
@@ -1183,15 +1218,15 @@ fields:
     required: False
     none of the above: False
     choices:
-      - Told someone there was a warrant for their arrest, or that there was a court summons that had been or was about to be issued for that person, and disclosed this information for a purpose unrelated to the lawful execution of the warrant or service of the court summons. s. 5(2)(a): unrelated_warrant
+      - Told someone there was a warrant for their arrest, or that there was a court summons that had been or was about to be issued for that person, and disclosed this information for a purpose unrelated to the lawful execution of the warrant or service of the court summons.: unrelated_warrant
       
-      - Knew the location of an offender but failed to report the offender or do anything to bring the offender into custody. s. 5(2)(h)(iv): unreported_offender 
+      - Knew the location of an offender but failed to report the offender or do anything to bring the offender into custody.: unreported_offender 
       
-      - Failed to report a crime or evidence about a crime to the police or Crown Prosecutor. s. 5(2)(h): failure_to_report_crime
+      - Failed to report a crime or evidence about a crime to the police or Crown Prosecutor.: failure_to_report_crime
       
-      - Helped another police officer commit misconduct against you or someone else, or did nothing to stop another police officer from committing misconduct against you or someone else. s. 5(2)(e): colluded_with_another_officer
+      - Helped another police officer commit misconduct against you or someone else, or did nothing to stop another police officer from committing misconduct against you or someone else.: colluded_with_another_officer
       
-      - Indebted themself to a person the police officer was expected to report to police or testify against in a legal proceeding. s. 5(2)(c): indebted_themself
+      - Indebted themself to a person the police officer was expected to report to police or testify against in a legal proceeding.: indebted_themself
     
     show if:
       code: |
@@ -1210,17 +1245,17 @@ fields:
     required: False
     none of the above: False
     choices:
-      - Had a gun that was not issued by the police service. s. 5(2)(f): had_gun
+      - Had a gun that was not issued by the police service.: had_gun
       
-      - Fired a gun. s. 5(2)(f): fired_gun 
+      - Fired a gun.: fired_gun 
       
-      - Did not report that they fired a gun. s. 5(2)(f): did_not_report_firing
+      - Did not report that they fired a gun.: did_not_report_firing
       
-      - Pointed a gun at you or someone else. s. 5(2)(f): pointed_gun
+      - Pointed a gun at you or someone else.: pointed_gun
       
-      - Threatened to use a gun against you or someone else, in any manner. s. 5(2)(f): threatened_to_use_gun
+      - Threatened to use a gun against you or someone else, in any manner.: threatened_to_use_gun
       
-      - Acted erratic or reckless with a gun, or did anything else involving a gun that was improper. s. 5(2)(f): acted_erratic
+      - Acted erratic or reckless with a gun, or did anything else involving a gun that was improper.: acted_erratic
     
     show if:
       code: |
@@ -1239,11 +1274,11 @@ fields:
     required: False
     none of the above: False
     choices:
-      - Seriously injured someone (such as fractured bone, major burn, or a loss of vision, hearing, or body part). s. 5(2)(i) & s. 46: seriously_injured
+      - Seriously injured someone (such as fractured bone, major burn, or a loss of vision, hearing, or body part).: seriously_injured
       
-      - Hospitalized someone. s 5(2)(i) & s. 46: hospitalized 
+      - Hospitalized someone.: hospitalized 
       
-      - Killed someone. s 5(2)(i) & s. 46: killed
+      - Killed someone.: killed
     
     show if:
       code: |
@@ -1258,13 +1293,13 @@ fields:
     required: False
     none of the above: False
     choices:
-      - Failed to do something else they should have done as part of their duties and responsibilities as a police officer. s. 5(2)(h): failure_of_negligence
+      - Failed to do something else they should have done as part of their duties and responsibilities as a police officer.: failure_of_negligence
       
-      - Did something not authorized by law. s. 5(2)(i): unauthorised_by_law 
+      - Did something not authorized by law.: unauthorised_by_law 
       
-      - Did something against the law. s. 5(2)(e): illegal
+      - Did something against the law.: illegal
       
-      - Threatened or decreased the positive reputation of the police. s. 5(2)(e): threatens_reputation
+      - Threatened or decreased the positive reputation of the police.: threatens_reputation
     
 
 progress: 50
@@ -1447,47 +1482,47 @@ review:
     
   - Edit: at_the_scene['searched_without_warrant']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Searched without a warrant or a lawful reason. s. 5(2)(i)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Searched without a warrant or a lawful reason.</strong></span>
     show if: at_the_scene['searched_without_warrant']
     
   - Edit: at_the_scene['arrested_without_warrant']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Arrested or detained someone without a warrant or lawful reason. s. 5(2)(i)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Arrested or detained someone without a warrant or lawful reason.</strong></span>
     show if: at_the_scene['arrested_without_warrant']
     
   - Edit: at_the_scene['discrimination']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. s. 5(2)(e)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.</strong></span>
     show if: at_the_scene['discrimination']
     
   - Edit: at_the_scene['intoxicated']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Consumed alcohol, marijuana, or an illegal narcotic drug while on duty or appeared to be intoxicated. s. 5(2)(b)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Consumed alcohol, marijuana, or an illegal narcotic drug while on duty or appeared to be intoxicated.</strong></span>
     show if: at_the_scene['intoxicated']
     
   - Edit: at_the_scene['disobeyed_superior']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police. s. 5(2)(g)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police.</strong></span>
     show if: at_the_scene['disobeyed_superior']
     
   - Edit: at_the_scene['destroyed_official_document']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Destroyed, damaged, hid or erased an official document or any other records. s. 5(2)(d)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Destroyed, damaged, hid or erased an official document or any other records.</strong></span>
     show if: at_the_scene['destroyed_official_document']
     
   - Edit: at_the_scene['suppressed_complaint_against_officer']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated. s. 5(2)(e)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated.</strong></span>
     show if: at_the_scene['suppressed_complaint_against_officer']
     
   - Edit: at_the_scene['unauthorised_communication']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Communicated something private, confidential, or improper to the media or any other person without authorization from the police. s. 5(2)(a)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Communicated something private, confidential, or improper to the media or any other person without authorization from the police.</strong></span>
     show if: at_the_scene['unauthorised_communication']
     
   - Edit: at_the_scene['misleading_statement']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Made or signed a false or misleading statement. s. 5(2)(d) </strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Made or signed a false or misleading statement.</strong></span>
     show if: at_the_scene['misleading_statement']
     
   - note: |
@@ -1499,32 +1534,32 @@ review:
 
   - Edit: no_police_at_the_scene['discrimination']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry. s. 5(2)(e)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Treated me or someone else differently based on race, skin colour, religion, sex, gender, physical or mental disability, marital status, age, or ancestry.</strong></span>
     show if: no_police_at_the_scene['discrimination']
     
   - Edit: no_police_at_the_scene['disobeyed_superior']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police. s. 5(2)(g)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Disobeyed an order from a superior, or the police disobeyed a directive, rule, or policy of the police.</strong></span>
     show if: no_police_at_the_scene['disobeyed_superior']
     
   - Edit: no_police_at_the_scene['destroyed_official_document']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Destroyed, damaged, hid or erased an official document or any other records. s. 5(2)(d)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Destroyed, damaged, hid or erased an official document or any other records.</strong></span>
     show if: no_police_at_the_scene['destroyed_official_document']
     
   - Edit: no_police_at_the_scene['suppressed_complaint_against_officer']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated. s. 5(2)(e)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Caused a complaint against another police officer to be ignored, withheld, suppressed, or do anything else to prevent a complaint against another police officer from being investigated.</strong></span>
     show if: no_police_at_the_scene['suppressed_complaint_against_officer']
     
   - Edit: no_police_at_the_scene['unauthorised_communication']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Communicated something private, confidential, or improper to the media or any other person without authorization from the police. s. 5(2)(a) </strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Communicated something private, confidential, or improper to the media or any other person without authorization from the police.</strong></span>
     show if: no_police_at_the_scene['unauthorised_communication']
     
   - Edit: no_police_at_the_scene['misleading_statement']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Made or signed a false or misleading statement. s. 5(2)(d) </strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Made or signed a false or misleading statement.</strong></span>
     show if: no_police_at_the_scene['misleading_statement']
     
   - note: |
@@ -1536,17 +1571,17 @@ review:
     
   - Edit: verbal_interactions_specific['profane_language']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Used profane, abusive, or insulting language. s. 5(2)(e) </strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Used profane, abusive, or insulting language. </strong></span>
     show if: verbal_interactions_specific['profane_language']
     
   - Edit: verbal_interactions_specific['demanded_payment']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Demanded, received, or tried to convince me or another person to provide them with money, favours, or any other type of payment, gift, or benefit, without authorization. s. 5(2)(c)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Demanded, received, or tried to convince me or another person to provide them with money, favours, or any other type of payment, gift, or benefit, without authorization.</strong></span>
     show if: verbal_interactions_specific['demanded_payment']
     
   - Edit: verbal_interactions_specific['demanded_illicit_drug']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Demanded, received or tried to convince me or another person to provide them with liquor, marijuana, or an illicit drug for  themself or any other police officer on duty. s. 5(2)(b)(iv)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Demanded, received or tried to convince me or another person to provide them with liquor, marijuana, or an illicit drug for  themself or any other police officer on duty.</strong></span>
     show if: verbal_interactions_specific['demanded_illicit_drug']
       
   - note: |
@@ -1558,17 +1593,17 @@ review:
     
   - Edit: physical_interactions_specific['strip_searched']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Strip searched me or someone else without a lawful reason. s. 5(2)(i)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Strip searched me or someone else without a lawful reason.</strong></span>
     show if: physical_interactions_specific['strip_searched']
     
   - Edit: physical_interactions_specific['too_much_force']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Used too much force. s. 5(2)(i)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Used too much force.</strong></span>
     show if: physical_interactions_specific['too_much_force']
     
   - Edit: physical_interactions_specific['sexually_assaulted']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Sexually assaulted or sexually harassed someone. s. 5(2)(e) & s. 46</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Sexually assaulted or sexually harassed someone.</strong></span>
     show if: physical_interactions_specific['sexually_assaulted']
     
   - note: |
@@ -1581,27 +1616,27 @@ review:
       
   - Edit: helping_criminals_specific['unrelated_warrant']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Told someone there was a warrant for their arrest, or that there was a court summons that had been or was about to be issued for that person, and disclosed this information for a purpose unrelated to the lawful execution of the warrant or service of the court summons. s. 5(2)(a)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Told someone there was a warrant for their arrest, or that there was a court summons that had been or was about to be issued for that person, and disclosed this information for a purpose unrelated to the lawful execution of the warrant or service of the court summons.</strong></span>
     show if: helping_criminals_specific['unrelated_warrant']
     
   - Edit: helping_criminals_specific['unreported_offender']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Knew the location of an offender but failed to report the offender or do anything to bring the offender into custody. s. 5(2)(h)(iv)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Knew the location of an offender but failed to report the offender or do anything to bring the offender into custody.</strong></span>
     show if: helping_criminals_specific['unreported_offender']
     
   - Edit: helping_criminals_specific['failure_to_report_crime']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Failed to report a crime or evidence about a crime to the police or Crown Prosecutor. s. 5(2)(h)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Failed to report a crime or evidence about a crime to the police or Crown Prosecutor.</strong></span>
     show if: helping_criminals_specific['failure_to_report_crime']
     
   - Edit: helping_criminals_specific['colluded_with_another_officer']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Helped another police officer commit misconduct against you or someone else, or did nothing to stop another police officer from committing misconduct against you or someone else. s. 5(2)(e)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Helped another police officer commit misconduct against you or someone else, or did nothing to stop another police officer from committing misconduct against you or someone else.</strong></span>
     show if: helping_criminals_specific['colluded_with_another_officer']
     
   - Edit: helping_criminals_specific['indebted_themself']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Indebted themself to a person the police officer was expected to report to police or testify against in a legal proceeding. s. 5(2)(c)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Indebted themself to a person the police officer was expected to report to police or testify against in a legal proceeding.</strong></span>
     show if: helping_criminals_specific['indebted_themself']
     
   
@@ -1614,32 +1649,32 @@ review:
     
   - Edit: firearms['had_gun']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Had a gun that was not issued by the police service. s. 5(2)(f)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Had a gun that was not issued by the police service.</strong></span>
     show if: firearms['had_gun']
     
   - Edit: firearms['fired_gun']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Fired a gun. s. 5(2)(f)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Fired a gun.</strong></span>
     show if: firearms['fired_gun']
     
   - Edit: firearms['did_not_report_firing']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Did not report that they fired a gun. s. 5(2)(f)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Did not report that they fired a gun.</strong></span>
     show if: firearms['did_not_report_firing']
     
   - Edit: firearms['pointed_gun']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Pointed a gun at you or someone else. s. 5(2)(f)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Pointed a gun at you or someone else.</strong></span>
     show if: firearms['pointed_gun']
     
   - Edit: firearms['threatened_to_use_gun']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Threatened to use a gun against you or someone else, in any manner. s. 5(2)(f)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Threatened to use a gun against you or someone else, in any manner.</strong></span>
     show if: firearms['threatened_to_use_gun']
     
   - Edit: firearms['acted_erratic']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Acted erratic or reckless with a gun, or did anything else involving a gun that was improper. s. 5(2)(f)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Acted erratic or reckless with a gun, or did anything else involving a gun that was improper.</strong></span>
     show if: firearms['acted_erratic']
     
   - note: |
@@ -1651,17 +1686,17 @@ review:
     
   - Edit: injuries['seriously_injured']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Seriously injured someone (such as fractured bone, major burn, or a loss of vision, hearing, or body part). s. 5(2)(i) & s. 46</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Seriously injured someone (such as fractured bone, major burn, or a loss of vision, hearing, or body part).</strong></span>
     show if: injuries['seriously_injured']
     
   - Edit: injuries['hospitalized']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Hospitalized someone. s 5(2)(i) & s. 46</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Hospitalized someone.</strong></span>
     show if: injuries['hospitalized']
     
   - Edit: injuries['killed']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Killed someone. s 5(2)(i) & s. 46</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Killed someone.</strong></span>
     show if: injuries['killed']
       
   - note: |
@@ -1673,22 +1708,22 @@ review:
     
   - Edit: final_questions['failure_of_negligence']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Failed to do something else they should have done as part of their duties and responsibilities as a police officer. s. 5(2)(h)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Failed to do something else they should have done as part of their duties and responsibilities as a police officer.</strong></span>
     show if: final_questions['failure_of_negligence']
     
   - Edit: final_questions['unauthorised_by_law']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Did something not authorized by law. s. 5(2)(i)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Did something not authorized by law.</strong></span>
     show if: final_questions['unauthorised_by_law']
     
   - Edit: final_questions['illegal']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Did something against the law. s. 5(2)(e)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Did something against the law.</strong></span>
     show if: final_questions['illegal']
     
   - Edit: final_questions['threatens_reputation']
     button: |
-      <span style="color: #3F4D88; font-size: 17px;"><strong>Threatened or decreased the positive reputation of the police. s. 5(2)(e)</strong></span>
+      <span style="color: #3F4D88; font-size: 17px;"><strong>Threatened or decreased the positive reputation of the police.</strong></span>
     show if: final_questions['threatens_reputation']
       
 progress: 65
