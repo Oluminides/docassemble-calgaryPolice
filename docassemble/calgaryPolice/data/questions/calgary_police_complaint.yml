@@ -5,14 +5,21 @@ include:
 features:
   hide standard menu: True
   small screen navigation: False
-  #navigation: True
+  navigation: True
   progress bar: True
-  #navigation back button: False
   question back button: True 
   javascript:
     - docassemble.AssemblyLine:al_audio.js  
   css:
     - docassemble.AssemblyLine:al_audio.css
+
+---
+sections:
+  - Introduction
+  - Stage 1 - Qualifying
+  - Stage 2 - Tell Us Your Story
+  - Stage 3 - Yes/No Follow-ups
+  - Stage 4 - Review and Submit Complaint
   
 ---
 metadata:
@@ -26,13 +33,13 @@ metadata:
 objects:
   - user: Individual
   - ccf_logo: DAStaticFile.using(filename="ccf_logo.png")
-  - cps_logo: DAStaticFile.using(filename="cps_logo.png")
+  - new_logo: DAStaticFile.using(filename="new_logo_small.png")
 ---
 default screen parts:
   logo: |
     <div class="title-container" style="display: flex; flex-direction: row;">
       <div class="al-logo">
-        <img src="${ ccf_logo.url_for() }"/>
+        <img src="${ new_logo.url_for() }"/>
       </div>
       
       <div class="al-title" style="padding-left: 15px; padding-top: 5px;">
@@ -46,6 +53,7 @@ code: |
   from datetime import datetime
   
   user_prototype
+  language_choice
   user_saw_intro_screen
   user_saw_stages
   
@@ -92,7 +100,7 @@ code: |
   how_police_involvedString = ""
 
   if how_police_involved == "I called 911 or the police" or how_police_involved == "Someone else called 911 or the police":
-    how_police_involvedString += how_police_involved
+    how_police_involvedString += " " + " " + how_police_involved
     how_police_involvedString += phone_call_details
 
   beforeString = how_police_involvedString
@@ -100,22 +108,22 @@ code: |
   duringString = ""
 
   if showed_up == "Yes, the police came to the scene":
-    duringString += "The police then came to the scene."
+    duringString += " " + "The police then came to the scene."
 
     if verbal_interactions == "Yes, there were verbal interactions with the police":
-      duringString += "There were verbal interactions with the police."
+      duringString += " " + "There were verbal interactions with the police."
     else:
-      duringString += "There were no verbal interactions with the police."
+      duringString += " " + "There were no verbal interactions with the police."
 
     if physical_interactions == "Yes, there were physical interactions with the police":
-      duringString += "There were physical interactions with the police."
+      duringString += " " + "There were physical interactions with the police."
     else:
-      duringString += "There were no physical interactions with the police."
+      duringString += " " + "There were no physical interactions with the police."
 
     if (verbal_interactions == "Yes, there were verbal interactions with the police" or physical_interactions == "Yes, there were physical interactions with the police") and use_of_weapons == "Yes, they used guns or weapons or threatened to use them":
-      duringString += "The police used guns or weapons or threatened to use them."
+      duringString += " " + "The police used guns or weapons or threatened to use them."
     else:
-      duringString += "The police did not use guns or weapons nor did they threaten to use them."
+      duringString += " " + "The police did not use guns or weapons nor did they threaten to use them."
 
     if how_police_arrived:
       duringString += how_police_arrived
@@ -131,13 +139,13 @@ code: |
 
 
   elif showed_up == "No, the police did not come to the scene":
-    duringString += "The police did not come to the scene."
+    duringString += " " + "The police did not come to the scene."
 
     if what_happened_next:
       duringString += what_happened_next
     
   else:
-    duringString += "I don’t know if the police came to the scene."
+    duringString += " " + "I don’t know if the police came to the scene."
 
     if what_happened_next:
       duringString += what_happened_next
@@ -151,13 +159,13 @@ code: |
   afterString = ""
 
   if any_injuries == "Yes, there were injuries because of the incident":
-    afterString += "There were injuries because of the incident."
+    afterString += " " + "There were injuries because of the incident."
 
     if injury_details:
       afterString += injury_details
   
   if any_property_damage == "Yes, there was property damage because of the incident":
-    afterString += "There was property damage because of the incident."
+    afterString += " " + "There was property damage because of the incident."
 
     if property_damage_details:
       afterString += property_damage_details
@@ -171,13 +179,13 @@ code: |
     additional_infoString += potential_causes
 
   if help_criminals == "Yes, the police potentially helped someone do something criminal or illegal":
-    additional_infoString += "The police potentially helped someone do something criminal or illegal."
+    additional_infoString += " " + "The police potentially helped someone do something criminal or illegal."
 
   if any_witnesses == "Yes, there were witnesses":
-    additional_infoString += "There were witnesses at the incident."
+    additional_infoString += " " + "There were witnesses at the incident."
 
   if any_evidence == "Yes, I have videos, photos, audio recordings, or another record that could be evidence":
-    additional_infoString += "I have videos, photos, audio recordings, or another record that could be evidence."
+    additional_infoString += " " + "I have videos, photos, audio recordings, or another record that could be evidence."
   
 
   at_the_sceneBool = False
@@ -692,6 +700,30 @@ css: |
 #progress: 6
 continue button field: user_prototype
 #section: Introduction
+
+---
+# ==================== Language =================== #
+question: |
+  <span style="font-size: 30px; display: block; margin: auto; text-align: center;">Select your language preference</span>
+
+fields: 
+  - <h5 style="color:#696969; font-family:Arial, Helvetica, sans-serif; font-size:17px;">Please select your choice of language:</h5>: language
+    input type: radio
+    choices:
+      - English
+
+css: |
+  <style>
+    label.form-label.text-start.btn.btn-light.dalabelauty {
+      text-align: left;
+    }
+    label.form-label.text-start.btn.dalabelauty.btn-primary {
+      text-align: left;
+    }
+  </style>
+  
+#progress: 6
+continue button field: language_choice
 ---
 # ==================== Intro =================== #
 question: |
@@ -721,7 +753,7 @@ terms:
 
 progress: 10
 continue button field: user_saw_intro_screen
-#section: Introduction
+section: Introduction
 ---
 # ==================== Stages =================== #
 question: |
@@ -790,7 +822,7 @@ css: |
 
 progress: 10
 continue button field: user_saw_stages
-#section: Introduction
+section: Introduction
 ---
 # ==================== Stage 1 =================== #
 question: |
@@ -803,7 +835,9 @@ fields:
       - Police in Calgary
       - Police outside of Calgary
  
- 
+  - note: |  
+      <hr/>
+
   - <h5 style="color:#696969; font-family:Arial, Helvetica, sans-serif; font-size:17px;">Who is the victim of the incident you are complaining about?:</h5>: user.complaint_victim
     input type: radio
     choices:
@@ -875,7 +909,7 @@ css: |
   
 progress: 23
 continue button field: user_stage1
-#section: Introduction
+section: Stage 1 - Qualifying
 ---
 # ==================== Stage 2 =================== #
 question: |
@@ -900,7 +934,7 @@ fields:
       - Someone else called 911 or the police
       - No one called 911 or the police
       - I don’t know if someone called 911 or the police
-      
+
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">What did you say on the phone with 911 or the police, and what did they say? </span>: phone_call_details
     input type: area
     hint: Be as detailed as possible
@@ -925,14 +959,24 @@ fields:
       - Yes, the police came to the scene
       - No, the police did not come to the scene
       - I don’t know if the police came to the scene
-      
+
+ 
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">What happened next?</span>: what_happened_next
     input type: area
     hint: Leave blank if you don't know
     required: false
     js show if: |
       val("showed_up") == "No, the police did not come to the scene" || val("showed_up") == "I don’t know if the police came to the scene"
-      
+
+  - note: |  
+      <hr/>
+
+  
+    show if:
+      variable: showed_up
+      is: Yes, the police came to the scene
+
+
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">Did you or someone else have any verbal interactions with the police?<span>: verbal_interactions
     input type: radio
     choices:
@@ -941,7 +985,15 @@ fields:
     show if:
       variable: showed_up
       is: Yes, the police came to the scene
-      
+
+  - note: |  
+      <hr/>
+
+  
+    show if:
+      variable: showed_up
+      is: Yes, the police came to the scene
+
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">Did you or someone else have any physical interactions with the police?<span>: physical_interactions
     input type: radio
     choices:
@@ -950,7 +1002,15 @@ fields:
     show if:
       variable: showed_up
       is: Yes, the police came to the scene
-      
+
+  - note: |  
+      <hr/>
+
+  
+    js show if: |
+      val("showed_up") == "Yes, the police came to the scene" && (val("verbal_interactions") == "Yes, there were verbal interactions with the police" || val("physical_interactions") == "Yes, there were physical interactions with the police")
+
+
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">Did the police use any guns or weapons, or threaten to use any guns or weapons?<span>: use_of_weapons
     input type: radio
     choices:
@@ -958,14 +1018,14 @@ fields:
       - No, they didn’t use guns or weapons or threatened to use them
     js show if: |
       val("showed_up") == "Yes, the police came to the scene" && (val("verbal_interactions") == "Yes, there were verbal interactions with the police" || val("physical_interactions") == "Yes, there were physical interactions with the police")
-      
+
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">How did the police arrive on the scene, and approximately how many police were there?</span>: how_police_arrived
     input type: area
     hint: Leave blank if you don't know
     required: false
     js show if: |
       val("showed_up") == "Yes, the police came to the scene"
-      
+
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">In the first 5 to 10 minutes of arriving on scene, what did the police do?</span>: police_actions_early
     input type: area
     hint: Leave blank if you don't know
@@ -1014,6 +1074,9 @@ fields:
     show if:
       variable: any_injuries
       is: Yes, there were injuries because of the incident
+
+  - note: |  
+      <hr/>
       
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">Was there any property damage because of the incident?<span>: any_property_damage
     input type: radio
@@ -1053,6 +1116,9 @@ fields:
     choices:
       - Yes, the police potentially helped someone do something criminal or illegal
       - No, the police didn’t potentially help someone do something criminal or illegal
+
+  - note: |  
+      <hr/>
       
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">Were there witnesses to the incident?<span>: any_witnesses
     input type: radio
@@ -1067,7 +1133,10 @@ fields:
     show if:
       variable: any_witnesses
       is: Yes, there were witnesses
-      
+
+  - note: |  
+      <hr/>
+
   - <span style="color:#696969; font-family:Arial, Helvetica, sans-serif;">Do you have any videos, photos, audio recordings, medical records, or any other records that could be evidence?<span>: any_evidence
     input type: radio
     choices:
@@ -1084,7 +1153,7 @@ fields:
       
 progress: 36
 continue button field: user_stage2
-#section: Introduction
+section: Stage 2 - Tell Us Your Story
 
 ---
 # ==================== Stage 3 =================== #
@@ -1304,7 +1373,7 @@ fields:
 
 progress: 50
 continue button field: user_stage3
-#section: Introduction
+section: Stage 3 - Yes/No Follow-ups
 
 ---
 # ==================== Stage 4 =================== #
@@ -1728,7 +1797,7 @@ review:
       
 progress: 65
 continue button field: user_stage4
-#section: Introduction
+section: Stage 4 - Review and Submit Complaint
 
 ---
 # ===================== UNQUALIFIED =============================== #
@@ -1808,9 +1877,8 @@ css: |
   
   
 continue button field: unqualified
-  
 progress: 80
-
+section: Stage 4 - Review and Submit Complaint
 ---
 # ===================== QUALIFIED =============================== #
 question: |
@@ -1869,8 +1937,7 @@ css: |
   
 continue button field: qualified
 progress: 80
-
-
+section: Stage 4 - Review and Submit Complaint
 
 ---   
 # ==================== Non-Anonymous =================== #
@@ -1906,7 +1973,7 @@ css: |
   
 progress: 90
 continue button field: user_details
-#section: Identity Confirmation
+section: Stage 4 - Review and Submit Complaint
 ---
 # ===================== Sign =============================== #
 question: |
@@ -1937,7 +2004,7 @@ css: |
   
 progress: 90
 continue button field: user_sign
-#section: Identity Confirmation
+section: Stage 4 - Review and Submit Complaint
 
 ---
 # ==================== Letter Objects =================== #
@@ -2046,7 +2113,7 @@ css: |
 
 progress: 100
 continue button field: final_page
-#section: Introduction
+section: Stage 4 - Review and Submit Complaint
 ---
 
 
@@ -2251,7 +2318,8 @@ action buttons:
     action: submit_complaint
   
 progress: 100
-# section: Preview of Letter
+section: Stage 4 - Review and Submit Complaint
+
 ---   
 event: submit_complaint
 code: |
